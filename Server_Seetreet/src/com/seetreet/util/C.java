@@ -1,7 +1,7 @@
 package com.seetreet.util;
 
 public class C {
-	public static final String DBIP = "211.189.127.61";
+	public static final String DBIP = "211.189.127.255";
 	public static final int DBPORT = 27017;
 	public static final String DBID = "seetreet";
 	public static final String DBPWSTR = "see";

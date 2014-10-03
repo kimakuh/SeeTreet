@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.seetreet.bean.ApiContentIdListBean;
 import com.seetreet.http.HttpControl;
 /**
  * Servlet implementation class FrontController
@@ -31,9 +35,15 @@ public class ApiReceiveController extends HttpServlet {
     	
     	response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		PrintWriter out = response.getWriter();
+		//PrintWriter out = response.getWriter();
 		//System.out.println("DataReceiver--------------------");
-		HttpControl.getContentsId();
+		ApiContentIdListBean beanList;
+		try {
+			HttpControl.getContentsId();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	//HttpDAO a = new HttpDAO();
     	//a.getContentsId();
     	
