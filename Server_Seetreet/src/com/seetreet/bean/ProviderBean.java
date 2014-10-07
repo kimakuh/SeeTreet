@@ -1,5 +1,7 @@
 package com.seetreet.bean;
 
+import com.seetreet.bean.content.ContentBean;
+
 public class ProviderBean {
 	private String providerId;
 	private String[] images;

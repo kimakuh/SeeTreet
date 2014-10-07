@@ -1,5 +1,7 @@
 package com.seetreet.dao;
 
+import org.bson.types.ObjectId;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.mongodb.BasicDBObject;
@@ -10,6 +12,7 @@ import com.mongodb.WriteResult;
 import com.seetreet.bean.ApiContentIdListBean;
 import com.seetreet.bean.UserBean;
 import com.seetreet.bean.UserLoginBean;
+import com.seetreet.bean.content.ContentProviderBean;
 
 public class MongoDAO {
 	public static boolean insertUser() {
@@ -120,5 +123,87 @@ public class MongoDAO {
 		}
 				
 		return null;
+	}
+	
+	/*param : email , token
+	 * description :
+	 * 
+	 * */
+	public static boolean isUser(String email, String token) {
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		BasicDBObject user
+			= new BasicDBObject()
+					.append(UserBean.KEY_EMAIL, email)
+					.append(UserBean.KEY_TOKEN, new ObjectId(token));
+		
+		
+		if(col.findOne(user) != null) 
+			return true;
+				
+		return false;
+	}
+	
+	/*param : email , pw
+	 * description : 
+	 * notice : MongoDB의 _id 값을 토큰 값으로 사용함. 다만 JAVA에서 받은 ObjectId 객체를 toString으로 하면 변환 됨 */
+	public static UserLoginBean hasUser(String email, String pw) {
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		BasicDBObject user
+			= new BasicDBObject()
+					.append(UserBean.KEY_EMAIL, email)
+					.append(UserBean.KEY_PW, pw);
+		
+		DBObject res;
+		if((res = col.findOne(user)) != null) {
+			UserBean bean 
+				= new UserBean(
+						(String)res.get(UserBean.KEY_EMAIL),
+						(String)res.get(UserBean.KEY_NAME),
+						(int)res.get(UserBean.KEY_AGE),
+						(String)res.get(UserBean.KEY_PHONE),
+						(String)res.get(UserBean.KEY_MODTIME),
+						res.get(UserBean.KEY_TOKEN).toString());
+			
+			return bean;
+		}
+				
+		return null;
+	}
+	
+	public static ContentProviderBean enrollContent(ContentProviderBean bean) {		
+		ContentProviderBean result = null;
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENT);
+		
+		BasicDBObject content
+			= new BasicDBObject()
+					.append(ContentProviderBean.KEY_TITLE, bean.getTitle())
+					.append(ContentProviderBean.KEY_TYPE, bean.getType())
+					.append(ContentProviderBean.KEY_PROVIDER, bean.getProviderId())
+					.append(ContentProviderBean.KEY_GENRE, bean.getGenre())
+					.append(ContentProviderBean.KEY_STARTTIME, bean.getStartTime())
+					.append(ContentProviderBean.KEY_ENDTIME, bean.getEndTime());
+		
+		ObjectId id = (ObjectId) col.insert(content).getUpsertedId();
+		
+		DBObject res = col.findOne(new BasicDBObject(ContentProviderBean.KEY_ID, id));
+		try {
+			result = new ContentProviderBean(
+					(String)res.get(ContentProviderBean.KEY_TITLE), 
+					(String)res.get(ContentProviderBean.KEY_GENRE),
+					(int)res.get(ContentProviderBean.KEY_TYPE), 
+					(int)res.get(ContentProviderBean.KEY_STARTTIME), 
+					(int)res.get(ContentProviderBean.KEY_ENDTIME), 
+					res.get(ContentProviderBean.KEY_ID).toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

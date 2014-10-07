@@ -2,7 +2,7 @@ package com.seetreet.bean;
 
 import com.google.gson.JsonObject;
 
-public class UserBean implements UserLoginBean , BeanJson{
+public class UserBean implements UserLoginBean{
 	private String email;
 	private String pw;
 	private GenreBean[] favoriteGenre;
@@ -113,7 +113,9 @@ public class UserBean implements UserLoginBean , BeanJson{
 	public JsonObject getJson() {
 		// TODO Auto-generated method stub
 		JsonObject temp = new JsonObject();
-		
-		return null;
+		temp.addProperty(KEY_EMAIL, email);
+		temp.addProperty(KEY_NAME, name);
+		temp.addProperty(KEY_TOKEN, token);
+		return temp;
 	}
 }

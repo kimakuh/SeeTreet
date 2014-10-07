@@ -50,16 +50,18 @@ public class LoginController extends HttpServlet {
 		String email = cmd.replace(PREFIX, "");		
 		String pw = req.getHeader("password");	
 		
-		
 		UserLoginBean bean = MongoDAO.loginUser(email, pw);		
 		PrintWriter out = res.getWriter();
 		JsonObject json = new JsonObject();
+		
 		try {
 			if(bean == null) {
 				json.addProperty("state", false);
 				out.write(json.toString());
 			} else {
+				System.out.println(bean.getEmail());
 				json.addProperty("state", true);
+				json.add("data", bean.getJson());
 				out.write(json.toString());
 			}
 		} catch (Exception e) {

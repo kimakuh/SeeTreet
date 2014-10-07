@@ -5,8 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import jdk.nashorn.internal.parser.JSONParser;
-
 import com.seetreet.bean.ApiContentIdListBean;
 import com.seetreet.dao.MongoDAO;
 import com.seetreet.util.C;

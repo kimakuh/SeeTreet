@@ -1,5 +1,7 @@
 package com.seetreet.bean;
 
+import com.seetreet.bean.content.ContentBean;
+
 public class ArtistBean {
 	private String 		artistId;
 	private String[] 	artistImages;
