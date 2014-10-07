@@ -37,10 +37,10 @@ public class ApiReceiveController extends HttpServlet {
 		response.setContentType("application/json");
 		//PrintWriter out = response.getWriter();
 		//System.out.println("DataReceiver--------------------");
-		ApiContentIdListBean beanList;
+		
 		try {
-			HttpControl.getContentsId();
-		} catch (JSONException e) {
+			HttpControl.getContents();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
