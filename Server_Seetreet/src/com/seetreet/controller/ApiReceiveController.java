@@ -17,7 +17,7 @@ import com.seetreet.http.HttpControl;
 /**
  * Servlet implementation class FrontController
  */
-@WebServlet("/api")
+@WebServlet("/admin/receiveApi")
 public class ApiReceiveController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

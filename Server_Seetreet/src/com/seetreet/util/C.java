@@ -21,6 +21,7 @@ public class C {
 	public static final String SEARCHFESTIVAL = "/searchFestival";
 	public static final String DEFAULTYN = "&defaultYN=Y";
 	public static final String CONTENTID = "&contentId=";
+	public static final String CATCODEYN = "&catcodeYN=Y";
 	public static final String OVERVIEWYN = "&overviewYN=Y";
 	public static final String CONTENTIDDATELIST = "&eventStartDate=" + currentDate() + "&listYN=Y";
 	public static final String SETTINGVALUE = "&numOfRows=1000&MobileOS=ETC&MobileApp=AppTesting&_type=json";

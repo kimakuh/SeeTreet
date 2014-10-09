@@ -22,18 +22,18 @@ public class HttpControl {
 			JSONArray jArray;
 			jArray = HttpCall.getContentIds();
 			int size = jArray.length();
-			System.out.println("JSON SIZE : "+size);
+			//System.out.println("JSON SIZE : "+size);
 			
 			for(int i = 0;i<size;i++){
 				JSONObject existObject = jArray.getJSONObject(i);
 				// true이면 없는거, false면 기존에 있는거
-				System.out.println("JSONARRAY : " + i + " VALUE: " + existObject.getInt("contentid"));
+				//System.out.println("JSONARRAY : " + i + " VALUE: " + existObject.getInt("contentid"));
 				
 				boolean resultContent = MongoDAO.checkPublicApiContentId(existObject.getInt("contentid"));
-				System.out.println("RESULT : "+resultContent);
+				//System.out.println("RESULT : "+resultContent);
 				if(resultContent != false){
 					// 새로 삽입
-					System.out.println("checkcheckID :" +  i);
+					//System.out.println("checkcheckID :" +  i);
 					ApiContentIdListBean contentInfoBean = HttpCall.getContent(existObject);
 					MongoDAO.insertPublicApiContent(contentInfoBean);
 					

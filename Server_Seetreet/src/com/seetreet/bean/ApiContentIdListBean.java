@@ -31,8 +31,8 @@ public class ApiContentIdListBean {
 	public static final String KEY_FINISHEDTIME			= "isFinished";
 	public static final String KEY_REPLY				= "reply";
 	
-	public ApiContentIdListBean(String _contentTitle, int _contentId, int _eventStartDate, int _eventEndDate, String _contentGenre
-			, String _contentType, String _artist, String _provider, String _isConfirmed_artistId, String _overview, int _modifiedTime, int _confirmedTime, int _isFinishedTime){
+	public ApiContentIdListBean(String _contentTitle, int _contentId, int _eventStartDate, int _eventEndDate, String _contentType, String _artist,
+			String _provider, String _isConfirmed_artistId, String _overview, int _modifiedTime, int _confirmedTime, int _isFinishedTime, String _category){
 		this.isFinishedTime = _isFinishedTime;
 		this.confirmedTime = _confirmedTime;
 		this.isConfirmed_artistId = _isConfirmed_artistId;
@@ -42,11 +42,51 @@ public class ApiContentIdListBean {
 		this.overview = _overview;
 		this.modifiedTime = _modifiedTime;
 		this.contentTitle = _contentTitle;
-		this.contentGenre = _contentGenre;
+		this.contentGenre = getCategoryTocontentGenre(_category);
 		this.contentId = _contentId;
 		this.eventStartDate = _eventStartDate;
 		this.eventEndDate = _eventEndDate;
 	}
+	
+	public String getCategoryTocontentGenre(String _category){
+		String result;
+
+		if(_category.equals("A02070100"))
+			result = "문화관광축제";
+		else if(_category.equals("A02070200"))
+			result = "일반축제";
+		else if(_category.equals("A02080100"))
+			result = "전통공연";
+		else if(_category.equals("A02080200"))
+			result = "연극";
+		else if(_category.equals("A02080300"))
+			result = "뮤지컬";
+		else if(_category.equals("A02080400"))
+			result = "오페라";
+		else if(_category.equals("A02080500"))
+			result = "전시회";
+		else if(_category.equals("A02080600"))
+			result = "박람회";
+		else if(_category.equals("A02080700"))
+			result = "컨벤션";
+		else if(_category.equals("A02080800"))
+			result = "무용";
+		else if(_category.equals("A02080900"))
+			result = "클래식음악회";
+		else if(_category.equals("A02080100"))
+			result = "대중콘서트";
+		else if(_category.equals("A02081100"))
+			result = "영화";
+		else if(_category.equals("A02081200"))
+			result = "스포츠경기";
+		else if(_category.equals("A02081300"))
+			result = "기타행사";
+		else 
+			result = "null";
+		
+		return result; 
+	}
+	
 	public String getOverview(){
 		return overview;
 	}
