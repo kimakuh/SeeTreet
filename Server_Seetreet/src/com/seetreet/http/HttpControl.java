@@ -5,7 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.seetreet.bean.ApiContentIdListBean;
+import com.seetreet.bean.ApiContentBean;
 import com.seetreet.dao.MongoDAO;
 import com.seetreet.util.C;
 
@@ -26,29 +26,18 @@ public class HttpControl {
 			
 			for(int i = 0;i<size;i++){
 				JSONObject existObject = jArray.getJSONObject(i);
-				// true이면 없는거, false면 기존에 있는거
-				//System.out.println("JSONARRAY : " + i + " VALUE: " + existObject.getInt("contentid"));
-				
+				// true이면 없는거, false면 기존에 있는거				
 				boolean resultContent = MongoDAO.checkPublicApiContentId(existObject.getInt("contentid"));
-				//System.out.println("RESULT : "+resultContent);
+
 				if(resultContent != false){
 					// 새로 삽입
-					//System.out.println("checkcheckID :" +  i);
-					ApiContentIdListBean contentInfoBean = HttpCall.getContent(existObject);
+					ApiContentBean contentInfoBean = HttpCall.getContent(existObject);
 					MongoDAO.insertPublicApiContent(contentInfoBean);
 					
 				}
 				else{
 					
 				}
-				/*
-				System.out.println(temp.getContentName());
-				System.out.println(temp.getContentId());
-				System.out.println(temp.getEventStartDate());
-				System.out.println(temp.getEventEndDate());
-				System.out.println("===========================");
-				MongoDAO.insertPublicApiContentId(temp);
-				*/
 			}	
 		}catch(Exception e){
 			e.printStackTrace();

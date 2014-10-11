@@ -20,6 +20,7 @@ public class C {
 	public static final String DETAILCOMMON = "/detailCommon";
 	public static final String SEARCHFESTIVAL = "/searchFestival";
 	public static final String DEFAULTYN = "&defaultYN=Y";
+	public static final String MAPINFOYN = "&mapinfoYN=Y";
 	public static final String CONTENTID = "&contentId=";
 	public static final String CATCODEYN = "&catcodeYN=Y";
 	public static final String OVERVIEWYN = "&overviewYN=Y";

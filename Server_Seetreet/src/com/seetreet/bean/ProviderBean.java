@@ -13,6 +13,7 @@ public class ProviderBean {
 	private String description;
 	private ContentBean[] history;
 	private String modTime;
+	private String publicGenre;
 	
 	public ProviderBean(String contentType, String[] images ,LocationBean location, GenreBean[] genre, 
 			String storeTitle, String storeType, String description) {
@@ -25,7 +26,19 @@ public class ProviderBean {
 		this.description = description;
 		this.favoriteGenre = genre;
 	}
-	
+	public ProviderBean(String contentType, String[] images ,LocationBean location, String genre, 
+			String storeTitle, String storeType, String description, String modTime) {
+		// TODO Auto-generated constructor stub
+		// PUBLIC PROVIDER
+		this.contentType = contentType;
+		this.images = images;
+		this.location = location;
+		this.StoreTitle = storeTitle;
+		this.StoreType = storeType;
+		this.description = description;
+		this.publicGenre = genre;
+		this.modTime = modTime;
+	}
 	public ProviderBean(String contentType, String[] images ,LocationBean location, 
 			String storeTitle, String storeType, String description,
 			String providerId, GenreBean[] genre, ContentBean[] history, String modTime) {
@@ -61,7 +74,7 @@ public class ProviderBean {
 		return location;
 	}
 	public String getModTime() {
-		return modTime;
+			return modTime;
 	}
 	public String getProviderId() {
 		return providerId;

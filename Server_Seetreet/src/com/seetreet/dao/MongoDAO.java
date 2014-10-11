@@ -4,12 +4,14 @@ import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
-import com.seetreet.bean.ApiContentIdListBean;
+import com.seetreet.bean.ApiContentBean;
+import com.seetreet.bean.ProviderBean;
 import com.seetreet.bean.UserBean;
 import com.seetreet.bean.UserLoginBean;
 import com.seetreet.bean.content.ContentProviderBean;
@@ -51,7 +53,7 @@ public class MongoDAO {
 	 * 
 	 * */
 	
-	public static boolean insertPublicApiContent(ApiContentIdListBean bean) {
+	public static boolean insertPublicApiContent(ApiContentBean bean) {
 	
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);		
@@ -62,19 +64,19 @@ public class MongoDAO {
 		
 		BasicDBObject newContent 
 			= new BasicDBObject()
-					.append(ApiContentIdListBean.KEY_CONTENTTITLE, bean.getContentName())
-					.append(ApiContentIdListBean.KEY_CONTENTID, bean.getContentId())
-					.append(ApiContentIdListBean.KEY_GENRE, bean.getContentGenre())
-					.append(ApiContentIdListBean.KEY_TYPE, bean.getContentType())
-					.append(ApiContentIdListBean.KEY_ARTIST, bean.getArtist())
-					.append(ApiContentIdListBean.KEY_PROVIDER, bean.getProvider())
-					.append(ApiContentIdListBean.KEY_MODIFIEDTIME, bean.getModifiedTime())
-					.append(ApiContentIdListBean.KEY_OVERVIEW, bean.getOverview())
-					.append(ApiContentIdListBean.KEY_ISCONFIRMED_ARTISTID, bean.getConfirmed_artistId())
-					.append(ApiContentIdListBean.KEY_CONFIRMEDTIME, bean.getConfirmedTime())
-					.append(ApiContentIdListBean.KEY_FINISHEDTIME, bean.getIsFinishedTime())
-					.append(ApiContentIdListBean.KEY_EVENTSTARTDATE, bean.getEventStartDate())
-					.append(ApiContentIdListBean.KEY_EVENTENDDATE , bean.getEventEndDate());
+					.append(ApiContentBean.KEY_CONTENTTITLE, bean.getContentName())
+					.append(ApiContentBean.KEY_CONTENTID, bean.getContentId())
+					.append(ApiContentBean.KEY_GENRE, bean.getContentGenre())
+					.append(ApiContentBean.KEY_TYPE, bean.getContentType())
+					.append(ApiContentBean.KEY_ARTIST, bean.getArtist())
+					.append(ApiContentBean.KEY_PROVIDER, bean.getProvider())
+					.append(ApiContentBean.KEY_MODIFIEDTIME, bean.getModifiedTime())
+					.append(ApiContentBean.KEY_OVERVIEW, bean.getOverview())
+					.append(ApiContentBean.KEY_ISCONFIRMED_ARTISTID, bean.getConfirmed_artistId())
+					.append(ApiContentBean.KEY_CONFIRMEDTIME, bean.getConfirmedTime())
+					.append(ApiContentBean.KEY_FINISHEDTIME, bean.getIsFinishedTime())
+					.append(ApiContentBean.KEY_EVENTSTARTDATE, bean.getEventStartDate())
+					.append(ApiContentBean.KEY_EVENTENDDATE , bean.getEventEndDate());
 					
 		System.out.println(newContent.toString());
 		col.insert(newContent);
@@ -88,11 +90,42 @@ public class MongoDAO {
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);		
 	
 		//같은게 있으면 false
-		if(col.findOne(new BasicDBObject(ApiContentIdListBean.KEY_CONTENTID, contentId)) != null)
+		if(col.findOne(new BasicDBObject(ApiContentBean.KEY_CONTENTID, contentId)) != null)
 			return false;	
 
 		//없으면 true
 		return true;
+	}
+	
+	public static boolean insertPublicProvider(ProviderBean obj) {
+		
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_PROVIDER);	
+		System.out.println("==========================================================================");
+		try{
+			BasicDBObject provider = new BasicDBObject();
+			BasicDBList list = new BasicDBList();
+			
+			list.add(0, obj.getLocation().getLocation()[0]);
+			list.add(1, obj.getLocation().getLocation()[1]);
+			BasicDBObject local = new BasicDBObject();
+			local.append("type", "Point")
+				.append("coordinates", list);
+			
+			provider.append("providerImage", obj.getImages())
+					.append("contentType", obj.getContentType())
+					.append("favoriteGenre", obj.getFavoriteGenre())
+					.append("location", local)
+					.append("StoreTitle", obj.getStoreTitle())
+					.append("StoreType", obj.getStoreType())
+					.append("description", obj.getDescription())
+					.append("modifiedTime", obj.getModTime());
+			col.insert(provider);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	/*param : email , pw

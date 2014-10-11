@@ -1,6 +1,6 @@
 package com.seetreet.bean;
 
-public class ApiContentIdListBean {
+public class ApiContentBean {
 	private String contentTitle;
 	private String contentGenre;
 	private String contentType;
@@ -8,12 +8,12 @@ public class ApiContentIdListBean {
 	private String provider;
 	private String isConfirmed_artistId;
 	private String overview;
-	private int confirmedTime;
-	private int isFinishedTime;
-	private int contentId;
-	private int eventStartDate;
-	private int eventEndDate;
-	private int modifiedTime;
+	private String confirmedTime;
+	private String isFinishedTime;
+	private String contentId;
+	private String eventStartDate;
+	private String eventEndDate;
+	private String modifiedTime;
 	
 	
 	public static final String KEY_CONTENTID 			= "contentId";
@@ -31,8 +31,8 @@ public class ApiContentIdListBean {
 	public static final String KEY_FINISHEDTIME			= "isFinished";
 	public static final String KEY_REPLY				= "reply";
 	
-	public ApiContentIdListBean(String _contentTitle, int _contentId, int _eventStartDate, int _eventEndDate, String _contentType, String _artist,
-			String _provider, String _isConfirmed_artistId, String _overview, int _modifiedTime, int _confirmedTime, int _isFinishedTime, String _category){
+	public ApiContentBean(String _contentTitle, String _contentId, String _eventStartDate, String _eventEndDate, String _contentType, String _artist,
+			String _provider, String _isConfirmed_artistId, String _overview, String _modifiedTime, String _confirmedTime, String _isFinishedTime, String _category){
 		this.isFinishedTime = _isFinishedTime;
 		this.confirmedTime = _confirmedTime;
 		this.isConfirmed_artistId = _isConfirmed_artistId;
@@ -91,14 +91,14 @@ public class ApiContentIdListBean {
 		return overview;
 	}
 	
-	public int getModifiedTime(){
+	public String getModifiedTime(){
 		return modifiedTime;
 	}
 	
-	public int getIsFinishedTime(){
+	public String getIsFinishedTime(){
 		return isFinishedTime;
 	}
-	public int getConfirmedTime(){
+	public String getConfirmedTime(){
 		return confirmedTime;
 	}
 	public String getConfirmed_artistId(){
@@ -120,15 +120,15 @@ public class ApiContentIdListBean {
 	public String getContentName(){
 		return contentTitle;
 	}
-	public int getContentId(){
+	public String getContentId(){
 		return contentId;
 	}
 	
-	public int getEventStartDate(){
+	public String getEventStartDate(){
 		return eventStartDate;
 	}
 	
-	public int getEventEndDate(){
+	public String getEventEndDate(){
 		return eventEndDate;
 	}
 }
