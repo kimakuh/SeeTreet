@@ -5,7 +5,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.mongodb.BasicDBObject;
 import com.seetreet.bean.ApiContentBean;
+import com.seetreet.bean.ProviderBean;
 import com.seetreet.dao.MongoDAO;
 import com.seetreet.util.C;
 
@@ -31,7 +33,11 @@ public class HttpControl {
 
 				if(resultContent != false){
 					// 새로 삽입
-					ApiContentBean contentInfoBean = HttpCall.getContent(existObject);
+					JSONObject obj = HttpCall.getContentObject(existObject);
+					ProviderBean prov = new ProviderBean(obj);
+					BasicDBObject provObj = MongoDAO.insertPublicProvider(prov);
+					
+					ApiContentBean contentInfoBean = new ApiContentBean(prov, provObj,existObject, obj);
 					MongoDAO.insertPublicApiContent(contentInfoBean);
 					
 				}

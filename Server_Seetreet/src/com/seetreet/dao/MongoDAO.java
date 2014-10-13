@@ -42,7 +42,7 @@ public class MongoDAO {
 					.append(UserBean.KEY_NAME, bean.getName())
 					.append(UserBean.KEY_PHONE , bean.getPhone())
 					.append(UserBean.KEY_PW, bean.getPw());
-		System.out.println(newUser.toString());
+		//System.out.println(newUser.toString());
 		col.insert(newUser);
 		
 		return true;
@@ -62,6 +62,7 @@ public class MongoDAO {
 		//if(col.findOne(new BasicDBObject(UserBean.KEY_EMAIL, bean.getEmail())) != null)
 			//return false;
 		
+		
 		BasicDBObject newContent 
 			= new BasicDBObject()
 					.append(ApiContentBean.KEY_CONTENTTITLE, bean.getContentName())
@@ -69,7 +70,7 @@ public class MongoDAO {
 					.append(ApiContentBean.KEY_GENRE, bean.getContentGenre())
 					.append(ApiContentBean.KEY_TYPE, bean.getContentType())
 					.append(ApiContentBean.KEY_ARTIST, bean.getArtist())
-					.append(ApiContentBean.KEY_PROVIDER, bean.getProvider())
+					.append(ApiContentBean.KEY_PROVIDER, bean.getProviderObject())
 					.append(ApiContentBean.KEY_MODIFIEDTIME, bean.getModifiedTime())
 					.append(ApiContentBean.KEY_OVERVIEW, bean.getOverview())
 					.append(ApiContentBean.KEY_ISCONFIRMED_ARTISTID, bean.getConfirmed_artistId())
@@ -78,12 +79,16 @@ public class MongoDAO {
 					.append(ApiContentBean.KEY_EVENTSTARTDATE, bean.getEventStartDate())
 					.append(ApiContentBean.KEY_EVENTENDDATE , bean.getEventEndDate());
 					
-		System.out.println(newContent.toString());
+		//System.out.println(newContent.toString());
 		col.insert(newContent);
 		
 		return true;
 	}
 	
+	/*param : checkPublicApiContentId(int contentId)
+	 * description : 기존에 있는 contentId 값을 확인함.
+	 * 
+	 * */
 	public static boolean checkPublicApiContentId(int contentId) {
 		
 		DB db = MongoDB.getDB();
@@ -97,11 +102,14 @@ public class MongoDAO {
 		return true;
 	}
 	
-	public static boolean insertPublicProvider(ProviderBean obj) {
+	/*param : insertPublicProvider(ProviderBean obj)
+	 * description : 새로운 공공 api provider 객체 삽입.
+	 * 
+	 * */
+	public static BasicDBObject insertPublicProvider(ProviderBean obj) {
 		
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_PROVIDER);	
-		System.out.println("==========================================================================");
 		try{
 			BasicDBObject provider = new BasicDBObject();
 			BasicDBList list = new BasicDBList();
@@ -111,20 +119,20 @@ public class MongoDAO {
 			BasicDBObject local = new BasicDBObject();
 			local.append("type", "Point")
 				.append("coordinates", list);
-			
+
 			provider.append("providerImage", obj.getImages())
 					.append("contentType", obj.getContentType())
-					.append("favoriteGenre", obj.getFavoriteGenre())
+					.append("favoriteGenre", obj.getPublicGenre())
 					.append("location", local)
 					.append("StoreTitle", obj.getStoreTitle())
 					.append("StoreType", obj.getStoreType())
 					.append("description", obj.getDescription())
 					.append("modifiedTime", obj.getModTime());
 			col.insert(provider);
-			return true;
+			return provider;
 		}catch(Exception e){
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 	}
 	

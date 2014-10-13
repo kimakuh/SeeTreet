@@ -1,19 +1,25 @@
 package com.seetreet.bean;
 
+import org.json.JSONObject;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+
 public class ApiContentBean {
 	private String contentTitle;
 	private String contentGenre;
 	private String contentType;
 	private String artist;
-	private String provider;
+	private ProviderBean provider;
+	private BasicDBObject providerObject;
 	private String isConfirmed_artistId;
 	private String overview;
-	private String confirmedTime;
-	private String isFinishedTime;
-	private String contentId;
-	private String eventStartDate;
-	private String eventEndDate;
-	private String modifiedTime;
+	private Long confirmedTime;
+	private Long isFinishedTime;
+	private Long contentId;
+	private Long eventStartDate;
+	private Long eventEndDate;
+	private Long modifiedTime;
 	
 	
 	public static final String KEY_CONTENTID 			= "contentId";
@@ -31,8 +37,11 @@ public class ApiContentBean {
 	public static final String KEY_FINISHEDTIME			= "isFinished";
 	public static final String KEY_REPLY				= "reply";
 	
-	public ApiContentBean(String _contentTitle, String _contentId, String _eventStartDate, String _eventEndDate, String _contentType, String _artist,
-			String _provider, String _isConfirmed_artistId, String _overview, String _modifiedTime, String _confirmedTime, String _isFinishedTime, String _category){
+	
+	/*
+	public ApiContentBean(String _contentTitle, Long _contentId, Long _eventStartDate, Long _eventEndDate,
+	 String _contentType, String _artist,
+			String _provider, String _isConfirmed_artistId, String _overview, Long _modifiedTime, Long _confirmedTime, Long _isFinishedTime, String _category){
 		this.isFinishedTime = _isFinishedTime;
 		this.confirmedTime = _confirmedTime;
 		this.isConfirmed_artistId = _isConfirmed_artistId;
@@ -47,8 +56,32 @@ public class ApiContentBean {
 		this.eventStartDate = _eventStartDate;
 		this.eventEndDate = _eventEndDate;
 	}
+	*/
+	public ApiContentBean(ProviderBean _prov, BasicDBObject _providerObject, JSONObject _existObject, JSONObject _detailObject){
+		try{
+			this.contentTitle = _existObject.getString("title");
+			this.contentId = _existObject.getLong("contentid");
+			this.eventStartDate = _existObject.getLong("eventstartdate");
+			this.eventEndDate = _existObject.getLong("eventenddate");
+			this.contentType = "public";
+			this.artist = "null";
+			this.provider = _prov;
+			this.providerObject = _providerObject;
+			this.isConfirmed_artistId = "public";
+			this.overview = _detailObject.getString("overview");
+			this.modifiedTime = _detailObject.getLong("modifiedtime");
+			this.confirmedTime = _existObject.getLong("eventstartdate");
+			this.isFinishedTime = _existObject.getLong("eventenddate");
+			this.contentGenre = getCategoryTocontentGenre(_detailObject.getString("cat3"));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+ 
+	}
 	
-	public String getCategoryTocontentGenre(String _category){
+	
+	public static String getCategoryTocontentGenre(String _category){
 		String result;
 
 		if(_category.equals("A02070100"))
@@ -91,20 +124,20 @@ public class ApiContentBean {
 		return overview;
 	}
 	
-	public String getModifiedTime(){
+	public Long getModifiedTime(){
 		return modifiedTime;
 	}
 	
-	public String getIsFinishedTime(){
+	public Long getIsFinishedTime(){
 		return isFinishedTime;
 	}
-	public String getConfirmedTime(){
+	public Long getConfirmedTime(){
 		return confirmedTime;
 	}
 	public String getConfirmed_artistId(){
 		return isConfirmed_artistId;
 	}
-	public String getProvider(){
+	public ProviderBean getProvider(){
 		return provider;
 	}
 	public String getArtist(){
@@ -120,15 +153,19 @@ public class ApiContentBean {
 	public String getContentName(){
 		return contentTitle;
 	}
-	public String getContentId(){
+	public Long getContentId(){
 		return contentId;
 	}
 	
-	public String getEventStartDate(){
+	public Long getEventStartDate(){
 		return eventStartDate;
 	}
 	
-	public String getEventEndDate(){
+	public Long getEventEndDate(){
 		return eventEndDate;
+	}
+	
+	public BasicDBObject getProviderObject(){
+		return providerObject;
 	}
 }
