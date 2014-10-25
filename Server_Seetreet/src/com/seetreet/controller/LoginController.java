@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
 import com.google.gson.JsonObject;
 import com.seetreet.bean.UserLoginBean;
 import com.seetreet.dao.MongoDAO;
@@ -52,16 +54,16 @@ public class LoginController extends HttpServlet {
 		
 		UserLoginBean bean = MongoDAO.loginUser(email, pw);		
 		PrintWriter out = res.getWriter();
-		JsonObject json = new JsonObject();
+		JSONObject json = new JSONObject();
 		
 		try {
 			if(bean == null) {
-				json.addProperty("state", false);
+				json.put("state", false);
 				out.write(json.toString());
 			} else {
 				System.out.println(bean.getEmail());
-				json.addProperty("state", true);
-				json.add("data", bean.getJson());
+				json.put("state", true);
+				json.put("data", bean.getJson());
 				out.write(json.toString());
 			}
 		} catch (Exception e) {

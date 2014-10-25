@@ -1,18 +1,33 @@
 package com.seetreet.bean;
 
-public class ReplyBean {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.JsonObject;
+
+public class ReplyBean implements BeanJson {
 	private String replyId;
-	private String contentId;
-	private float replyscore;
+	private String contentId;	
 	private String replytext;
 	private String replyimage;
 	
-	public ReplyBean(String replyId, String contentId, float replyscore, String replytext, String replyimage) {
+	public static final String KEY_ID = "_id";
+	public static final String KEY_CONTENTID = "contentId";
+	public static final String KEY_REPLYTEXT = "replytext";
+	public static final String KEY_REPLYIMAGE = "replyimage";
+	
+	public ReplyBean(String contentId, String replytext, String replyimage) {
+		// TODO Auto-generated constructor stub		
+		this.contentId = contentId;
+		this.replytext = replytext;
+		this.replyimage = replyimage;
+	}
+	
+	public ReplyBean(String replyId, String contentId, String replytext, String replyimage) {
 		// TODO Auto-generated constructor stub
 		
 		this.contentId = contentId;
 		this.replyId = replyId;
-		this.replyscore = replyscore;
 		this.replytext = replytext;
 		this.replyimage = replyimage;
 	}
@@ -26,10 +41,18 @@ public class ReplyBean {
 	public String getReplyimage() {
 		return replyimage;
 	}
-	public float getReplyscore() {
-		return replyscore;
-	}
 	public String getReplytext() {
 		return replytext;
+	}
+
+	@Override
+	public JSONObject getJson() throws JSONException{
+		// TODO Auto-generated method stub
+		JSONObject obj = new JSONObject();
+		obj.put(KEY_CONTENTID, this.contentId);
+		obj.put(KEY_ID, this.replyId);
+		obj.put(KEY_REPLYTEXT, this.replytext);
+		obj.put(KEY_REPLYIMAGE, this.replyimage);
+		return obj;
 	}
 }

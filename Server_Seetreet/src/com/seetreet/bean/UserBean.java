@@ -1,5 +1,8 @@
 package com.seetreet.bean;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.gson.JsonObject;
 
 public class UserBean implements UserLoginBean{
@@ -110,12 +113,12 @@ public class UserBean implements UserLoginBean{
 
 
 	@Override
-	public JsonObject getJson() {
+	public JSONObject getJson() throws JSONException{
 		// TODO Auto-generated method stub
-		JsonObject temp = new JsonObject();
-		temp.addProperty(KEY_EMAIL, email);
-		temp.addProperty(KEY_NAME, name);
-		temp.addProperty(KEY_TOKEN, token);
+		JSONObject temp = new JSONObject();
+		temp.put(KEY_EMAIL, email);
+		temp.put(KEY_NAME, name);
+		temp.put(KEY_TOKEN, token);
 		return temp;
 	}
 }

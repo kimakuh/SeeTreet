@@ -53,9 +53,9 @@ public class ContentProviderController extends HttpServlet {
 		
 	}
 
-	private void enrollContentByProvider(HttpServletRequest req , HttpServletResponse res) {
-		String token = req.getHeader(UserBean.KEY_TOKEN);
+	private void enrollContentByProvider(HttpServletRequest req , HttpServletResponse res) {		
 		String email = (String) req.getAttribute(UserBean.KEY_EMAIL);
+		String title = req.getHeader("title");
 		String body = req.getParameter("data");
 		
 		

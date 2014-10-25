@@ -12,6 +12,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.JsonObject;
 import com.seetreet.bean.UserBean;
 import com.seetreet.bean.content.ContentBean;
 import com.seetreet.dao.MongoDAO;
@@ -46,6 +50,7 @@ public class ContentFilter implements Filter {
 		// place your code here
 		
 		HttpServletRequest httpReq = (HttpServletRequest)req;
+		res.setCharacterEncoding(C.ENCODING);
 		httpReq.setCharacterEncoding(C.ENCODING);
 		String uri = httpReq.getRequestURI();
 		String contextPath = httpReq.getContextPath();
@@ -59,7 +64,14 @@ public class ContentFilter implements Filter {
 		if(!MongoDAO.isUser(email, token)) {
 			System.out.println("> FILTER : ERROR");
 			PrintWriter out = res.getWriter();
-			out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_UNKNOWN_TOKEN ,null));
+			try {
+				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_UNKNOWN_TOKEN ,new JSONObject()));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				out.close();
+			}
 			return;
 		}
 		System.out.println("> FILTER : " + email + " , " + token);

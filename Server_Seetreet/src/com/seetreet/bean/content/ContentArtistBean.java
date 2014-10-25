@@ -1,17 +1,19 @@
 package com.seetreet.bean.content;
 
+import com.seetreet.bean.ArtistBean;
 import com.seetreet.bean.GenreBean;
+import com.seetreet.bean.ProviderBean;
 
 public class ContentArtistBean extends ContentProviderBean{
-	public static final String KEY_ARTIST 	= "content_artist";
-	private String artistId = null;
-	public ContentArtistBean(String title, GenreBean genre, int type,
-			int start, int end, String providerId , String artistId) {
-		super(title, genre, type, start, end, providerId);
+	public static final String KEY_ARTIST 	= "artists";
+	private ArtistBean[] artist = null;
+	public ContentArtistBean(String title, GenreBean genre, String type,
+			int start, int end, ProviderBean provider , ArtistBean[] artist) {
+		super(title, genre, type, start, end, provider);
 		// TODO Auto-generated constructor stub
-		this.artistId = artistId;
+		this.artist = artist;
 	}
-	public String getArtistId() {
-		return artistId;
+	public ArtistBean[] getArtist() {
+		return artist;
 	}
 }

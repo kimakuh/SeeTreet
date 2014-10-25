@@ -1,5 +1,7 @@
 package com.seetreet.util;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class C {
 	public static final String DBIP = "211.189.127.155";
 	//public static final String DBIP = "211.189.127.61";
@@ -37,4 +39,12 @@ public class C {
 	}
 	
 	public static final String ENCODING = "UTF-8";
+	
+	public static String extractSuffix(HttpServletRequest req , String prefix) {
+		String reqURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String cmd = reqURI.substring(contextPath.length());
+		
+		return cmd.replace(prefix, ""); 
+	}
 }

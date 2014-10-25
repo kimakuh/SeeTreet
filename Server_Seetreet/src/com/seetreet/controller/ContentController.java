@@ -45,9 +45,12 @@ public class ContentController extends HttpServlet {
 		RequestDispatcher dispatcher = null;
 		if(postfix.contains(ContentProviderController.PREFIX)) {
 			dispatcher = req.getRequestDispatcher(ContentProviderController.PREFIX+"*");
-		} else {
-			
+		} else if(postfix.contains(ContentUserController.PREFIX)){
+			System.out.println(">> user content");
+			dispatcher = req.getRequestDispatcher(ContentUserController.PREFIX+"*");
 		}
+		
+		System.out.println(postfix);
 		
 		dispatcher.forward(req, res);					
 	}
