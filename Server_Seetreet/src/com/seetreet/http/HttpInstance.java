@@ -21,7 +21,7 @@ public enum HttpInstance {
 	private HttpClient client;
 	
 	HttpInstance() {
-		System.out.println("httpInstance-----------------");
+		//System.out.println("httpInstance-----------------");
 		//	client = new DefaultHttpClient();
 			client = new DefaultHttpClient();
 			//System.out.println("httpInstance-----------------");
