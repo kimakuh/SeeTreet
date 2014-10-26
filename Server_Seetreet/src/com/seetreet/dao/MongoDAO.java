@@ -121,15 +121,15 @@ public class MongoDAO {
 			BasicDBObject provider = new BasicDBObject();
 			BasicDBList list = new BasicDBList();
 			
-			list.add(0, obj.getLocation().getLocation()[0]);
-			list.add(1, obj.getLocation().getLocation()[1]);
+			list.add(0, obj.getLocation().getLatitude());
+			list.add(1, obj.getLocation().getLongitude());
 			BasicDBObject local = new BasicDBObject();
 			local.append("type", "Point")
 				.append("coordinates", list);
 
 			provider.append("providerImage", obj.getImages())
 					.append("contentType", obj.getContentType())
-					.append("favoriteGenre", obj.getPublicGenre())
+					.append("favoriteGenre", obj.getFavoriteGenre())
 					.append("location", local)
 					.append("StoreTitle", obj.getStoreTitle())
 					.append("StoreType", obj.getStoreType())

@@ -50,7 +50,7 @@ public class ContentController extends HttpServlet {
 			dispatcher = req.getRequestDispatcher(ContentUserController.PREFIX+"*");
 		}
 		
-		System.out.println(postfix);
+		System.out.println(">> ContentController :: "+postfix);
 		
 		dispatcher.forward(req, res);					
 	}

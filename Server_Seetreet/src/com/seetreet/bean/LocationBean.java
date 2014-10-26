@@ -12,6 +12,9 @@ public class LocationBean {
 	public static final String KEY_DESCRIPT 	= "l_descript";
 	public static final String KEY_COORDINATE	= "coordinates";
 	
+	public static final int LAT = 0;
+	public static final int LONG = 1;
+	
 	public LocationBean(String name, String description , double latitude, double longitude) {
 		// TODO Auto-generated constructor stub
 		this.name = name;
