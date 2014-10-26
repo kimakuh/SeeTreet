@@ -20,6 +20,7 @@ public class ProviderBean implements BeanJson{
 	private String description;
 	private ContentBean[] history;
 	private String modTime;
+	private String publicGenre;
 	
 	public static final String KEY_ID = "_id";
 	public static final String KEY_IMAGES = "providerImage";
@@ -59,7 +60,43 @@ public class ProviderBean implements BeanJson{
 		this.modTime = modTime;
 	}
 	
-	
+	public ProviderBean(JSONObject obj){
+		//怨듦났 API Bean 媛앹껜
+		try{
+			this.contentType = "public";
+			if(obj.has("firstimage")){
+				if(obj.has("firstimage2")){
+					String[] tempImage = {obj.getString("firstimage"),obj.getString("firstimage2")};
+					this.images = tempImage;
+				}
+				else{
+					String[] tempImage = {obj.getString("firstimage"), "null"};
+					this.images = tempImage;
+				}
+			}			
+			if(obj.has("title")){
+				this.StoreTitle = obj.getString("title");
+			}
+			if(obj.has("overview")){
+				this.description = obj.getString("overview");
+			}
+			if(obj.has("mapx") && obj.has("mapy")){
+				//double[] temp={obj.getDouble("mapx"), obj.getDouble("mapy")};
+				//public LocationBean(String name, String description , double latitude, double longitude) {
+				LocationBean loc = new LocationBean(this.StoreTitle, this.description, obj.getDouble("mapx"), obj.getDouble("mapy"));
+				this.location = loc;
+			}
+			if(obj.has("cat3")){
+				this.StoreType = ApiContentBean.getCategoryTocontentGenre(obj.getString("cat3"));
+				this.publicGenre = ApiContentBean.getCategoryTocontentGenre(obj.getString("cat3"));
+			}
+			if(obj.has("modifiedtime")){
+				this.modTime = obj.getString("modifiedtime");
+			}	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	public String getContentType() {
 		return contentType;
 	}
@@ -90,7 +127,9 @@ public class ProviderBean implements BeanJson{
 	public String getStoreType() {
 		return StoreType;
 	}
-
+	public String getPublicGenre() {
+		return publicGenre;
+	}
 
 	@Override
 	public JSONObject getJson() throws JSONException{
