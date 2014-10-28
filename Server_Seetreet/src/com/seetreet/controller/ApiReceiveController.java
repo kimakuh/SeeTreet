@@ -9,10 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.seetreet.bean.ApiContentBean;
 import com.seetreet.http.HttpControl;
 /**
  * Servlet implementation class FrontController

@@ -1,17 +1,13 @@
 package com.seetreet.dao;
 
 import org.bson.types.ObjectId;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.WriteResult;
-import com.seetreet.bean.ApiContentBean;
+import com.seetreet.bean.ContentPublicApiBean;
 import com.seetreet.bean.ArtistBean;
 import com.seetreet.bean.GenreBean;
 import com.seetreet.bean.LocationBean;
@@ -60,7 +56,7 @@ public class MongoDAO {
 	 * 
 	 * */
 	
-	public static boolean insertPublicApiContent(ApiContentBean bean) {
+	public static boolean insertPublicApiContent(ContentPublicApiBean bean, BasicDBObject provObj) {
 	
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);		
@@ -69,45 +65,100 @@ public class MongoDAO {
 		//if(col.findOne(new BasicDBObject(UserBean.KEY_EMAIL, bean.getEmail())) != null)
 			//return false;
 		
-		
-		BasicDBObject newContent 
+		if(bean != null && provObj != null){
+			BasicDBObject newContent 
 			= new BasicDBObject()
-					.append(ApiContentBean.KEY_CONTENTTITLE, bean.getContentName())
-					.append(ApiContentBean.KEY_CONTENTID, bean.getContentId())
-					.append(ApiContentBean.KEY_GENRE, bean.getContentGenre())
-					.append(ApiContentBean.KEY_TYPE, bean.getContentType())
-					.append(ApiContentBean.KEY_ARTIST, bean.getArtist())
-					.append(ApiContentBean.KEY_PROVIDER, bean.getProviderObject())
-					.append(ApiContentBean.KEY_MODIFIEDTIME, bean.getModifiedTime())
-					.append(ApiContentBean.KEY_OVERVIEW, bean.getOverview())
-					.append(ApiContentBean.KEY_ISCONFIRMED_ARTISTID, bean.getConfirmed_artistId())
-					.append(ApiContentBean.KEY_CONFIRMEDTIME, bean.getConfirmedTime())
-					.append(ApiContentBean.KEY_FINISHEDTIME, bean.getIsFinishedTime())
-					.append(ApiContentBean.KEY_EVENTSTARTDATE, bean.getEventStartDate())
-					.append(ApiContentBean.KEY_EVENTENDDATE , bean.getEventEndDate());
+					.append(ContentPublicApiBean.KEY_CONTENTTITLE, bean.getContentName())
+					.append(ContentPublicApiBean.KEY_CONTENTID, bean.getContentId())
+					.append(ContentPublicApiBean.KEY_GENRE, bean.getContentGenre())
+					.append(ContentPublicApiBean.KEY_TYPE, bean.getContentType())
+					.append(ContentPublicApiBean.KEY_EVENTSTARTDATE, bean.getEventStartDate())
+					.append(ContentPublicApiBean.KEY_EVENTENDDATE , bean.getEventEndDate())
+					.append(ContentPublicApiBean.KEY_LIKECOUNT, bean.getLikeCount())
+					.append(ContentPublicApiBean.KEY_CONFIRMEDTIME, bean.getConfirmedTime())
+					.append(ContentPublicApiBean.KEY_FINISHEDTIME, bean.getIsFinished())
+					.append(ContentPublicApiBean.KEY_PROVIDER, provObj)
+					.append(ContentPublicApiBean.KEY_ARTIST, bean.getArtist())
+					.append(ContentPublicApiBean.KEY_ISCONFIRMED_ARTISTID, bean.getConfirmed_artistId());
 					
-		//System.out.println(newContent.toString());
-		col.insert(newContent);
+			//System.out.println(newContent.toString());
+			col.insert(newContent);
 		
-		return true;
+			return true;	
+		}else
+			return false;
+		
 	}
 	
 	/*param : checkPublicApiContentId(int contentId)
 	 * description : 기존에 있는 contentId 값을 확인함.
 	 * 
 	 * */
-	public static boolean checkPublicApiContentId(int contentId) {
+	public static boolean checkPublicApiContentId(Long contentId) {
 		
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);		
 	
 		//같은게 있으면 false
-		if(col.findOne(new BasicDBObject(ApiContentBean.KEY_CONTENTID, contentId)) != null)
+		if(col.findOne(new BasicDBObject(ContentPublicApiBean.KEY_CONTENTID, contentId)) != null)
 			return false;	
 
 		//없으면 true
 		return true;
 	}
+	
+	/*param : providerId
+	 * description : enrollContentByProvider에서 호출, 
+	 * 				 providerId를 통해서 체크하고 provider객체 반환.
+	 * 
+	 * */
+	public static DBObject checkProviderId(String providerId) {
+		
+		try{
+			DB db = MongoDB.getDB();
+			DBCollection col = db.getCollection("test_provider");		
+			DBObject res;
+			if((res = col.findOne(new ObjectId(providerId))) != null)
+				return res;
+			
+			return res;
+			/*{
+				
+				
+				
+				DBObject dbLocation = (DBObject)res.get(ProviderBean.KEY_LOCATION);
+				BasicDBList pos = (BasicDBList)dbLocation.get(LocationBean.KEY_COORDINATE);
+				
+				LocationBean location = new LocationBean(
+						(String)dbLocation.get(LocationBean.KEY_NAME),
+						(String)dbLocation.get(LocationBean.KEY_DESCRIPT),
+						(double)pos.get(0), 
+						(double)pos.get(1));
+				
+				BasicDBList images = (BasicDBList)res.get(ProviderBean.KEY_IMAGES);
+				String[] t = {};
+				
+				GenreBean[] genre = {new GenreBean("", (String)res.get(ProviderBean.KEY_GENRE))};
+				
+				bean = new ProviderBean(
+						(String)res.get(ProviderBean.KEY_TYPE),
+						images.toArray(t),
+						location,
+						genre,
+						(String)res.get(ProviderBean.KEY_STORETITLE),
+						(String)res.get(ProviderBean.KEY_STORETYPE),
+						(String)res.get(ProviderBean.KEY_DESCRIPT)						
+						);
+				
+				
+			}*/
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}		
+	}
+	
 	
 	/*param : insertPublicProvider(ProviderBean obj)
 	 * description : 새로운 공공 api provider 객체 삽입.
@@ -126,10 +177,11 @@ public class MongoDAO {
 			BasicDBObject local = new BasicDBObject();
 			local.append("type", "Point")
 				.append("coordinates", list);
-
+			
+			
 			provider.append("providerImage", obj.getImages())
 					.append("contentType", obj.getContentType())
-					.append("favoriteGenre", obj.getFavoriteGenre())
+					.append("favoriteGenre", obj.getFavoriteGenre()[0].getDetailGenre())
 					.append("location", local)
 					.append("StoreTitle", obj.getStoreTitle())
 					.append("StoreType", obj.getStoreType())
@@ -139,6 +191,8 @@ public class MongoDAO {
 			return provider;
 		}catch(Exception e){
 			e.printStackTrace();
+			System.out.println(obj.getStoreTitle());
+			System.out.println(obj.getProviderId());
 			return null;
 		}
 	}
@@ -375,5 +429,39 @@ public class MongoDAO {
 		}
 		
 		return res;
+	}
+	
+	//public static boolean insertContentByProvider(String _contentTitle, String _contentStartTime, String _contentEndTime, String _providerId, ProviderBean _tempProvider){
+	public static boolean insertContentByProvider(String _contentTitle, String _contentStartTime, String _contentEndTime, String _providerId, DBObject _tempProvider){
+		try{
+			DB db = MongoDB.getDB();
+			DBCollection col = db.getCollection("test_content");
+			BasicDBObject content = new BasicDBObject();
+			
+			/*
+			BasicDBObject provider = new BasicDBObject();
+			provider.append("_id", new ObjectId(_providerId))
+					.append("providerImage", _tempProvider.getImages())
+					.append("contentType", _tempProvider.getContentType())
+					.append("favoriteGenre", _tempProvider.getFavoriteGenre())
+					.append("location", _tempProvider.getLocation())
+					.append("StoreTitle", _tempProvider.getStoreTitle())
+					.append("StoreType", _tempProvider.getStoreType())
+					.append("description", _tempProvider.getDescription());
+			*/
+			content.append("contentTitle", _contentTitle)
+			   	   .append("contentStartTime", _contentStartTime)
+			   	   .append("contentEndTime", _contentEndTime)
+				   .append("provider", _tempProvider);
+			
+			col.insert(content);
+			
+			
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 }
