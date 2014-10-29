@@ -75,7 +75,6 @@ public  class HttpCall {
 			return obj;
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println(url);
 			return null;
 		}
 	}

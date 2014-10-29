@@ -69,7 +69,6 @@ public class MongoDAO {
 			BasicDBObject newContent 
 			= new BasicDBObject()
 					.append(ContentPublicApiBean.KEY_CONTENTTITLE, bean.getContentName())
-					.append(ContentPublicApiBean.KEY_CONTENTID, bean.getContentId())
 					.append(ContentPublicApiBean.KEY_GENRE, bean.getContentGenre())
 					.append(ContentPublicApiBean.KEY_TYPE, bean.getContentType())
 					.append(ContentPublicApiBean.KEY_EVENTSTARTDATE, bean.getEventStartDate())
@@ -79,7 +78,8 @@ public class MongoDAO {
 					.append(ContentPublicApiBean.KEY_FINISHEDTIME, bean.getIsFinished())
 					.append(ContentPublicApiBean.KEY_PROVIDER, provObj)
 					.append(ContentPublicApiBean.KEY_ARTIST, bean.getArtist())
-					.append(ContentPublicApiBean.KEY_ISCONFIRMED_ARTISTID, bean.getConfirmed_artistId());
+					.append(ContentPublicApiBean.KEY_ISCONFIRMED_ARTISTID, bean.getConfirmed_artistId())
+					.append(ContentPublicApiBean.KEY_CONTENTID, bean.getContentId());
 					
 			//System.out.println(newContent.toString());
 			col.insert(newContent);
@@ -171,12 +171,17 @@ public class MongoDAO {
 		try{
 			BasicDBObject provider = new BasicDBObject();
 			BasicDBList list = new BasicDBList();
-			
-			list.add(0, obj.getLocation().getLatitude());
-			list.add(1, obj.getLocation().getLongitude());
 			BasicDBObject local = new BasicDBObject();
-			local.append("type", "Point")
-				.append("coordinates", list);
+			if(obj.getLocation() != null){
+				list.add(0, obj.getLocation().getLatitude());
+				list.add(1, obj.getLocation().getLongitude());
+				local.append("type", "Point")
+					.append("coordinates", list);
+			}
+			else{
+				local = null;
+			}
+			
 			
 			
 			provider.append("providerImage", obj.getImages())
