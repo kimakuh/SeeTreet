@@ -2,26 +2,21 @@ package com.seetreet.bean;
 
 import org.json.JSONObject;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-
-public class ApiContentBean {
+public class ContentPublicApiBean {
+	private String contentId;
 	private String contentTitle;
 	private String contentGenre;
 	private String contentType;
+	private String contentStartTime;
+	private String contentEndTime;
 	private String artist;
 	private ProviderBean provider;
-	private BasicDBObject providerObject;
+	private int likeCount;
 	private String isConfirmed_artistId;
-	private String overview;
-	private Long confirmedTime;
-	private Long isFinishedTime;
-	private Long contentId;
-	private Long eventStartDate;
-	private Long eventEndDate;
-	private Long modifiedTime;
+	private String confirmedTime;
+	private boolean isFinished;
 	
-	
+		
 	public static final String KEY_CONTENTID 			= "contentId";
 	public static final String KEY_CONTENTTITLE 		= "contentTitle";
 	public static final String KEY_GENRE				= "contentGenre";
@@ -36,43 +31,27 @@ public class ApiContentBean {
 	public static final String KEY_CONFIRMEDTIME		= "confirmedTime";
 	public static final String KEY_FINISHEDTIME			= "isFinished";
 	public static final String KEY_REPLY				= "reply";
+	public static final String KEY_LIKECOUNT 			= "likeCount";
 	
 	
-	/*
-	public ApiContentBean(String _contentTitle, Long _contentId, Long _eventStartDate, Long _eventEndDate,
-	 String _contentType, String _artist,
-			String _provider, String _isConfirmed_artistId, String _overview, Long _modifiedTime, Long _confirmedTime, Long _isFinishedTime, String _category){
-		this.isFinishedTime = _isFinishedTime;
-		this.confirmedTime = _confirmedTime;
-		this.isConfirmed_artistId = _isConfirmed_artistId;
-		this.contentType = _contentType;
-		this.artist = _artist;
-		this.provider = _provider;
-		this.overview = _overview;
-		this.modifiedTime = _modifiedTime;
-		this.contentTitle = _contentTitle;
-		this.contentGenre = getCategoryTocontentGenre(_category);
-		this.contentId = _contentId;
-		this.eventStartDate = _eventStartDate;
-		this.eventEndDate = _eventEndDate;
-	}
-	*/
-	public ApiContentBean(ProviderBean _prov, BasicDBObject _providerObject, JSONObject _existObject, JSONObject _detailObject){
+
+	public ContentPublicApiBean(ProviderBean _prov, JSONObject _existObject, JSONObject _detailObject){
 		try{
+			// reply 처리 안함.
+			this.contentId = String.valueOf(_existObject.getLong("contentid"));
 			this.contentTitle = _existObject.getString("title");
-			this.contentId = _existObject.getLong("contentid");
-			this.eventStartDate = _existObject.getLong("eventstartdate");
-			this.eventEndDate = _existObject.getLong("eventenddate");
+			this.contentGenre = _prov.getFavoriteGenre()[0].getDetailGenre();
 			this.contentType = "public";
-			this.artist = "null";
+			this.contentStartTime = String.valueOf(_existObject.getLong("eventstartdate"));
+			this.contentEndTime = String.valueOf(_existObject.getLong("eventenddate"));
+			this.contentType = "public";
+			this.artist = "";
 			this.provider = _prov;
-			this.providerObject = _providerObject;
+			this.likeCount = 0;
 			this.isConfirmed_artistId = "public";
-			this.overview = _detailObject.getString("overview");
-			this.modifiedTime = _detailObject.getLong("modifiedtime");
-			this.confirmedTime = _existObject.getLong("eventstartdate");
-			this.isFinishedTime = _existObject.getLong("eventenddate");
-			this.contentGenre = getCategoryTocontentGenre(_detailObject.getString("cat3"));
+			this.confirmedTime = this.contentStartTime;
+			this.isFinished = false;
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -120,18 +99,15 @@ public class ApiContentBean {
 		return result; 
 	}
 	
-	public String getOverview(){
-		return overview;
-	}
-	
-	public Long getModifiedTime(){
+	/*	
+	public String getModifiedTime(){
 		return modifiedTime;
 	}
-	
-	public Long getIsFinishedTime(){
-		return isFinishedTime;
+	*/
+	public boolean getIsFinished(){
+		return isFinished;
 	}
-	public Long getConfirmedTime(){
+	public String getConfirmedTime(){
 		return confirmedTime;
 	}
 	public String getConfirmed_artistId(){
@@ -153,19 +129,18 @@ public class ApiContentBean {
 	public String getContentName(){
 		return contentTitle;
 	}
-	public Long getContentId(){
+	public String getContentId(){
 		return contentId;
 	}
 	
-	public Long getEventStartDate(){
-		return eventStartDate;
+	public String getEventStartDate(){
+		return contentStartTime;
+	}
+	public int getLikeCount(){
+		return likeCount;
+	}
+	public String getEventEndDate(){
+		return contentEndTime;
 	}
 	
-	public Long getEventEndDate(){
-		return eventEndDate;
-	}
-	
-	public BasicDBObject getProviderObject(){
-		return providerObject;
-	}
 }

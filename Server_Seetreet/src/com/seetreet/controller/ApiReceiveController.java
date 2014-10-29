@@ -9,10 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.seetreet.bean.ApiContentBean;
 import com.seetreet.http.HttpControl;
 /**
  * Servlet implementation class FrontController
@@ -39,6 +35,7 @@ public class ApiReceiveController extends HttpServlet {
 		//System.out.println("DataReceiver--------------------");
 		
 		try {
+			System.out.println("Public Api Receiving...");
 			HttpControl.getContents();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

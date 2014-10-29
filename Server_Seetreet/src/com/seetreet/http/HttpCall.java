@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.seetreet.bean.ApiContentBean;
+import com.seetreet.bean.ContentPublicApiBean;
 import com.seetreet.bean.LocationBean;
 import com.seetreet.bean.ProviderBean;
 import com.seetreet.dao.MongoDAO;
@@ -47,10 +47,10 @@ public  class HttpCall {
 	public static JSONObject getContentObject(JSONObject notExistContent){
 		//ApiContentBean contentInfo = null;
 		HttpClient httpclient = HttpInstance.INSTANCE.getHttp();
-		
+		String url = null;
 		try{
 			
-			String url = C.APISERVER + C.DETAILCOMMON+ C.SERVICEKEY+ C.CONTENTID +notExistContent.getInt("contentid")
+			url = C.APISERVER + C.DETAILCOMMON+ C.SERVICEKEY+ C.CONTENTID +notExistContent.getInt("contentid")
 					+C.DEFAULTYN + C.FIRSTIMAGEYN + C.MAPINFOYN + C.CATCODEYN + C.OVERVIEWYN + C.SETTINGVALUE;
 			//System.out.println(url);
 			HttpGet httpget = new HttpGet(url);

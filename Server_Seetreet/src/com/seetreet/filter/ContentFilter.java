@@ -60,6 +60,7 @@ public class ContentFilter implements Filter {
 		String[] postfixes = postfix.split("/");
 		String email = postfixes[postfixes.length -1];		
 		String token = httpReq.getHeader(UserBean.KEY_TOKEN);
+		/*
 		if(!MongoDAO.isUser(email, token)) {
 			System.out.println("> FILTER : ERROR");
 			PrintWriter out = res.getWriter();
@@ -72,7 +73,7 @@ public class ContentFilter implements Filter {
 				out.close();
 			}
 			return;
-		}
+		}*/
 		httpReq.setAttribute(UserBean.KEY_EMAIL, email);
 		
 		// pass the request along the filter chain
