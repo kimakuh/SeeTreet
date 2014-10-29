@@ -577,7 +577,7 @@ public class MongoDAO {
 		
 		return res;
 	}
-	
+
 	public static JSONObject enrollReply(ReplyBean bean) {
 		DB db = MongoDB.getDB();
 		DBCollection contentCol = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
@@ -772,5 +772,5 @@ public class MongoDAO {
 			e.printStackTrace();
 			return false;
 		}		
-	}
+	}	
 }

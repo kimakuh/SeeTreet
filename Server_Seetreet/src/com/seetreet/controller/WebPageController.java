@@ -34,12 +34,16 @@ public class WebPageController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String uri = req.getRequestURI();
+		System.out.println(">>URI : "+uri);
 		String contextPath = req.getContextPath();
+		System.out.println(">>contextPath : "+contextPath);
 		String cmd = uri.substring(contextPath.length());
 		System.out.println(">> WebPageController :: " + cmd);
 		RequestDispatcher dispatcher = null;
 		if(cmd.equals("/hello.see")) {
+
 			dispatcher = req.getRequestDispatcher("/html/index.html");	
+
 		}
 		
 		dispatcher.forward(req, res);
