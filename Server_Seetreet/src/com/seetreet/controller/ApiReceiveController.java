@@ -35,6 +35,7 @@ public class ApiReceiveController extends HttpServlet {
 		//System.out.println("DataReceiver--------------------");
 		
 		try {
+			System.out.println("Public Api Receiving...");
 			HttpControl.getContents();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
