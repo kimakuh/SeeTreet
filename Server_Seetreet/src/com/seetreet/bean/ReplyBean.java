@@ -10,22 +10,25 @@ public class ReplyBean implements BeanJson {
 	private String contentId;	
 	private String replytext;
 	private String replyimage;
+	private String userEmail;
 	
 	public static final String KEY_ID = "_id";
 	public static final String KEY_CONTENTID = "contentId";
 	public static final String KEY_REPLYTEXT = "replytext";
 	public static final String KEY_REPLYIMAGE = "replyimage";
+	public static final String KEY_USEREMAIL = "userEmail";
 	
-	public ReplyBean(String contentId, String replytext, String replyimage) {
-		// TODO Auto-generated constructor stub		
+	public ReplyBean(String email ,String contentId, String replytext, String replyimage) {
+		// TODO Auto-generated constructor stub
+		this.userEmail = email;
 		this.contentId = contentId;
 		this.replytext = replytext;
 		this.replyimage = replyimage;
 	}
 	
-	public ReplyBean(String replyId, String contentId, String replytext, String replyimage) {
+	public ReplyBean(String email , String replyId, String contentId, String replytext, String replyimage) {
 		// TODO Auto-generated constructor stub
-		
+		this.userEmail = email;
 		this.contentId = contentId;
 		this.replyId = replyId;
 		this.replytext = replytext;
@@ -44,6 +47,9 @@ public class ReplyBean implements BeanJson {
 	public String getReplytext() {
 		return replytext;
 	}
+	public String getUserEmail() {
+		return userEmail;
+	}
 
 	@Override
 	public JSONObject getJson() throws JSONException{
@@ -53,6 +59,7 @@ public class ReplyBean implements BeanJson {
 		obj.put(KEY_ID, this.replyId);
 		obj.put(KEY_REPLYTEXT, this.replytext);
 		obj.put(KEY_REPLYIMAGE, this.replyimage);
+		obj.put(KEY_USEREMAIL, this.userEmail);
 		return obj;
 	}
 }

@@ -8,12 +8,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import com.google.gson.JsonObject;
+import com.seetreet.bean.UserBean;
 import com.seetreet.bean.UserLoginBean;
 import com.seetreet.dao.MongoDAO;
+import com.seetreet.util.ResBodyFactory;
 
 /**
  * Servlet implementation class LoginController
@@ -54,17 +57,13 @@ public class LoginController extends HttpServlet {
 		
 		UserLoginBean bean = MongoDAO.loginUser(email, pw);		
 		PrintWriter out = res.getWriter();
-		JSONObject json = new JSONObject();
 		
 		try {
-			if(bean == null) {
-				json.put("state", false);
-				out.write(json.toString());
-			} else {
-				System.out.println(bean.getEmail());
-				json.put("state", true);
-				json.put("data", bean.getJson());
-				out.write(json.toString());
+			if(bean == null) {				
+				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, null));
+			} else {	
+				initSession(req, res, bean);
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, bean.getJson()));			
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -72,5 +71,13 @@ public class LoginController extends HttpServlet {
 		} finally {
 			out.close();
 		}
+	}
+	
+	private void initSession(HttpServletRequest req, HttpServletResponse res, UserLoginBean bean) {
+		HttpSession sess = req.getSession();
+		sess.setAttribute(UserLoginBean.KEY_EMAIL, bean.getEmail());
+		sess.setAttribute(UserLoginBean.KEY_AGE, bean.getAge());
+		sess.setAttribute(UserLoginBean.KEY_NAME, bean.getName());
+		sess.setAttribute(UserLoginBean.KEY_TOKEN, bean.getToken());		
 	}
 }

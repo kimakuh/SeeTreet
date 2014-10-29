@@ -178,6 +178,7 @@ public class MongoDAO {
 	 * 
 	 * */
 	public static boolean isUser(String email, String token) {
+		if(email == null || token == null)return false;
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
 		
@@ -186,7 +187,7 @@ public class MongoDAO {
 					.append(UserBean.KEY_EMAIL, email)
 					.append(UserBean.KEY_TOKEN, new ObjectId(token));
 		
-		
+		System.out.println(user.toString());
 		if(col.findOne(user) != null) 
 			return true;
 				
@@ -220,6 +221,141 @@ public class MongoDAO {
 		}
 				
 		return null;
+	}
+	
+	public static boolean isArtist(String email , String token) {
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		DBObject user = col.findOne(new BasicDBObject().append(UserBean.KEY_EMAIL, email)
+													   .append(UserBean.KEY_TOKEN, new ObjectId(token)));
+		
+		
+		DBObject artist = (DBObject)user.get(UserBean.KEY_ARTIST);
+		
+		if(artist == null) return false;		
+		return true;
+	}
+	
+	public static boolean isProvider(String email , String token) {
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		DBObject user = col.findOne(new BasicDBObject().append(UserBean.KEY_EMAIL, email)
+													   .append(UserBean.KEY_TOKEN, new ObjectId(token)));
+		
+		
+		DBObject provider = (DBObject)user.get(UserBean.KEY_PROVIDER);
+		
+		if(provider == null) return false;
+		return true;
+	}
+	
+	public static boolean joinArtist(ArtistBean bean , String token) {
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.TEST_COLLECTION_ARTIST);
+		
+		BasicDBList images = new BasicDBList();
+		for(String image : bean.getArtistImages()) {
+			images.add(image);
+		}
+		
+		BasicDBList locations = new BasicDBList();
+		for(LocationBean loc : bean.getFavoriteLocation()) {
+			BasicDBList coords = new BasicDBList();
+			coords.add(loc.getLatitude());
+			coords.add(loc.getLongitude());
+			
+			locations.add(new BasicDBObject()
+							  .append(LocationBean.KEY_NAME, loc.getName())
+							  .append(LocationBean.KEY_DESCRIPT, loc.getDescription())
+							  .append("type", "Point")
+							  .append(LocationBean.KEY_COORDINATE, coords)
+						 );
+		}
+		
+		BasicDBList genres = new BasicDBList();
+		for(GenreBean genre : bean.getGenre()) {
+			genres.add(new BasicDBObject()
+						   .append(GenreBean.KEY_CATEGORY, genre.getCategory())
+						   .append(GenreBean.KEY_DETAIL, genre.getDetailGenre())
+					  );
+		}
+		
+		BasicDBObject artist = new BasicDBObject()
+								   .append(ArtistBean.KEY_IMAGES, images)
+								   .append(ArtistBean.KEY_DESCRIPT, bean.getDescription())
+								   .append(ArtistBean.KEY_LOCATIONS, locations)
+								   .append(ArtistBean.KEY_VIDEO, bean.getVideoUrl())
+								   .append(ArtistBean.KEY_GENRE, genres)
+								   .append(ArtistBean.KEY_MODTIME, bean.getModTime());
+		
+		col.insert(artist);
+		
+		DBCollection userCollection = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		BasicDBObject findQuery = new BasicDBObject()
+									  .append(UserBean.KEY_TOKEN, new ObjectId(token));
+
+		
+		BasicDBObject updateQuery = new BasicDBObject()
+										.append("$set", new BasicDBObject(UserBean.KEY_ARTIST, artist));
+		
+		userCollection.update(findQuery, updateQuery);							   
+		
+		return true;
+	}
+	
+	
+	public static boolean joinProvider(ProviderBean bean , String token) {
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.TEST_COLLECTION_PROVIDER);
+		
+		BasicDBList images = new BasicDBList();
+		for(String image : bean.getImages()) {
+			images.add(image);
+		}				
+		
+		LocationBean loc = bean.getLocation();
+		BasicDBObject location = new BasicDBObject()
+		  .append(LocationBean.KEY_NAME, loc.getName())
+		  .append(LocationBean.KEY_DESCRIPT, loc.getDescription())
+		  .append(LocationBean.KEY_LATITUDE, loc.getLatitude())
+		  .append(LocationBean.KEY_LONGITUDE, loc.getLongitude());
+		
+				
+		BasicDBList genres = new BasicDBList();
+		for(GenreBean genre : bean.getFavoriteGenre()) {
+			genres.add(new BasicDBObject()
+						   .append(GenreBean.KEY_CATEGORY, genre.getCategory())
+						   .append(GenreBean.KEY_DETAIL, genre.getDetailGenre())
+					  );
+		}
+		
+		BasicDBObject provider = new BasicDBObject()
+								   .append(ProviderBean.KEY_IMAGES, images)
+								   .append(ProviderBean.KEY_DESCRIPT, bean.getDescription())
+								   .append(ProviderBean.KEY_LOCATION, location)
+								   .append(ProviderBean.KEY_TYPE, bean.getContentType())
+								   .append(ProviderBean.KEY_GENRE, genres)
+								   .append(ProviderBean.KEY_STORETITLE, bean.getStoreTitle())
+								   .append(ProviderBean.KEY_STORETYPE, bean.getStoreType())
+								   .append(ProviderBean.KEY_MODTIME, bean.getModTime());
+		
+		col.insert(provider);
+		
+		DBCollection userCollection = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		BasicDBObject findQuery = new BasicDBObject()
+									  .append(UserBean.KEY_TOKEN, new ObjectId(token));
+
+		
+		BasicDBObject updateQuery = new BasicDBObject()
+										.append("$set", new BasicDBObject(UserBean.KEY_PROVIDER, provider));
+		
+		userCollection.update(findQuery, updateQuery);							   
+		
+		return true;
 	}
 	
 	/* date 		: 2014.10.12
@@ -357,13 +493,15 @@ public class MongoDAO {
 		return res;
 	}
 	
-	public static ReplyBean[] getReplyByContentId(String contentId) {
+	public static ReplyBean[] getReplyByContentId(String contentId, int page) {
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection("test_reply");
 		
 		DBCursor iter =col.find(new BasicDBObject()
-									.append(ReplyBean.KEY_CONTENTID, contentId));
-		ReplyBean[] res = new ReplyBean[iter.count()];
+									.append(ReplyBean.KEY_CONTENTID, contentId))
+							.skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
+		
+		ReplyBean[] res = new ReplyBean[iter.size()];
 		int i = 0;
 		while(iter.hasNext()) {
 			DBObject obj = iter.next();
@@ -374,6 +512,169 @@ public class MongoDAO {
 					obj.get(ReplyBean.KEY_REPLYIMAGE).toString());		
 		}
 		
+		return res;
+	}
+	
+	public static JSONObject enrollReply(ReplyBean bean) {
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
+		DBCollection contentRe = db.getCollection(MongoDB.TEST_COLLECTION_REPLY);
+		
+		BasicDBObject rep = new BasicDBObject();
+		rep.append(ReplyBean.KEY_CONTENTID, bean.getContentId())
+		   .append(ReplyBean.KEY_REPLYIMAGE, bean.getReplyimage())
+		   .append(ReplyBean.KEY_REPLYTEXT, bean.getReplytext())
+		   .append(ReplyBean.KEY_USEREMAIL, bean.getUserEmail());
+		
+		contentRe.insert(rep);
+		
+//		rep.append(ReplyBean.KEY_ID, rep.get(ReplyBean.KEY_ID).toString());
+		
+		BasicDBObject findQuery = new BasicDBObject()
+									  .append(ContentBean.KEY_ID, new ObjectId(bean.getContentId()));
+		BasicDBObject updateQuery 
+		= new BasicDBObject()
+			  .append("$push", new BasicDBObject()
+								   .append(ContentBean.KEY_REPLY, rep)
+					 );
+		
+		contentCol.update(findQuery, updateQuery);		
+		JSONObject json = new JSONObject();		
+		try {
+			json.put(ReplyBean.KEY_ID , rep.get(ReplyBean.KEY_ID).toString())
+				.put(ReplyBean.KEY_CONTENTID , rep.get(ReplyBean.KEY_CONTENTID))
+				.put(ReplyBean.KEY_REPLYIMAGE , rep.get(ReplyBean.KEY_REPLYIMAGE))
+				.put(ReplyBean.KEY_REPLYTEXT , rep.get(ReplyBean.KEY_REPLYTEXT))
+				.put(ReplyBean.KEY_USEREMAIL , rep.get(ReplyBean.KEY_USEREMAIL));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		
+		return json;
+	}
+	
+	public static boolean deleteReply(ReplyBean bean) {		
+		DB db = MongoDB.getDB();
+		DBCollection colReply = db.getCollection(MongoDB.TEST_COLLECTION_REPLY);
+		DBCollection colContent = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
+		
+		System.out.println("bean : " + bean.getReplyId() + " , " +bean.getUserEmail() + " , " + bean.getContentId());;
+		
+		colReply.remove(new BasicDBObject()
+							.append(ReplyBean.KEY_ID, new ObjectId(bean.getReplyId()))
+							.append(ReplyBean.KEY_USEREMAIL, bean.getUserEmail()));
+		
+		BasicDBObject findQuery = new BasicDBObject()
+		  							  .append(ContentBean.KEY_ID, new ObjectId(bean.getContentId()));
+		BasicDBObject updateQuery = new BasicDBObject()
+										.append("$pull", new BasicDBObject()
+															 .append(ContentBean.KEY_REPLY, 
+																	 new BasicDBObject()
+															 			 .append(ReplyBean.KEY_ID, new ObjectId(bean.getReplyId()))
+															 			 .append(ReplyBean.KEY_USEREMAIL, bean.getUserEmail())
+																	 )
+												);
+		WriteResult result = colContent.update(findQuery, updateQuery);		
+		
+		return true;
+	}
+	
+	public static JSONObject getArtist(String email , String token) throws JSONException {
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		DBObject user = col.findOne(new BasicDBObject().append(UserBean.KEY_EMAIL, email)
+													   .append(UserBean.KEY_TOKEN, new ObjectId(token)));
+		
+		
+		DBObject artist = (DBObject)user.get(UserBean.KEY_ARTIST);		
+		
+		return new JSONObject(artist.toString());
+	}
+	
+	public static ContentBean[] searchContentByLocationFromArtist(double l_lat,	double l_long, int page) {
+		ContentBean[] res = null;
+
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection("test_content");
+
+		BasicDBList position = new BasicDBList();
+		position.put(0, l_lat);
+		position.put(1, l_long);
+
+		DBCursor iter = col.find(
+						new BasicDBObject("provider.location", 
+								new BasicDBObject("$near", 
+										new BasicDBObject("$geometry",
+												new BasicDBObject("type", "Point")
+													.append("coordinates", position))))
+							.append(ContentBean.KEY_FINISHIED, false)
+							.append(ContentBean.KEY_C_ARTIST, 
+									new BasicDBObject("$exists", false)))
+						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
+
+		res = new ContentBean[MAX_LIMIT];
+		int i = 0;
+		while (iter.hasNext()) {
+			DBObject obj = iter.next();
+
+			DBObject dbProvider = (DBObject) obj.get(ContentBean.KEY_PROVIDER);
+			BasicDBList dbArtists = (BasicDBList) obj
+					.get(ContentBean.KEY_ARTIST);
+			DBObject dbLocation = (DBObject) dbProvider
+					.get(ProviderBean.KEY_LOCATION);
+			DBObject dbArtist = null;
+			String selectedArtistId = (String) obj
+					.get(ContentBean.KEY_C_ARTIST);
+
+			for (int n = 0; n < dbArtists.size(); n++) {
+				String temp = ((DBObject) dbArtists.get(n)).get("_id")
+						.toString();
+				System.out.println(temp + " :: " + selectedArtistId);
+				if (temp.equals(selectedArtistId)) {
+					dbArtist = (DBObject) dbArtists.get(n);
+					break;
+				}
+			}
+			BasicDBList pos = (BasicDBList) dbLocation
+					.get(LocationBean.KEY_COORDINATE);
+			LocationBean location = new LocationBean(
+					(String) dbLocation.get(LocationBean.KEY_NAME),
+					(String) dbLocation.get(LocationBean.KEY_DESCRIPT),
+					(double) pos.get(0), (double) pos.get(1));
+			GenreBean[] genre = { new GenreBean("",
+					(String) dbProvider.get(ProviderBean.KEY_GENRE)) };
+
+			BasicDBList images = (BasicDBList) dbProvider
+					.get(ProviderBean.KEY_IMAGES);
+			String[] t = {};
+			ProviderBean provider = new ProviderBean(
+					(String) dbProvider.get(ProviderBean.KEY_TYPE),
+					images.toArray(t), location, genre,
+					(String) dbProvider.get(ProviderBean.KEY_STORETITLE),
+					(String) dbProvider.get(ProviderBean.KEY_STORETYPE),
+					(String) dbProvider.get(ProviderBean.KEY_DESCRIPT));
+
+			images = (BasicDBList) dbArtist.get(ArtistBean.KEY_IMAGES);
+			String[] t2 = {};
+			ArtistBean[] artist = { new ArtistBean(images.toArray(t2),
+					(String) dbArtist.get(ArtistBean.KEY_VIDEO),
+					(String) dbArtist.get(ArtistBean.KEY_DESCRIPT)) };
+
+			res[i++] = new ContentBean(
+					(String) obj.get(ContentBean.KEY_TITLE),
+					new GenreBean("", (String) obj.get(ContentBean.KEY_GENRE)),
+					(String) obj.get(ContentBean.KEY_TYPE),
+					Integer.parseInt((String) obj
+							.get(ContentBean.KEY_STARTTIME)),
+					Integer.parseInt((String) obj.get(ContentBean.KEY_ENDTIME)),
+					provider, artist, selectedArtistId, (String) obj
+							.get(ContentBean.KEY_C_TIME), (boolean) obj
+							.get(ContentBean.KEY_FINISHIED), null);
+		}
+
 		return res;
 	}
 }

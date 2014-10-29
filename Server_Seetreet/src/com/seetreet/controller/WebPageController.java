@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import sun.rmi.server.Dispatcher;
 
 /**
  * Servlet implementation class WebPageController
@@ -39,8 +38,8 @@ public class WebPageController extends HttpServlet {
 		String cmd = uri.substring(contextPath.length());
 		System.out.println(">> WebPageController :: " + cmd);
 		RequestDispatcher dispatcher = null;
-		if(cmd.equals("hello.see")) {
-			dispatcher = req.getRequestDispatcher("html/index.html");
+		if(cmd.equals("/hello.see")) {
+			dispatcher = req.getRequestDispatcher("/html/index.html");
 		}
 		
 		dispatcher.forward(req, res);

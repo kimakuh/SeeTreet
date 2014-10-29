@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.JsonArray;
@@ -29,6 +30,7 @@ public class ReplyController extends HttpServlet {
 	private final String ENROLL = "/user/content/user/reply/enroll";
 	private final String SEARCH = "/user/content/user/reply/search";
     private final String UPDATE = "/user/content/user/reply/update";
+    private final String DELETE = "/user/content/user/reply/delete";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -46,32 +48,24 @@ public class ReplyController extends HttpServlet {
 		String contextPath = req.getContextPath();
 		String cmd = reqURI.substring(contextPath.length());
 		
-		if(cmd.contains(SEARCH)) {
-			String contentId = cmd.replace(SEARCH+"/", "");
-			String token = req.getHeader(UserBean.KEY_TOKEN);
-			String email = req.getParameter(UserBean.KEY_EMAIL);
-			String text  = req.getParameter(ReplyBean.KEY_REPLYTEXT);
-			String image = req.getParameter(ReplyBean.KEY_REPLYIMAGE);
+		if(cmd.contains(SEARCH)) {			
+			
 			
 			PrintWriter out = res.getWriter();
 			
 			try {
-				if(MongoDAO.isUser(email, token)) {
-					ReplyBean[] list = MongoDAO.getReplyByContentId(contentId);					
-					JSONArray arr = new JSONArray();					
-					for(ReplyBean bean : list) {
-						arr.put(bean.getJson());
-					}
-					out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, arr));
-				}else {
-					out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_UNKNOWN_TOKEN, new JsonObject()));
+				JSONArray arr = searchReply(req, res);
+				if(arr.length()== 0) {
+					out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_EMPTY, null));
+					return;
 				}
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, arr));
 			} catch (Exception e) {
 				// TODO: handle exception
+				e.printStackTrace();
 			} finally {
 				if(out!= null) try{out.close();}catch(Exception e) {e.printStackTrace();}
-			}
-			
+			}			
 		}
 	}
 
@@ -83,14 +77,66 @@ public class ReplyController extends HttpServlet {
 		String reqURI = req.getRequestURI();
 		String contextPath = req.getContextPath();
 		String cmd = reqURI.substring(contextPath.length());	
+			
+		PrintWriter out = res.getWriter();
 		
-		
-		if(cmd.contains(ENROLL)) {
-			System.out.println(">> enroll");
-		}else if(cmd.contains(UPDATE)) {
-			System.out.println(">> update");
+		try {
+			if(cmd.contains(ENROLL)) {				
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, enrollReply(req, res)));
+			}else if(cmd.contains(UPDATE)) {
+				System.out.println(">> update");
+			}else if(cmd.contains(DELETE)) {
+				boolean isDeleted = deleteReply(req, res);
+				if(isDeleted) {
+					out.write(ResBodyFactory.create(isDeleted, ResBodyFactory.STATE_GOOD_WITH_DATA, null));
+				}else {
+					out.write(ResBodyFactory.create(isDeleted, ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, null));
+				}				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			if(out != null) out.close();
 		}
+		
 	}
 	
+	private JSONArray searchReply(HttpServletRequest req, HttpServletResponse res) {
+		JSONArray arr = new JSONArray();
+		try{
+			String contentId = (String)req.getParameter(ReplyBean.KEY_CONTENTID);
+			int    page  = Integer.parseInt((String)req.getParameter("page"));
+			ReplyBean[] list = MongoDAO.getReplyByContentId(contentId, page);			
+								
+			for(ReplyBean bean : list) {
+				arr.put(bean.getJson());
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}		
+		return arr;
+	}
 	
+	private JSONObject enrollReply(HttpServletRequest req, HttpServletResponse res) {			
+		String contentId = req.getParameter(ReplyBean.KEY_CONTENTID);
+		String replytext = req.getParameter(ReplyBean.KEY_REPLYTEXT);
+		String replyimage= req.getParameter(ReplyBean.KEY_REPLYIMAGE);	
+		
+		ReplyBean reply = new ReplyBean((String)req.getAttribute(UserBean.KEY_EMAIL) , contentId, replytext, replyimage);
+		return MongoDAO.enrollReply(reply);					
+	}
+	
+	private void updateReply(HttpServletRequest req, HttpServletResponse res) {
+		
+	}
+	
+	private boolean deleteReply(HttpServletRequest req, HttpServletResponse res) {
+		String contentId 	= req.getParameter(ReplyBean.KEY_CONTENTID);
+		String replyId 		= req.getParameter(ReplyBean.KEY_ID);
+		String email		= (String)req.getAttribute(UserBean.KEY_EMAIL);
+		
+		ReplyBean bean = new ReplyBean(email, replyId, contentId, null, null);
+		return MongoDAO.deleteReply(bean);		
+	}
 }

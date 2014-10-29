@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.seetreet.bean.UserBean;
+import com.seetreet.dao.MongoDAO;
 import com.seetreet.util.C;
 
 @WebFilter("*.see")
@@ -32,14 +33,23 @@ public class SessionFilter implements Filter {
 		System.out.println(">> WEB-ACCESS");
 		HttpServletRequest httpReq = (HttpServletRequest)req;
 		HttpServletResponse httpRes = (HttpServletResponse)res;
-		req.setCharacterEncoding(C.ENCODING);
-		res.setContentType("text/html;");
+		req.setCharacterEncoding(C.ENCODING);		
 		res.setCharacterEncoding(C.ENCODING);
+		
+		String uri = httpReq.getRequestURI();
+		String contextPath = httpReq.getContextPath();
+		String cmd = uri.substring(contextPath.length());
+		
 		HttpSession sess = httpReq.getSession();
-		if(sess.getAttribute(UserBean.KEY_TOKEN) == null) {
+		String token = (String) sess.getAttribute(UserBean.KEY_TOKEN);
+		String email = (String) sess.getAttribute(UserBean.KEY_EMAIL);
+		
+		System.out.println(">> session Filter :: " + cmd + " , " + token + " , " + email);
+		if(!MongoDAO.isUser(email, token) && !cmd.equals("/hello.see")) {
 			httpRes.sendRedirect("hello.see");
-		}
-		System.out.println(">> web");
+			return;
+		}		
+		
 		chain.doFilter(req, res);	
 	}
 

@@ -30,10 +30,23 @@ public class ProviderBean implements BeanJson{
 	public static final String KEY_STORETITLE = "StoreTitle";
 	public static final String KEY_STORETYPE = "StoreType";
 	public static final String KEY_DESCRIPT = "description";
+	public static final String KEY_MODTIME = "modTime";
 	
 	
 	public ProviderBean(String contentType, String[] images ,LocationBean location, GenreBean[] genre, 
 			String storeTitle, String storeType, String description) {
+		// TODO Auto-generated constructor stub
+		this.contentType = contentType;
+		this.images = images;
+		this.location = location;
+		this.StoreTitle = storeTitle;
+		this.StoreType = storeType;
+		this.description = description;
+		this.favoriteGenre = genre;
+	}
+	
+	public ProviderBean(String contentType, String[] images ,LocationBean location, GenreBean[] genre, 
+			String storeTitle, String storeType, String description , String modTime) {
 		// TODO Auto-generated constructor stub
 		this.contentType = contentType;
 		this.images = images;

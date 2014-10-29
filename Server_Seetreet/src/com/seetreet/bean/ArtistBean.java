@@ -13,12 +13,17 @@ public class ArtistBean implements BeanJson{
 	private String 		videoUrl;
 	private String 		description;
 	private String		modTime;
+	private GenreBean[]	genre;
 	private LocationBean[] favoriteLocation;
 	private ContentBean[] history;	
 	
 	public static final String KEY_IMAGES = "artistImages";
 	public static final String KEY_VIDEO  = "artistUrl";
 	public static final String KEY_DESCRIPT = "description";
+	public static final String KEY_GENRE = "artistGenre";
+	public static final String KEY_LOCATIONS = "favoriteLocation";
+	public static final String KEY_ID = "_id"; 
+	public static final String KEY_MODTIME = "modTime";
 	
 	public ArtistBean(String[] artistImages, String videoUrl , String description) {
 		// TODO Auto-generated constructor stub
@@ -28,17 +33,18 @@ public class ArtistBean implements BeanJson{
 	}
 	
 	public ArtistBean(String[] artistImages, String videoUrl , String description, String modTime,
-			LocationBean[] locations) {
+			LocationBean[] locations , GenreBean[] genre) {
 		// TODO Auto-generated constructor stub
 		this.artistImages = artistImages;
 		this.videoUrl = videoUrl;
 		this.description = description;
 		this.modTime = modTime;
 		this.favoriteLocation = locations;
+		this.genre = genre;
 	}
 	
 	public ArtistBean(String[] artistImages, String videoUrl , String description, String modTime,
-			LocationBean[] locations, String artistId , ContentBean[] history) {
+			LocationBean[] locations, String artistId , ContentBean[] history , GenreBean[] genre) {
 		// TODO Auto-generated constructor stub
 		this.artistImages = artistImages;
 		this.videoUrl = videoUrl;
@@ -47,6 +53,7 @@ public class ArtistBean implements BeanJson{
 		this.favoriteLocation = locations;
 		this.artistId = artistId;
 		this.history = history;
+		this.genre = genre;
 	}
 	
 	public String getArtistId() {
@@ -70,7 +77,11 @@ public class ArtistBean implements BeanJson{
 	public String getVideoUrl() {
 		return videoUrl;
 	}
-
+	
+	public GenreBean[] getGenre() {
+		return genre;
+	}
+	
 	@Override
 	public JSONObject getJson() throws JSONException {
 		// TODO Auto-generated method stub
