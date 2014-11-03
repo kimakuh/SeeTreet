@@ -14,6 +14,6 @@ public class ContentArtistBean extends ContentProviderBean{
 		this.artist = artist;
 	}
 	public ArtistBean[] getArtist() {
-		return artist;
+			return artist;
 	}
 }

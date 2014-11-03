@@ -43,6 +43,7 @@ public class ApiReceiveController extends HttpServlet {
 		}
     	//HttpDAO a = new HttpDAO();
     	//a.getContentsId();
+		System.out.println("Receiving data End");
     	
     }
  }

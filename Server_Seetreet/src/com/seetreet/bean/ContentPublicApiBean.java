@@ -41,14 +41,14 @@ public class ContentPublicApiBean {
 			this.contentId = String.valueOf(_existObject.getLong("contentid"));
 			this.contentTitle = _existObject.getString("title");
 			this.contentGenre = _prov.getFavoriteGenre()[0].getDetailGenre();
-			this.contentType = "public";
+			this.contentType = "공공";
 			this.contentStartTime = String.valueOf(_existObject.getLong("eventstartdate"));
 			this.contentEndTime = String.valueOf(_existObject.getLong("eventenddate"));
-			this.contentType = "public";
+			this.contentType = "공공";
 			this.artist = "";
 			this.provider = _prov;
 			this.likeCount = 0;
-			this.isConfirmed_artistId = "public";
+			this.isConfirmed_artistId = "공공";
 			this.confirmedTime = this.contentStartTime;
 			this.isFinished = false;
 

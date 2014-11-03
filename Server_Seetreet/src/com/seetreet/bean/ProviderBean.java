@@ -72,7 +72,7 @@ public class ProviderBean implements BeanJson{
 	public ProviderBean(JSONObject obj){
 		//Public Api 
 		try{
-			this.contentType = "public";
+			this.contentType = "공공";
 			if(obj.has("firstimage")){
 				if(obj.has("firstimage2")){
 					String[] tempImage = {obj.getString("firstimage"),obj.getString("firstimage2")};

@@ -61,10 +61,16 @@ public class ContentBean extends ContentArtistBean{
 		// TODO Auto-generated method stub
 		JSONObject result = new JSONObject();
 		JSONArray jsArtist = new JSONArray();
-		try {			
-			for(ArtistBean a : getArtist()) {
-				jsArtist.put(a.getJson());
+		try {
+			if(getArtist() != null){
+				for(ArtistBean a : getArtist()) {
+					jsArtist.put(a.getJson());
+				}	
 			}
+			else{
+				jsArtist = null;
+			}
+			System.out.println("ContentBean GetJson : ");
 			result.put(KEY_ID, getId());
 			result.put(KEY_TITLE, getTitle());
 			result.put(KEY_GENRE, getGenre().getJson());
@@ -76,6 +82,7 @@ public class ContentBean extends ContentArtistBean{
 			result.put(KEY_PROVIDER, getProvider().getJson());
 			result.put(KEY_ARTIST, jsArtist);
 			result.put(KEY_C_ARTIST, getIsConfirmed_artistId());
+			System.out.println("ContentBean GetJson END: ");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

@@ -120,7 +120,7 @@ public class MongoDAO {
 		
 		try{
 			DB db = MongoDB.getDB();
-			DBCollection col = db.getCollection("test_provider");		
+			DBCollection col = db.getCollection(MongoDB.COLLECTION_PROVIDER);		
 			DBObject res;
 			if((res = col.findOne(new ObjectId(providerId))) != null)
 				return res;
@@ -742,35 +742,128 @@ public class MongoDAO {
 	}
 
 	//public static boolean insertContentByProvider(String _contentTitle, String _contentStartTime, String _contentEndTime, String _providerId, ProviderBean _tempProvider){
-	public static boolean insertContentByProvider(String _contentTitle, String _contentStartTime, String _contentEndTime, String _providerId, DBObject _tempProvider){
-		try{
-			DB db = MongoDB.getDB();
-			DBCollection col = db.getCollection("test_content");
-			BasicDBObject content = new BasicDBObject();
-			
-			/*
-			BasicDBObject provider = new BasicDBObject();
-			provider.append("_id", new ObjectId(_providerId))
-					.append("providerImage", _tempProvider.getImages())
-					.append("contentType", _tempProvider.getContentType())
-					.append("favoriteGenre", _tempProvider.getFavoriteGenre())
-					.append("location", _tempProvider.getLocation())
-					.append("StoreTitle", _tempProvider.getStoreTitle())
-					.append("StoreType", _tempProvider.getStoreType())
-					.append("description", _tempProvider.getDescription());
-			*/
-			content.append("contentTitle", _contentTitle)
-			   	   .append("contentStartTime", _contentStartTime)
-			   	   .append("contentEndTime", _contentEndTime)
-				   .append("provider", _tempProvider);
-			
-			col.insert(content);
-			
-			
-			return true;
+	public static JSONObject insertContentByProvider(String _contentTitle, String _contentStartTime, String _contentEndTime, DBObject _providerObject){
+	
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		BasicDBObject content = new BasicDBObject();
+		
+		/*
+		BasicDBObject provider = new BasicDBObject();
+		provider.append("_id", new ObjectId(_providerId))
+				.append("providerImage", _tempProvider.getImages())
+				.append("contentType", _tempProvider.getContentType())
+				.append("favoriteGenre", _tempProvider.getFavoriteGenre())
+				.append("location", _tempProvider.getLocation())
+				.append("StoreTitle", _tempProvider.getStoreTitle())
+				.append("StoreType", _tempProvider.getStoreType())
+				.append("description", _tempProvider.getDescription());
+		*/
+		content.append(ContentProviderBean.KEY_TITLE, _contentTitle)
+		   	   .append(ContentProviderBean.KEY_STARTTIME, _contentStartTime)
+		   	   .append(ContentProviderBean.KEY_ENDTIME, _contentEndTime)
+			   .append(ContentProviderBean.KEY_PROVIDER, _providerObject)
+			   .append(ContentBean.KEY_FINISHIED, false);
+		
+		col.insert(content);
+		JSONObject json = new JSONObject();		
+		try {
+			json.put(ContentProviderBean.KEY_TITLE , content.get(ContentProviderBean.KEY_TITLE))
+				.put(ContentProviderBean.KEY_STARTTIME , content.get(ContentProviderBean.KEY_STARTTIME))
+				.put(ContentProviderBean.KEY_ENDTIME , content.get(ContentProviderBean.KEY_ENDTIME))
+				.put(ContentProviderBean.KEY_PROVIDER , content.get(ContentProviderBean.KEY_PROVIDER))
+				.put(ContentBean.KEY_FINISHIED , false);
 		}catch(Exception e){
 			e.printStackTrace();
-			return false;
 		}		
+		return json;
+	
 	}	
+	
+	
+ 
+	public static ContentBean[] searchContentByProvider(String _id){
+		ContentBean[] res = null;
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+
+		DBCursor iter = 
+				col.find(new BasicDBObject("provider._id", new ObjectId(_id)));
+		System.out.println(iter.toString());
+		System.out.println("Iter Count :"+ iter.count());
+		res = new ContentBean[MAX_LIMIT];
+		int i = 0;
+		while(iter.hasNext()){
+			DBObject obj = iter.next();
+			System.out.println("FINISHED : "+obj.get(ContentBean.KEY_FINISHIED));
+			DBObject dbProvider = (DBObject)obj.get(ContentBean.KEY_PROVIDER);
+			System.out.println(obj.get(ContentBean.KEY_PROVIDER));
+			BasicDBList dbArtists = (BasicDBList)obj.get(ContentBean.KEY_ARTIST);
+			DBObject dbLocation = (DBObject)dbProvider.get(ProviderBean.KEY_LOCATION);
+			DBObject dbArtist = null;
+			String selectedArtistId = (String)obj.get(ContentBean.KEY_C_ARTIST);
+			if(dbArtists!=null){
+				for(int n = 0 ; n < dbArtists.size(); n++) {
+					String temp = ((DBObject)dbArtists.get(n)).get("_id").toString();
+					System.out.println(temp + " :: " + selectedArtistId);
+					if(temp.equals(selectedArtistId)) {
+						dbArtist = (DBObject)dbArtists.get(n);
+						break;
+					}
+				}	
+			}else{
+				dbArtist = null;
+			}
+				
+			
+			BasicDBList pos = (BasicDBList)dbLocation.get(LocationBean.KEY_COORDINATE);
+			LocationBean location = new LocationBean(
+					(String)dbLocation.get(LocationBean.KEY_NAME),
+					(String)dbLocation.get(LocationBean.KEY_DESCRIPT),
+					(double)pos.get(0), 
+					(double)pos.get(1));
+			GenreBean[] genre = {new GenreBean("", (String)dbProvider.get(ProviderBean.KEY_GENRE))};
+			
+			BasicDBList images = (BasicDBList)dbProvider.get(ProviderBean.KEY_IMAGES); 	
+			String[] t = {};
+			ProviderBean provider = new ProviderBean(
+					(String)dbProvider.get(ProviderBean.KEY_TYPE),
+					images.toArray(t),
+					location,
+					genre,
+					(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
+					(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
+					(String)dbProvider.get(ProviderBean.KEY_DESCRIPT));
+			ArtistBean[] artistResult;
+			if(dbArtist != null){
+				images = (BasicDBList)dbArtist.get(ArtistBean.KEY_IMAGES);
+				String[] t2 = {};
+				ArtistBean[] artist = {new ArtistBean(
+							images.toArray(t2), 
+							(String)dbArtist.get(ArtistBean.KEY_VIDEO), 
+							(String)dbArtist.get(ArtistBean.KEY_DESCRIPT))};
+				artistResult = artist;
+			}else
+				artistResult = null;
+			
+			
+			res[i++] = new ContentBean(
+						(String)obj.get(ContentBean.KEY_TITLE),
+						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
+						(String)obj.get(ContentBean.KEY_TYPE),
+						Integer.parseInt((String)obj.get(ContentBean.KEY_STARTTIME)),
+						Integer.parseInt((String)obj.get(ContentBean.KEY_ENDTIME)),
+						provider,
+						artistResult,
+						selectedArtistId,
+						(String)obj.get(ContentBean.KEY_C_TIME),
+						(boolean)obj.get(ContentBean.KEY_FINISHIED),
+						
+						null				
+					);
+		}
+		
+		
+		return res;
+	}
 }
