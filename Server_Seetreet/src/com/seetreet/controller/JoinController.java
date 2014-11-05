@@ -32,9 +32,9 @@ import com.seetreet.util.ResBodyFactory;
 public class JoinController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	private final String PREFIX_USER = "/user/join/user/";
-	private final String PREFIX_ARTIST = "/user/join/artist/";
-	private final String PREFIX_PROVIDER = "/user/join/provider/";
+	private final String PREFIX_USER 			= "/user/join/user/";
+	private final String PREFIX_ARTIST 			= "/user/join/artist/";
+	private final String PREFIX_PROVIDER 		= "/user/join/provider/";
 	
     /**
      * @see HttpServlet#HttpServlet()
