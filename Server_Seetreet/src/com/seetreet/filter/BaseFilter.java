@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletResponse;
 
 import com.seetreet.util.C;
 
@@ -41,8 +42,15 @@ public class BaseFilter implements Filter {
 		req.setCharacterEncoding(C.ENCODING);
 		res.setCharacterEncoding(C.ENCODING);
 		
+		HttpServletResponse httpRes = (HttpServletResponse)res;
+		httpRes.setHeader("Access-Control-Allow-Origin", "*");
+		httpRes.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+		httpRes.setHeader("Access-Control-Allow-Headers", "*");	
+		
 		// pass the request along the filter chain
 		chain.doFilter(req, res);
+		
+			
 	}
 
 	/**

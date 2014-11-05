@@ -1,6 +1,7 @@
 package com.seetreet.controller;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -9,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.DefaultEditorKit.InsertContentAction;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,11 +17,12 @@ import org.json.JSONObject;
 
 import com.mongodb.DBObject;
 import com.seetreet.bean.ArtistBean;
+
 import com.seetreet.bean.GenreBean;
-import com.seetreet.bean.ProviderBean;
 import com.seetreet.bean.UserBean;
 import com.seetreet.bean.content.ContentBean;
 import com.seetreet.bean.content.ContentProviderBean;
+
 import com.seetreet.dao.MongoDAO;
 import com.seetreet.util.ResBodyFactory;
 
@@ -68,6 +69,7 @@ public class ContentProviderController extends HttpServlet {
 		}
 		
 	}
+
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -132,4 +134,5 @@ public class ContentProviderController extends HttpServlet {
 		String contentId = (String)req.getParameter(ContentBean.KEY_ID);
 		return MongoDAO.deleteContentByProvider(contentId);
 	}
+
 }

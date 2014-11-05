@@ -4,6 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.seetreet.bean.content.ContentBean;
 
 public class ProviderBean implements BeanJson{
@@ -17,6 +20,7 @@ public class ProviderBean implements BeanJson{
 	private String description;
 	private ContentBean[] history;
 	private String modTime;
+	private String publicGenre;
 	
 	public static final String KEY_ID = "_id";
 	public static final String KEY_IMAGES = "providerImage";
@@ -70,7 +74,7 @@ public class ProviderBean implements BeanJson{
 	}
 	
 	public ProviderBean(JSONObject obj){
-		//Public Api 
+		//怨듦났 API Bean 媛앹껜
 		try{
 			this.contentType = "공공";
 			if(obj.has("firstimage")){
@@ -102,7 +106,7 @@ public class ProviderBean implements BeanJson{
 				this.favoriteGenre = genre;
 			}
 			if(obj.has("modifiedtime")){
-				this.modTime = String.valueOf(obj.getLong("modifiedtime"));
+				this.modTime = obj.getString("modifiedtime");
 			}	
 		}catch(Exception e){
 			e.printStackTrace();
@@ -138,7 +142,9 @@ public class ProviderBean implements BeanJson{
 	public String getStoreType() {
 		return StoreType;
 	}
-	
+	public String getPublicGenre() {
+		return publicGenre;
+	}
 
 	@Override
 	public JSONObject getJson() throws JSONException{

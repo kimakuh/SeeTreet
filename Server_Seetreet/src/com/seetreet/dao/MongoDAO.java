@@ -1,8 +1,9 @@
 package com.seetreet.dao;
 
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import javax.swing.text.AbstractDocument.Content;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.json.JSONException;
@@ -73,6 +74,7 @@ public class MongoDAO {
 		//if(col.findOne(new BasicDBObject(UserBean.KEY_EMAIL, bean.getEmail())) != null)
 			//return false;
 		
+
 		if(bean != null && provObj != null){
 			BasicDBList artists = new BasicDBList();
 			artists = null;
@@ -90,21 +92,21 @@ public class MongoDAO {
 					.append(ContentPublicApiBean.KEY_ARTIST, artists)
 					.append(ContentPublicApiBean.KEY_ISCONFIRMED_ARTISTID, bean.getConfirmed_artistId())
 					.append(ContentPublicApiBean.KEY_CONTENTID, bean.getContentId());
-					
-			//System.out.println(newContent.toString());
+			
 			col.insert(newContent);
-		
-			return true;	
 		}else
 			return false;
+		//System.out.println(newContent.toString());
 		
+		
+		return true;
 	}
 	
 	/*param : checkPublicApiContentId(int contentId)
 	 * description : 기존에 있는 contentId 값을 확인함.
 	 * 
 	 * */
-	public static boolean checkPublicApiContentId(Long contentId) {
+	public static boolean checkPublicApiContentId(int contentId) {
 		
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);		
@@ -116,6 +118,7 @@ public class MongoDAO {
 		//없으면 true
 		return true;
 	}
+
 	
 	/*param : providerId
 	 * description : enrollContentByProvider에서 호출, 
@@ -496,7 +499,7 @@ public class MongoDAO {
 						.append(ContentBean.KEY_C_ARTIST, new BasicDBObject("$ne", null))
 				).skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
 		
-		res = new ContentBean[MAX_LIMIT];
+		res = new ContentBean[iter.length()];
 		int i = 0;
 		while(iter.hasNext()){
 			DBObject obj = iter.next();
@@ -583,7 +586,7 @@ public class MongoDAO {
 		
 		return res;
 	}
-
+	
 	public static JSONObject enrollReply(ReplyBean bean) {
 		DB db = MongoDB.getDB();
 		DBCollection contentCol = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
@@ -645,7 +648,7 @@ public class MongoDAO {
 															 			 .append(ReplyBean.KEY_USEREMAIL, bean.getUserEmail())
 																	 )
 												);
-		WriteResult result = colContent.update(findQuery, updateQuery);		
+		colContent.update(findQuery, updateQuery);		
 		
 		return true;
 	}
@@ -663,8 +666,8 @@ public class MongoDAO {
 		return new JSONObject(artist.toString());
 	}
 	
-	public static ContentBean[] searchContentByLocationFromArtist(double l_lat,	double l_long, int page) {
-		ContentBean[] res = null;
+	public static ContentProviderBean[] searchContentByLocationFromArtist(double l_lat,	double l_long, int page) {
+		ContentProviderBean[] res = null;
 
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection("test_content");
@@ -672,7 +675,11 @@ public class MongoDAO {
 		BasicDBList position = new BasicDBList();
 		position.put(0, l_lat);
 		position.put(1, l_long);
-
+		
+//		BasicDBList confirmedQuery = new BasicDBList();
+//		confirmedQuery.add(new BasicDBObject("$eq" , ""));
+//		confirmedQuery.add(new BasicDBObject("$eq" , null));
+		
 		DBCursor iter = col.find(
 						new BasicDBObject("provider.location", 
 								new BasicDBObject("$near", 
@@ -681,31 +688,26 @@ public class MongoDAO {
 													.append("coordinates", position))))
 							.append(ContentBean.KEY_FINISHIED, false)
 							.append(ContentBean.KEY_C_ARTIST, 
-									new BasicDBObject("$exists", false)))
+									new BasicDBObject("$eq" , "")))
 						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
 
-		res = new ContentBean[MAX_LIMIT];
-		int i = 0;
-		while (iter.hasNext()) {
-			DBObject obj = iter.next();
-
+		res = new ContentProviderBean[iter.length()];
+		
+		if(iter.length() <= 0 ) return null;
+		
+		List<DBObject> list = iter.toArray();
+		
+		for(int i = 0 ; i < list.size(); i++) {
+			DBObject obj = list.get(i);
+			System.out.println(obj.toString());
 			DBObject dbProvider = (DBObject) obj.get(ContentBean.KEY_PROVIDER);
 			BasicDBList dbArtists = (BasicDBList) obj
 					.get(ContentBean.KEY_ARTIST);
 			DBObject dbLocation = (DBObject) dbProvider
-					.get(ProviderBean.KEY_LOCATION);
-			DBObject dbArtist = null;
-			String selectedArtistId = (String) obj
-					.get(ContentBean.KEY_C_ARTIST);
-
+					.get(ProviderBean.KEY_LOCATION);			
+			
 			for (int n = 0; n < dbArtists.size(); n++) {
-				String temp = ((DBObject) dbArtists.get(n)).get("_id")
-						.toString();
-				System.out.println(temp + " :: " + selectedArtistId);
-				if (temp.equals(selectedArtistId)) {
-					dbArtist = (DBObject) dbArtists.get(n);
-					break;
-				}
+				String temp = ((DBObject) dbArtists.get(n)).get("_id").toString();			
 			}
 			BasicDBList pos = (BasicDBList) dbLocation
 					.get(LocationBean.KEY_COORDINATE);
@@ -718,34 +720,26 @@ public class MongoDAO {
 
 			BasicDBList images = (BasicDBList) dbProvider
 					.get(ProviderBean.KEY_IMAGES);
+			
+			
 			String[] t = {};
 			ProviderBean provider = new ProviderBean(
 					(String) dbProvider.get(ProviderBean.KEY_TYPE),
 					images.toArray(t), location, genre,
 					(String) dbProvider.get(ProviderBean.KEY_STORETITLE),
 					(String) dbProvider.get(ProviderBean.KEY_STORETYPE),
-					(String) dbProvider.get(ProviderBean.KEY_DESCRIPT));
-
-			images = (BasicDBList) dbArtist.get(ArtistBean.KEY_IMAGES);
-			String[] t2 = {};
-			ArtistBean[] artist = { new ArtistBean(images.toArray(t2),
-					(String) dbArtist.get(ArtistBean.KEY_VIDEO),
-					(String) dbArtist.get(ArtistBean.KEY_DESCRIPT)) };
-
-			res[i++] = new ContentBean(
-					(String) obj.get(ContentBean.KEY_TITLE),
-					new GenreBean("", (String) obj.get(ContentBean.KEY_GENRE)),
-					(String) obj.get(ContentBean.KEY_TYPE),
-					Integer.parseInt((String) obj
-							.get(ContentBean.KEY_STARTTIME)),
-					Integer.parseInt((String) obj.get(ContentBean.KEY_ENDTIME)),
-					provider, artist, selectedArtistId, (String) obj
-							.get(ContentBean.KEY_C_TIME), (boolean) obj
-							.get(ContentBean.KEY_FINISHIED), null);
+					(String) dbProvider.get(ProviderBean.KEY_DESCRIPT));			
+			
+			res[i] = new ContentProviderBean(
+					(String) obj.get(ContentBean.KEY_TITLE), 
+					new GenreBean("", (String) obj.get(ContentBean.KEY_GENRE)), 
+					(String) obj.get(ContentBean.KEY_TYPE), 
+					Integer.parseInt((String) obj.get(ContentBean.KEY_STARTTIME)), 
+					Integer.parseInt((String) obj.get(ContentBean.KEY_ENDTIME)), provider);		
 		}
-
 		return res;
 	}
+
 
 	//public static boolean insertContentByProvider(String _contentTitle, String _contentStartTime, String _contentEndTime, String _providerId, ProviderBean _tempProvider){
 	public static JSONObject insertContentByProvider(String _contentTitle, String _contentStartTime, String _contentEndTime, DBObject _providerObject){
@@ -886,5 +880,64 @@ public class MongoDAO {
 			return true;
 		else
 			return false;
+	}
+	
+	public static boolean insertCandidateByArtistWithContentId(String contentId , String email) {
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
+		DBCollection userCol = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		BasicDBObject findArtistQuery = new BasicDBObject(UserBean.KEY_EMAIL, email);		
+		DBObject user = userCol.findOne(findArtistQuery);
+		DBObject artist = (DBObject)user.get(UserBean.KEY_ARTIST);
+					
+		if(artist == null) return false;
+		
+		BasicDBObject findArtistInContentQuery = new BasicDBObject();
+		findArtistInContentQuery.put(ContentBean.KEY_ID, new ObjectId(contentId));
+		findArtistInContentQuery.put(ArtistBean.KEY_ID, artist.get(ArtistBean.KEY_ID));
+		DBObject isInserted 
+		= contentCol.findOne(
+				new BasicDBObject().append(ContentBean.KEY_ID , new ObjectId(contentId)),
+				new BasicDBObject()
+					.append(ContentBean.KEY_ARTIST, 
+							new BasicDBObject()
+								.append("$elemMatch",
+										new BasicDBObject()
+											.append(ArtistBean.KEY_ID, artist.get(ArtistBean.KEY_ID))
+										)								
+							)				
+				);		
+		
+		if(isInserted != null) return false;
+		
+		BasicDBObject findContentQuery 		= new BasicDBObject();
+		findContentQuery.append(ContentBean.KEY_ID , new ObjectId(contentId));
+		BasicDBObject updateContentQuery 	= new BasicDBObject();
+		updateContentQuery.append("$push", new BasicDBObject(ContentBean.KEY_ARTIST, artist));
+				
+		contentCol.update(findContentQuery, updateContentQuery);	
+			
+		return true;
+	}
+	
+	public static boolean deleteCandidateByArtistWithContentId(String contentId , String email) {
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
+		DBCollection userCol = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		BasicDBObject findArtistQuery = new BasicDBObject(UserBean.KEY_EMAIL, email);		
+		DBObject user = userCol.findOne(findArtistQuery);
+		DBObject artist = (DBObject)user.get(UserBean.KEY_ARTIST);
+		
+		if(artist == null) return false;		
+		
+		BasicDBObject findContentQuery = new BasicDBObject();
+		findContentQuery.append(ContentBean.KEY_ID , new ObjectId(contentId));
+		BasicDBObject updateContentQuery = new BasicDBObject();
+		updateContentQuery.append("$pull", new BasicDBObject(ContentBean.KEY_ARTIST, artist));
+		
+		contentCol.update(findContentQuery, updateContentQuery);		
+		return true;
 	}
 }

@@ -16,6 +16,7 @@ import com.seetreet.bean.ArtistBean;
 import com.seetreet.bean.LocationBean;
 import com.seetreet.bean.UserBean;
 import com.seetreet.bean.content.ContentBean;
+import com.seetreet.bean.content.ContentProviderBean;
 import com.seetreet.dao.MongoDAO;
 import com.seetreet.util.ResBodyFactory;
 
@@ -25,7 +26,8 @@ import com.seetreet.util.ResBodyFactory;
 @WebServlet("/user/content/artist/*")
 public class ContentArtistController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    
+	private static final String PREFIX_REC = "/user/content/artist/rec/";
 	private static final String PREFIX_SEARCH = "/user/content/artist/search/";
 	private static final String PREFIX_APPLY = "/user/content/artist/apply/";
 	private static final String PREFIX_DELETE = "/user/content/artist/delete/";
@@ -51,6 +53,8 @@ public class ContentArtistController extends HttpServlet {
 		try {
 			if(cmd.contains(PREFIX_SEARCH)) {
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, searchContentByArtist(req, res)));
+			}else if(cmd.contains(PREFIX_REC)) {
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, recContentByArtist(req, res)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -72,9 +76,9 @@ public class ContentArtistController extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		try {
 			if(cmd.contains(PREFIX_APPLY)) {
-				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, searchContentByArtist(req, res)));
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, applyContentByArtist(req, res)));
 			} else if(cmd.contains(PREFIX_DELETE)) {
-				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, searchContentByArtist(req, res)));
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, deleteContentByArtist(req, res)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -84,22 +88,46 @@ public class ContentArtistController extends HttpServlet {
 		}
 	}
 
+	
 	private JSONArray searchContentByArtist(HttpServletRequest req, HttpServletResponse res) {
+		JSONArray arr = new JSONArray();
+		try {
+			int l_long 	= Integer.parseInt(req.getParameter(LocationBean.KEY_LONGITUDE));
+			int l_lat 	= Integer.parseInt(req.getParameter(LocationBean.KEY_LATITUDE));
+			int page 	= Integer.parseInt(req.getParameter("page"));
+			ContentProviderBean[] beans = MongoDAO.searchContentByLocationFromArtist(
+					l_lat, 
+					l_long, 
+					page);
+			
+			for (ContentProviderBean bean : beans) {				
+				arr.put(bean.getJson());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return arr;
+	}
+	
+	
+	private JSONArray recContentByArtist(HttpServletRequest req, HttpServletResponse res) {
 		JSONArray arr = new JSONArray();
 		try {
 			JSONObject artist = MongoDAO.getArtist(
 					(String) req.getAttribute(UserBean.KEY_EMAIL),
-					req.getParameter(UserBean.KEY_TOKEN));
+					req.getHeader(UserBean.KEY_TOKEN));
 			JSONObject location = artist.getJSONArray(ArtistBean.KEY_LOCATIONS)
 					.getJSONObject(0);
-			JSONArray coords = location
-					.getJSONArray(LocationBean.KEY_COORDINATE);
-
-			int page = Integer.parseInt(req.getParameter("page"));
-			ContentBean[] beans = MongoDAO.searchContentByLocationFromArtist(
-					coords.getDouble(0), coords.getDouble(1), page);
 			
-			for (ContentBean bean : beans) {
+					
+			int page = Integer.parseInt(req.getParameter("page"));
+			ContentProviderBean[] beans = MongoDAO.searchContentByLocationFromArtist(
+					location.getDouble(LocationBean.KEY_LATITUDE), 
+					location.getDouble(LocationBean.KEY_LONGITUDE), 
+					page);
+			
+			for (ContentProviderBean bean : beans) {				
 				arr.put(bean.getJson());
 			}
 		} catch (Exception e) {
@@ -110,16 +138,31 @@ public class ContentArtistController extends HttpServlet {
 	}
 	
 	/* 내일 할 것
-	 * 아티스트가 찾기 확인
-	 * 아트리스가 삭제하거나 지원하는경우
+	 * 
+	 * 아트리스가 삭제하거나 지원하는경우 확인
 	 * 프로바이더 등록
 	 * 프로바이더 수정, 삭제
 	 * */
-	private JSONObject deleteContentByArtist(HttpServletRequest req, HttpServletResponse res) {
-		return null;
+	private boolean deleteContentByArtist(HttpServletRequest req, HttpServletResponse res) {
+		try {
+			String contentId 	= req.getParameter(ContentBean.KEY_ID);		
+			String email 		= (String)req.getAttribute(UserBean.KEY_EMAIL);
+			return MongoDAO.deleteCandidateByArtistWithContentId(contentId, email);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return false;
 	}
-	private JSONObject applyContentByArtist(HttpServletRequest req, HttpServletResponse res) {
-		return null;
+	private boolean applyContentByArtist(HttpServletRequest req, HttpServletResponse res) {		
+		try {
+			String contentId 	= req.getParameter(ContentBean.KEY_ID);		
+			String email 		= (String)req.getAttribute(UserBean.KEY_EMAIL);
+			return MongoDAO.insertCandidateByArtistWithContentId(contentId, email);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}		
+		return false;
 	}
 	
 }
