@@ -1,5 +1,9 @@
 package com.seetreet.dao;
 
+import java.util.ArrayList;
+
+import javax.swing.text.AbstractDocument.Content;
+
 import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,6 +74,8 @@ public class MongoDAO {
 			//return false;
 		
 		if(bean != null && provObj != null){
+			BasicDBList artists = new BasicDBList();
+			artists = null;
 			BasicDBObject newContent 
 			= new BasicDBObject()
 					.append(ContentPublicApiBean.KEY_CONTENTTITLE, bean.getContentName())
@@ -81,7 +87,7 @@ public class MongoDAO {
 					.append(ContentPublicApiBean.KEY_CONFIRMEDTIME, bean.getConfirmedTime())
 					.append(ContentPublicApiBean.KEY_FINISHEDTIME, bean.getIsFinished())
 					.append(ContentPublicApiBean.KEY_PROVIDER, provObj)
-					.append(ContentPublicApiBean.KEY_ARTIST, bean.getArtist())
+					.append(ContentPublicApiBean.KEY_ARTIST, artists)
 					.append(ContentPublicApiBean.KEY_ISCONFIRMED_ARTISTID, bean.getConfirmed_artistId())
 					.append(ContentPublicApiBean.KEY_CONTENTID, bean.getContentId());
 					
@@ -200,8 +206,8 @@ public class MongoDAO {
 			return provider;
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println(obj.getStoreTitle());
-			System.out.println(obj.getProviderId());
+			//System.out.println(obj.getStoreTitle());
+			//System.out.println(obj.getProviderId());
 			return null;
 		}
 	}
@@ -795,7 +801,6 @@ public class MongoDAO {
 		int i = 0;
 		while(iter.hasNext()){
 			DBObject obj = iter.next();
-			System.out.println("FINISHED : "+obj.get(ContentBean.KEY_FINISHIED));
 			DBObject dbProvider = (DBObject)obj.get(ContentBean.KEY_PROVIDER);
 			System.out.println(obj.get(ContentBean.KEY_PROVIDER));
 			BasicDBList dbArtists = (BasicDBList)obj.get(ContentBean.KEY_ARTIST);
@@ -861,9 +866,25 @@ public class MongoDAO {
 						
 						null				
 					);
+		}		
+		return res;
+	}
+	
+	public static boolean deleteContentByProvider(String _contentId){
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		JSONObject res;
+		int nCount = 0;
+		try {
+			res = new JSONObject(col.remove(new BasicDBObject("_id", new ObjectId(_contentId))).toString());
+			nCount = res.getInt("n");
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 		
-		
-		return res;
+		if(nCount != 0)
+			return true;
+		else
+			return false;
 	}
 }

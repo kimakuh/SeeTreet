@@ -23,8 +23,8 @@ public class C {
 	
 	
 	//영욱이꺼
-	public static final String SERVICEKEY = "?ServiceKey=%2Bjvgyj%2FpkZ2s2LRybZLnbB2FMv2i8PvJlK1%2F%2FNLL8KXwqo9Ian%2FUXJciP9MKJFqlqQkvnQaO9Xqyw6dC955xTg%3D%3D";
-	//public static final String SERVICEKEY = "?ServiceKey=x9silkNV5NAwSY11q%2BB3wEIwMLN%2Bk41GRMIMMHseSBI%2BZZJacUaPhAAUno73xVl//xg/6jq7ximTUaUY1NkL3Q%3D%3D";
+	//public static final String SERVICEKEY = "?ServiceKey=%2Bjvgyj%2FpkZ2s2LRybZLnbB2FMv2i8PvJlK1%2F%2FNLL8KXwqo9Ian%2FUXJciP9MKJFqlqQkvnQaO9Xqyw6dC955xTg%3D%3D";
+	public static final String SERVICEKEY = "?ServiceKey=x9silkNV5NAwSY11q%2BB3wEIwMLN%2Bk41GRMIMMHseSBI%2BZZJacUaPhAAUno73xVl//xg/6jq7ximTUaUY1NkL3Q%3D%3D";
 	public static final String DETAILCOMMON = "/detailCommon";
 	public static final String SEARCHFESTIVAL = "/searchFestival";
 	public static final String DEFAULTYN = "&defaultYN=Y";

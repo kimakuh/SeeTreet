@@ -9,7 +9,7 @@ public class ContentPublicApiBean {
 	private String contentType;
 	private String contentStartTime;
 	private String contentEndTime;
-	private String artist;
+	private ArtistBean[] artist;
 	private ProviderBean provider;
 	private int likeCount;
 	private String isConfirmed_artistId;
@@ -23,7 +23,7 @@ public class ContentPublicApiBean {
 	public static final String KEY_TYPE					= "contentType";
 	public static final String KEY_EVENTSTARTDATE	 	= "contentStartTime";
 	public static final String KEY_EVENTENDDATE			= "contentEndTime";
-	public static final String KEY_ARTIST				= "artist";
+	public static final String KEY_ARTIST				= "artists";
 	public static final String KEY_PROVIDER				= "provider";
 	public static final String KEY_MODIFIEDTIME			= "modifiedtime";
 	public static final String KEY_OVERVIEW				= "overview";
@@ -45,7 +45,7 @@ public class ContentPublicApiBean {
 			this.contentStartTime = String.valueOf(_existObject.getLong("eventstartdate"));
 			this.contentEndTime = String.valueOf(_existObject.getLong("eventenddate"));
 			this.contentType = "공공";
-			this.artist = "";
+			this.artist = null;
 			this.provider = _prov;
 			this.likeCount = 0;
 			this.isConfirmed_artistId = "공공";
@@ -116,7 +116,7 @@ public class ContentPublicApiBean {
 	public ProviderBean getProvider(){
 		return provider;
 	}
-	public String getArtist(){
+	public ArtistBean[] getArtist(){
 		return artist;
 	}
 	public String getContentGenre(){

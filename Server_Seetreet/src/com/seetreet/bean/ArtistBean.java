@@ -24,6 +24,7 @@ public class ArtistBean implements BeanJson{
 	public static final String KEY_LOCATIONS = "favoriteLocation";
 	public static final String KEY_ID = "_id"; 
 	public static final String KEY_MODTIME = "modTime";
+	public static final String KEY_CONTENTHISTORY = "contentHistory";
 	
 	public ArtistBean(String[] artistImages, String videoUrl , String description) {
 		// TODO Auto-generated constructor stub

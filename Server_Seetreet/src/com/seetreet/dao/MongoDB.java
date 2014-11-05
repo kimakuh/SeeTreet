@@ -14,9 +14,11 @@ import com.seetreet.util.C;
 
 public class MongoDB {	
 	public static final String COLLECTION_USER = "user";
-	public static final String COLLECTION_CONTENT = "content";
-	public static final String COLLECTION_CONTENTS = "contents";
+	//public static final String COLLECTION_CONTENT = "content";
+	public static final String COLLECTION_CONTENTS = "content";
 	public static final String COLLECTION_PROVIDER = "provider";
+	public static final String COLLECTION_ARTIST = "artist";
+	public static final String COLLECTION_REPLY = "reply";
 	
 	
 	public static final String TEST_COLLECTION_CONTENT = "test_content";	
