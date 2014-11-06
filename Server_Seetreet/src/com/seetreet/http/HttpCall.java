@@ -65,6 +65,7 @@ public  class HttpCall {
 			
 			JSONObject temp = new JSONObject(result.toString());
 			JSONObject obj = temp.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONObject("item");
+			
 			/*
 			ProviderBean pub = new ProviderBean(obj);
 			MongoDAO.insertPublicProvider(pub);

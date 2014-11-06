@@ -23,6 +23,7 @@ import com.seetreet.bean.LocationBean;
 import com.seetreet.bean.ProviderBean;
 import com.seetreet.bean.UserBean;
 import com.seetreet.dao.MongoDAO;
+import com.seetreet.util.C;
 import com.seetreet.util.ResBodyFactory;
 
 /**
@@ -114,6 +115,7 @@ public class JoinController extends HttpServlet {
 			String videoUrl 	= req.getParameter(ArtistBean.KEY_VIDEO);
 			JSONArray genre		= new JSONArray(req.getParameter(ArtistBean.KEY_GENRE));
 			String descript 	= req.getParameter(ArtistBean.KEY_DESCRIPT);
+			String name 		= req.getParameter(ArtistBean.KEY_NAME);
 			JSONArray locations = new JSONArray(req.getParameter(ArtistBean.KEY_LOCATIONS));			
 			
 			
@@ -122,12 +124,8 @@ public class JoinController extends HttpServlet {
 				imageURLs[i] = images.getString(i);
 			}
 			
+			String modTime = C.currentDate();
 			
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			Calendar cal = Calendar.getInstance();
-			String modTime = dateFormat.format(cal.getTime());
-			
-		
 			LocationBean[] locs = new LocationBean[locations.length()];
 			for(int i = 0 ; i < locations.length(); i++) {
 				JSONObject location = locations.getJSONObject(i);
@@ -141,7 +139,7 @@ public class JoinController extends HttpServlet {
 				genres[i] = new GenreBean("", genre.getString(i));
 			}
 			
-			ArtistBean bean = new ArtistBean(imageURLs, videoUrl, descript, modTime, locs,genres);
+			ArtistBean bean = new ArtistBean(imageURLs, name, videoUrl, descript, modTime, locs,genres);
 			
 			if(MongoDAO.isUser(email, token)) {
 				if(MongoDAO.isArtist(email, token)) {
@@ -170,6 +168,7 @@ public class JoinController extends HttpServlet {
 			JSONObject location = new JSONObject(req.getParameter(ProviderBean.KEY_LOCATION));			
 			String storeTitle	= req.getParameter(ProviderBean.KEY_STORETITLE);
 			String storeType	= req.getParameter(ProviderBean.KEY_STORETYPE);
+			String address	 	= req.getParameter(ProviderBean.KEY_ADDRESS);
 
 			
 			String[] imageURLs = new String[images.length()];
@@ -177,11 +176,7 @@ public class JoinController extends HttpServlet {
 				imageURLs[i] = images.getString(i);
 			}
 			
-			
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			Calendar cal = Calendar.getInstance();
-			String modTime = dateFormat.format(cal.getTime());
-			
+			String modTime = C.currentDate();
 			
 			LocationBean loc = new LocationBean("", "", 
 										location.getDouble(LocationBean.KEY_LATITUDE), 
@@ -200,7 +195,8 @@ public class JoinController extends HttpServlet {
 								storeTitle, 
 								storeType, 
 								descript, 
-								modTime);
+								modTime,
+								address);
 			
 			if(MongoDAO.isUser(email, token)) {
 				if(MongoDAO.isProvider(email, token)) {

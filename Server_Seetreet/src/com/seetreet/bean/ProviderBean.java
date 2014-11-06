@@ -21,8 +21,10 @@ public class ProviderBean implements BeanJson{
 	private ContentBean[] history;
 	private String modTime;
 	private String publicGenre;
+	private String address;
 	
 	public static final String KEY_ID = "_id";
+	public static final String KEY_ADDRESS = "StoreAddress";
 	public static final String KEY_IMAGES = "providerImage";
 	public static final String KEY_TYPE = "contentType";
 	public static final String KEY_GENRE = "favoriteGenre";
@@ -34,7 +36,7 @@ public class ProviderBean implements BeanJson{
 	
 	
 	public ProviderBean(String contentType, String[] images ,LocationBean location, GenreBean[] genre, 
-			String storeTitle, String storeType, String description) {
+			String storeTitle, String storeType, String description, String address) {
 		// TODO Auto-generated constructor stub
 		this.contentType = contentType;
 		this.images = images;
@@ -43,10 +45,11 @@ public class ProviderBean implements BeanJson{
 		this.StoreType = storeType;
 		this.description = description;
 		this.favoriteGenre = genre;
+		this.address = address;
 	}
 	
 	public ProviderBean(String contentType, String[] images ,LocationBean location, GenreBean[] genre, 
-			String storeTitle, String storeType, String description , String modTime) {
+			String storeTitle, String storeType, String description , String modTime, String address) {
 		// TODO Auto-generated constructor stub
 		this.contentType = contentType;
 		this.images = images;
@@ -55,12 +58,13 @@ public class ProviderBean implements BeanJson{
 		this.StoreType = storeType;
 		this.description = description;
 		this.favoriteGenre = genre;
+		this.address = address;
 	}
 
 	
 	public ProviderBean(String contentType, String[] images ,LocationBean location, 
 			String storeTitle, String storeType, String description,
-			String providerId, GenreBean[] genre, ContentBean[] history, String modTime) {
+			String providerId, GenreBean[] genre, ContentBean[] history, String modTime, String address) {
 		// TODO Auto-generated constructor stub
 		this.contentType = contentType;
 		this.images = images;
@@ -71,6 +75,7 @@ public class ProviderBean implements BeanJson{
 		this.favoriteGenre = genre;
 		this.history = history;
 		this.modTime = modTime;
+		this.address = address;
 	}
 	
 	public ProviderBean(JSONObject obj){
@@ -145,6 +150,9 @@ public class ProviderBean implements BeanJson{
 	public String getPublicGenre() {
 		return publicGenre;
 	}
+	public String getAddress(){
+		return address;
+	}
 
 	@Override
 	public JSONObject getJson() throws JSONException{
@@ -177,6 +185,7 @@ public class ProviderBean implements BeanJson{
 		result.put(KEY_STORETITLE, getStoreTitle());
 		result.put(KEY_STORETYPE, getStoreType());
 		result.put(KEY_DESCRIPT, getDescription());
+		result.put(KEY_ADDRESS, getAddress());
 		
 		return result;
 	}
