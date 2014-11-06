@@ -325,7 +325,7 @@ public class MongoDAO {
 	
 	public static boolean joinArtist(ArtistBean bean , String token) {
 		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection(MongoDB.TEST_COLLECTION_ARTIST);
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_ARTIST);
 		
 		BasicDBList images = new BasicDBList();
 		for(String image : bean.getArtistImages()) {
@@ -355,6 +355,7 @@ public class MongoDAO {
 		}
 		
 		BasicDBObject artist = new BasicDBObject()
+								   .append(ArtistBean.KEY_NAME, bean.getName())
 								   .append(ArtistBean.KEY_IMAGES, images)
 								   .append(ArtistBean.KEY_DESCRIPT, bean.getDescription())
 								   .append(ArtistBean.KEY_LOCATIONS, locations)
@@ -381,7 +382,7 @@ public class MongoDAO {
 	
 	public static boolean joinProvider(ProviderBean bean , String token) {
 		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection(MongoDB.TEST_COLLECTION_PROVIDER);
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_PROVIDER);
 		
 		BasicDBList images = new BasicDBList();
 		for(String image : bean.getImages()) {
@@ -412,7 +413,8 @@ public class MongoDAO {
 								   .append(ProviderBean.KEY_GENRE, genres)
 								   .append(ProviderBean.KEY_STORETITLE, bean.getStoreTitle())
 								   .append(ProviderBean.KEY_STORETYPE, bean.getStoreType())
-								   .append(ProviderBean.KEY_MODTIME, bean.getModTime());
+								   .append(ProviderBean.KEY_MODTIME, bean.getModTime())
+								   .append(ProviderBean.KEY_ADDRESS, bean.getAddress());
 		
 		col.insert(provider);
 		
@@ -480,7 +482,7 @@ public class MongoDAO {
 		ContentBean[] res = null;
 		
 		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection("test_content");
+		DBCollection col = db.getCollection("content");
 		
 		BasicDBList position = new BasicDBList();
 		position.put(0, l_lat);
@@ -499,7 +501,7 @@ public class MongoDAO {
 						.append(ContentBean.KEY_C_ARTIST, new BasicDBObject("$ne", null))
 				).skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
 		
-		res = new ContentBean[iter.length()];
+		res = new ContentBean[iter.size()];
 		int i = 0;
 		while(iter.hasNext()){
 			DBObject obj = iter.next();
@@ -537,7 +539,9 @@ public class MongoDAO {
 					genre,
 					(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
 					(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
-					(String)dbProvider.get(ProviderBean.KEY_DESCRIPT));
+					(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
+					(String)dbProvider.get(ProviderBean.KEY_ADDRESS)
+					);
 			
 			images = (BasicDBList)dbArtist.get(ArtistBean.KEY_IMAGES);
 			String[] t2 = {};
@@ -589,8 +593,8 @@ public class MongoDAO {
 	
 	public static JSONObject enrollReply(ReplyBean bean) {
 		DB db = MongoDB.getDB();
-		DBCollection contentCol = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
-		DBCollection contentRe = db.getCollection(MongoDB.TEST_COLLECTION_REPLY);
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		DBCollection contentRe = db.getCollection(MongoDB.COLLECTION_REPLY);
 		
 		BasicDBObject rep = new BasicDBObject();
 		rep.append(ReplyBean.KEY_CONTENTID, bean.getContentId())
@@ -630,7 +634,7 @@ public class MongoDAO {
 	public static boolean deleteReply(ReplyBean bean) {		
 		DB db = MongoDB.getDB();
 		DBCollection colReply = db.getCollection(MongoDB.TEST_COLLECTION_REPLY);
-		DBCollection colContent = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
+		DBCollection colContent = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		
 		System.out.println("bean : " + bean.getReplyId() + " , " +bean.getUserEmail() + " , " + bean.getContentId());;
 		
@@ -670,7 +674,7 @@ public class MongoDAO {
 		ContentProviderBean[] res = null;
 
 		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection("test_content");
+		DBCollection col = db.getCollection("content");
 
 		BasicDBList position = new BasicDBList();
 		position.put(0, l_lat);
@@ -691,9 +695,9 @@ public class MongoDAO {
 									new BasicDBObject("$eq" , "")))
 						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
 
-		res = new ContentProviderBean[iter.length()];
+		res = new ContentProviderBean[iter.size()];
 		
-		if(iter.length() <= 0 ) return null;
+		if(iter.size() <= 0 ) return null;
 		
 		List<DBObject> list = iter.toArray();
 		
@@ -728,7 +732,8 @@ public class MongoDAO {
 					images.toArray(t), location, genre,
 					(String) dbProvider.get(ProviderBean.KEY_STORETITLE),
 					(String) dbProvider.get(ProviderBean.KEY_STORETYPE),
-					(String) dbProvider.get(ProviderBean.KEY_DESCRIPT));			
+					(String) dbProvider.get(ProviderBean.KEY_DESCRIPT), 
+					(String) dbProvider.get(ProviderBean.KEY_ADDRESS));			
 			
 			res[i] = new ContentProviderBean(
 					(String) obj.get(ContentBean.KEY_TITLE), 
@@ -791,7 +796,7 @@ public class MongoDAO {
 				col.find(new BasicDBObject("provider._id", new ObjectId(_id)));
 		System.out.println(iter.toString());
 		System.out.println("Iter Count :"+ iter.count());
-		res = new ContentBean[MAX_LIMIT];
+		res = new ContentBean[iter.size()];
 		int i = 0;
 		while(iter.hasNext()){
 			DBObject obj = iter.next();
@@ -832,7 +837,8 @@ public class MongoDAO {
 					genre,
 					(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
 					(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
-					(String)dbProvider.get(ProviderBean.KEY_DESCRIPT));
+					(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
+					(String)dbProvider.get(ProviderBean.KEY_ADDRESS));
 			ArtistBean[] artistResult;
 			if(dbArtist != null){
 				images = (BasicDBList)dbArtist.get(ArtistBean.KEY_IMAGES);
@@ -884,7 +890,7 @@ public class MongoDAO {
 	
 	public static boolean insertCandidateByArtistWithContentId(String contentId , String email) {
 		DB db = MongoDB.getDB();
-		DBCollection contentCol = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		DBCollection userCol = db.getCollection(MongoDB.COLLECTION_USER);
 		
 		BasicDBObject findArtistQuery = new BasicDBObject(UserBean.KEY_EMAIL, email);		
@@ -923,7 +929,7 @@ public class MongoDAO {
 	
 	public static boolean deleteCandidateByArtistWithContentId(String contentId , String email) {
 		DB db = MongoDB.getDB();
-		DBCollection contentCol = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		DBCollection userCol = db.getCollection(MongoDB.COLLECTION_USER);
 		
 		BasicDBObject findArtistQuery = new BasicDBObject(UserBean.KEY_EMAIL, email);		

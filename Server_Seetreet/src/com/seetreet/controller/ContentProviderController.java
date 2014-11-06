@@ -115,8 +115,6 @@ public class ContentProviderController extends HttpServlet {
 	private JSONArray searchContentByProvider(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		String providerId = (String)req.getHeader(UserBean.KEY_TOKEN);
 		ContentBean[] beans = MongoDAO.searchContentByProvider(providerId);
-		//System.out.println("searchContentByProvider : "+beans[0].getTitle());
-		//System.out.println("searchContentByProvider : "+beans.length);
 		JSONArray arr= new JSONArray();
 		try{
 			for(ContentBean bean : beans){

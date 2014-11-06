@@ -1,10 +1,14 @@
 package com.seetreet.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class C {
-//	public static final String DBIP = "211.189.127.155";
-	public static final String DBIP = "211.189.127.61";
+	public static final String DBIP = "211.189.127.155";
+	//public static final String DBIP = "211.189.127.61";
 	
 	public static final int DBPORT = 27017;
 	public static final String DBID = "seetreet";
@@ -31,11 +35,30 @@ public class C {
 	public static final String CATCODEYN = "&catcodeYN=Y";
 	public static final String FIRSTIMAGEYN = "&firstImageYN=Y";
 	public static final String OVERVIEWYN = "&overviewYN=Y";
-	public static final String CONTENTIDDATELIST = "&eventStartDate=" + currentDate() + "&listYN=Y";
+	public static final String CONTENTIDDATELIST = "&eventStartDate=" + currentPublicApiDate() + "&listYN=Y";
 	public static final String SETTINGVALUE = "&numOfRows=1000&MobileOS=ETC&MobileApp=AppTesting&_type=json";
 	
-	static int currentDate(){
-		return 20141001;
+	public static String currentDate(){
+		DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+		Calendar cal = Calendar.getInstance();
+		String curTime = dateFormat.format(cal.getTime());
+		String curAmPm;
+		int ampmInt = cal.get(Calendar.AM_PM);
+		if(ampmInt == Calendar.AM)
+			curAmPm = "AM";
+		else
+			curAmPm = "PM";
+		
+		curTime = curTime + curAmPm;
+		System.out.println(curTime);
+		return curTime;
+	}
+	
+	static String currentPublicApiDate(){
+		DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+		Calendar cal = Calendar.getInstance();
+		String curTime = dateFormat.format(cal.getTime());
+		return curTime;
 	}
 	
 	public static final String ENCODING = "UTF-8";

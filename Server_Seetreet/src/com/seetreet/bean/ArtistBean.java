@@ -8,6 +8,7 @@ import com.google.gson.JsonNull;
 import com.seetreet.bean.content.ContentBean;
 
 public class ArtistBean implements BeanJson{
+	private String		name;
 	private String 		artistId;
 	private String[] 	artistImages;
 	private String 		videoUrl;
@@ -17,6 +18,7 @@ public class ArtistBean implements BeanJson{
 	private LocationBean[] favoriteLocation;
 	private ContentBean[] history;	
 	
+	public static final String KEY_NAME = "name";
 	public static final String KEY_IMAGES = "artistImages";
 	public static final String KEY_VIDEO  = "artistUrl";
 	public static final String KEY_DESCRIPT = "description";
@@ -33,9 +35,10 @@ public class ArtistBean implements BeanJson{
 		this.description = description;
 	}
 	
-	public ArtistBean(String[] artistImages, String videoUrl , String description, String modTime,
+	public ArtistBean(String[] artistImages, String name, String videoUrl , String description, String modTime,
 			LocationBean[] locations , GenreBean[] genre) {
 		// TODO Auto-generated constructor stub
+		this.name = name;
 		this.artistImages = artistImages;
 		this.videoUrl = videoUrl;
 		this.description = description;
@@ -44,9 +47,10 @@ public class ArtistBean implements BeanJson{
 		this.genre = genre;
 	}
 	
-	public ArtistBean(String[] artistImages, String videoUrl , String description, String modTime,
+	public ArtistBean(String[] artistImages, String name, String videoUrl , String description, String modTime,
 			LocationBean[] locations, String artistId , ContentBean[] history , GenreBean[] genre) {
 		// TODO Auto-generated constructor stub
+		this.name = name;
 		this.artistImages = artistImages;
 		this.videoUrl = videoUrl;
 		this.description = description;
@@ -55,6 +59,10 @@ public class ArtistBean implements BeanJson{
 		this.artistId = artistId;
 		this.history = history;
 		this.genre = genre;
+	}
+	
+	public String getName(){
+		return name;
 	}
 	
 	public String getArtistId() {
