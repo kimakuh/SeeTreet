@@ -119,6 +119,7 @@ public class UserBean implements UserLoginBean{
 		temp.put(KEY_EMAIL, email);
 		temp.put(KEY_NAME, name);
 		temp.put(KEY_TOKEN, token);
+		temp.put(KEY_AGE, age);
 		return temp;
 	}
 }

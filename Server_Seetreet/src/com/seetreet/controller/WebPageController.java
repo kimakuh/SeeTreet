@@ -42,7 +42,7 @@ public class WebPageController extends HttpServlet {
 			
 			dispatcher = req.getRequestDispatcher("/views/pc/pc.hello.html");
 		} else if(cmd.equals("/enjoy.see")) {
-			dispatcher = req.getRequestDispatcher("/views/pc/pc.hello.html");
+			dispatcher = req.getRequestDispatcher("/views/pc/pc.index.html");
 		}
 		
 		dispatcher.forward(req, res);

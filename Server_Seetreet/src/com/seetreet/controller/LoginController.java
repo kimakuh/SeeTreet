@@ -57,12 +57,13 @@ public class LoginController extends HttpServlet {
 		
 		UserLoginBean bean = MongoDAO.loginUser(email, pw);		
 		PrintWriter out = res.getWriter();
-		
+				
 		try {
 			if(bean == null) {				
 				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, null));
 			} else {	
 				initSession(req, res, bean);
+				System.out.println(bean.getJson().toString());
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, bean.getJson()));			
 			}
 		} catch (Exception e) {

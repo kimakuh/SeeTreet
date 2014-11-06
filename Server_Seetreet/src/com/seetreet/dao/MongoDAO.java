@@ -476,15 +476,15 @@ public class MongoDAO {
 	 * */
 	
 	static double[] InGyae = {127.00111, 37.26711 };
-	public static ContentBean[] getContentsByLocation(float l_long, float l_lat , int page) {
-		ContentBean[] res = null;
+	public static ContentBean[] getContentsByLocation(float l_lat, float l_long , int page) {
+		ContentBean[] res = null;		
 		
 		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection("test_content");
+		DBCollection col = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
 		
 		BasicDBList position = new BasicDBList();
-		position.put(0, l_lat);
-		position.put(1, l_long);		
+		position.put(0, l_long);
+		position.put(1, l_lat);		
 		
 		DBCursor iter = 
 				col.find(new BasicDBObject("provider.location", 
@@ -498,13 +498,13 @@ public class MongoDAO {
 						.append(ContentBean.KEY_FINISHIED, false)
 						.append(ContentBean.KEY_C_ARTIST, new BasicDBObject("$ne", null))
 				).skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
+				
 		
-		res = new ContentBean[iter.length()];
+		res = new ContentBean[iter.size()];
+		
 		int i = 0;
 		while(iter.hasNext()){
-			DBObject obj = iter.next();
-			
-			
+			DBObject obj = iter.next();			
 			
 			DBObject dbProvider = (DBObject)obj.get(ContentBean.KEY_PROVIDER);						
 			BasicDBList dbArtists = (BasicDBList)obj.get(ContentBean.KEY_ARTIST);
@@ -513,8 +513,7 @@ public class MongoDAO {
 			String selectedArtistId = (String)obj.get(ContentBean.KEY_C_ARTIST);
 			
 			for(int n = 0 ; n < dbArtists.size(); n++) {
-				String temp = ((DBObject)dbArtists.get(n)).get("_id").toString();
-				System.out.println(temp + " :: " + selectedArtistId);
+				String temp = ((DBObject)dbArtists.get(n)).get("_id").toString();				
 				if(temp.equals(selectedArtistId)) {
 					dbArtist = (DBObject)dbArtists.get(n);
 					break;
@@ -691,9 +690,9 @@ public class MongoDAO {
 									new BasicDBObject("$eq" , "")))
 						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
 
-		res = new ContentProviderBean[iter.length()];
+		res = new ContentProviderBean[iter.size()];
 		
-		if(iter.length() <= 0 ) return null;
+		if(iter.size() <= 0 ) return null;
 		
 		List<DBObject> list = iter.toArray();
 		

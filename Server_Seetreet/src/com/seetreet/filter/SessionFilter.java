@@ -31,24 +31,24 @@ public class SessionFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		System.out.println(">> WEB-ACCESS");
-		HttpServletRequest httpReq = (HttpServletRequest)req;
-		HttpServletResponse httpRes = (HttpServletResponse)res;
-		req.setCharacterEncoding(C.ENCODING);		
-		res.setCharacterEncoding(C.ENCODING);
-		
-		String uri = httpReq.getRequestURI();
-		String contextPath = httpReq.getContextPath();
-		String cmd = uri.substring(contextPath.length());
-		
-		HttpSession sess = httpReq.getSession();
-		String token = (String) sess.getAttribute(UserBean.KEY_TOKEN);
-		String email = (String) sess.getAttribute(UserBean.KEY_EMAIL);
-		
-		System.out.println(">> session Filter :: " + cmd + " , " + token + " , " + email);
-		if(!MongoDAO.isUser(email, token) && !cmd.equals("/hello.see")) {
-			httpRes.sendRedirect("hello.see");
-			return;
-		}		
+//		HttpServletRequest httpReq = (HttpServletRequest)req;
+//		HttpServletResponse httpRes = (HttpServletResponse)res;
+//		req.setCharacterEncoding(C.ENCODING);		
+//		res.setCharacterEncoding(C.ENCODING);
+//		
+//		String uri = httpReq.getRequestURI();
+//		String contextPath = httpReq.getContextPath();
+//		String cmd = uri.substring(contextPath.length());
+//		
+//		HttpSession sess = httpReq.getSession();
+//		String token = (String) sess.getAttribute(UserBean.KEY_TOKEN);
+//		String email = (String) sess.getAttribute(UserBean.KEY_EMAIL);
+//		
+//		System.out.println(">> session Filter :: " + cmd + " , " + token + " , " + email);
+//		if(!MongoDAO.isUser(email, token) && !cmd.equals("/hello.see")) {
+//			httpRes.sendRedirect("hello.see");
+//			return;
+//		}		
 		
 		chain.doFilter(req, res);	
 	}

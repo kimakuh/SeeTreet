@@ -44,18 +44,18 @@ public class ContentUserController extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		
 		try {			
-			String latStr = req.getParameter(LocationBean.KEY_LATITUDE);
 			String longStr = req.getParameter(LocationBean.KEY_LONGITUDE);
+			String latStr = req.getParameter(LocationBean.KEY_LATITUDE);
 			if(latStr == null || longStr == null) {
 				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, new JsonObject()));
 				return;
 			}
 			
-			float l_lat = Float.parseFloat(latStr);
 			float l_long = Float.parseFloat(longStr);
+			float l_lat = Float.parseFloat(latStr);
 			int page	= Integer.parseInt(req.getParameter("page"));	
 			
-			ContentBean[] beans = MongoDAO.getContentsByLocation(l_long, l_lat, page);
+			ContentBean[] beans = MongoDAO.getContentsByLocation(l_lat, l_long , page);
 			System.out.println(beans.length);
 			
 			JSONArray result = new JSONArray();
