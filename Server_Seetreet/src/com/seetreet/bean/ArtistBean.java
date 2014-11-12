@@ -28,8 +28,9 @@ public class ArtistBean implements BeanJson{
 	public static final String KEY_MODTIME = "modTime";
 	public static final String KEY_CONTENTHISTORY = "contentHistory";
 	
-	public ArtistBean(String[] artistImages, String videoUrl , String description) {
+	public ArtistBean(String name, String[] artistImages, String videoUrl , String description) {
 		// TODO Auto-generated constructor stub
+		this.name = name;
 		this.artistImages = artistImages;
 		this.videoUrl = videoUrl;
 		this.description = description;
@@ -99,7 +100,8 @@ public class ArtistBean implements BeanJson{
 		for(String image : getArtistImages()) {
 			images.put(image);
 		}
-		result.put(KEY_IMAGES, images)
+		result.put(KEY_NAME, getName())
+			.put(KEY_IMAGES, images)
 			.put(KEY_DESCRIPT, getDescription())
 			.put(KEY_VIDEO, getVideoUrl());
 		

@@ -543,7 +543,8 @@ public class MongoDAO {
 						(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
 						(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
 						(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
-						(String)dbProvider.get(ProviderBean.KEY_ADDRESS)
+						(String)dbProvider.get(ProviderBean.KEY_ADDRESS),
+						(String)dbProvider.get(ProviderBean.KEY_MODTIME)
 						);	
 			}else{
 				provider = new ProviderBean(
@@ -554,7 +555,8 @@ public class MongoDAO {
 						(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
 						(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
 						(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
-						(String)dbProvider.get(ProviderBean.KEY_ADDRESS)
+						(String)dbProvider.get(ProviderBean.KEY_ADDRESS),
+						(String)dbProvider.get(ProviderBean.KEY_MODTIME)
 						);
 			}
 			
@@ -562,6 +564,7 @@ public class MongoDAO {
 			images = (BasicDBList)dbArtist.get(ArtistBean.KEY_IMAGES);
 			String[] t2 = {};
 			ArtistBean[] artist = {new ArtistBean(
+					(String)dbArtist.get(ArtistBean.KEY_NAME),
 					images.toArray(t2), 
 					(String)dbArtist.get(ArtistBean.KEY_VIDEO), 
 					(String)dbArtist.get(ArtistBean.KEY_DESCRIPT))};
@@ -577,7 +580,8 @@ public class MongoDAO {
 						selectedArtistId,
 						(String)obj.get(ContentBean.KEY_C_TIME),
 						(boolean)obj.get(ContentBean.KEY_FINISHIED),
-						null				
+						null,
+						obj.get(ContentBean.KEY_ID).toString()
 					);
 			}else{
 				res[i++] = new ContentBean(
@@ -591,7 +595,8 @@ public class MongoDAO {
 						selectedArtistId,
 						(String)obj.get(ContentBean.KEY_C_TIME),
 						(boolean)obj.get(ContentBean.KEY_FINISHIED),
-						null				
+						null,
+						obj.get(ContentBean.KEY_ID).toString()
 					);
 			}
 				
@@ -765,7 +770,9 @@ public class MongoDAO {
 					(String) dbProvider.get(ProviderBean.KEY_STORETITLE),
 					(String) dbProvider.get(ProviderBean.KEY_STORETYPE),
 					(String) dbProvider.get(ProviderBean.KEY_DESCRIPT), 
-					(String) dbProvider.get(ProviderBean.KEY_ADDRESS));			
+					(String) dbProvider.get(ProviderBean.KEY_ADDRESS), 
+					(String)dbProvider.get(ProviderBean.KEY_MODTIME)
+					);			
 			
 			res[i] = new ContentProviderBean(
 					(String) obj.get(ContentBean.KEY_TITLE), 
@@ -870,12 +877,14 @@ public class MongoDAO {
 					(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
 					(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
 					(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
-					(String)dbProvider.get(ProviderBean.KEY_ADDRESS));
+					(String)dbProvider.get(ProviderBean.KEY_ADDRESS), 
+					(String)dbProvider.get(ProviderBean.KEY_MODTIME));
 			ArtistBean[] artistResult;
 			if(dbArtist != null){
 				images = (BasicDBList)dbArtist.get(ArtistBean.KEY_IMAGES);
 				String[] t2 = {};
 				ArtistBean[] artist = {new ArtistBean(
+							(String)dbArtist.get(ArtistBean.KEY_NAME),
 							images.toArray(t2), 
 							(String)dbArtist.get(ArtistBean.KEY_VIDEO), 
 							(String)dbArtist.get(ArtistBean.KEY_DESCRIPT))};
@@ -895,8 +904,8 @@ public class MongoDAO {
 						selectedArtistId,
 						(String)obj.get(ContentBean.KEY_C_TIME),
 						(boolean)obj.get(ContentBean.KEY_FINISHIED),
-						
-						null				
+						null,
+						obj.get(ContentBean.KEY_ID).toString()
 					);
 		}		
 		return res;

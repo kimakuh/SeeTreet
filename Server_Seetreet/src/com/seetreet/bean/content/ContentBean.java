@@ -13,7 +13,8 @@ import com.seetreet.bean.GenreBean;
 import com.seetreet.bean.ProviderBean;
 import com.seetreet.bean.ReplyBean;
 
-public class ContentBean extends ContentArtistBean{	
+public class ContentBean extends ContentArtistBean{
+	private String contentId;
 	private String isConfirmed_artistId = null;
 	private String confirmedTime = null;
 	private boolean isFinished = false;
@@ -26,22 +27,26 @@ public class ContentBean extends ContentArtistBean{
 	public static final String KEY_C_TIME	= "ConfirmedTime";
 	public static final String KEY_FINISHIED= "isFinished";
 	public static final String KEY_REPLY 	= "reply";
+	public static final String KEY_CONTENTID= "_id";
 	
 	
 	/* description : 유저가 볼 때
 	 * */
 	public ContentBean(String title , GenreBean genre , String type, String start, String end ,
 			ProviderBean provider , ArtistBean[] artist , String confirmed_artist , String confirmed_time ,
-			boolean isFinished , ReplyBean[] replies) {
+			boolean isFinished , ReplyBean[] replies, String contentId) {
 		// TODO Auto-generated constructor stub
 		super(title, genre, type, start, end, provider, artist);		
 		this.confirmedTime = confirmed_time;
 		this.isConfirmed_artistId = confirmed_artist;
 		this.isFinished = isFinished;
 		this.replies = replies;
+		this.contentId = contentId;
 	}
 	
-	
+	public String getContentId(){
+		return contentId;
+	}
 	
 	public String getConfirmedTime() {
 		return confirmedTime;
@@ -71,7 +76,7 @@ public class ContentBean extends ContentArtistBean{
 				jsArtist = null;
 			}
 			System.out.println("ContentBean GetJson : ");
-			result.put(KEY_ID, getId());
+			result.put(KEY_ID, getContentId());
 			result.put(KEY_TITLE, getTitle());
 			result.put(KEY_GENRE, getGenre().getJson());
 			result.put(KEY_TYPE, getType());

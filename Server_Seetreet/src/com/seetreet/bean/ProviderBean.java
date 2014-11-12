@@ -32,11 +32,11 @@ public class ProviderBean implements BeanJson{
 	public static final String KEY_STORETITLE = "StoreTitle";
 	public static final String KEY_STORETYPE = "StoreType";
 	public static final String KEY_DESCRIPT = "description";
-	public static final String KEY_MODTIME = "modTime";
+	public static final String KEY_MODTIME = "modifiedTime";
 	
 	
 	public ProviderBean(String contentType, String[] images ,LocationBean location, GenreBean[] genre, 
-			String storeTitle, String storeType, String description, String address) {
+			String storeTitle, String storeType, String description, String address, String modTime) {
 		// TODO Auto-generated constructor stub
 		this.contentType = contentType;
 		this.images = images;
@@ -46,22 +46,9 @@ public class ProviderBean implements BeanJson{
 		this.description = description;
 		this.favoriteGenre = genre;
 		this.address = address;
+		this.modTime = modTime;
 	}
-	
-	public ProviderBean(String contentType, String[] images ,LocationBean location, GenreBean[] genre, 
-			String storeTitle, String storeType, String description , String modTime, String address) {
-		// TODO Auto-generated constructor stub
-		this.contentType = contentType;
-		this.images = images;
-		this.location = location;
-		this.StoreTitle = storeTitle;
-		this.StoreType = storeType;
-		this.description = description;
-		this.favoriteGenre = genre;
-		this.address = address;
-	}
-
-	
+		
 	public ProviderBean(String contentType, String[] images ,LocationBean location, 
 			String storeTitle, String storeType, String description,
 			String providerId, GenreBean[] genre, ContentBean[] history, String modTime, String address) {
@@ -198,6 +185,7 @@ public class ProviderBean implements BeanJson{
 		result.put(KEY_STORETYPE, getStoreType());
 		result.put(KEY_DESCRIPT, getDescription());
 		result.put(KEY_ADDRESS, getAddress());
+		result.put(KEY_MODTIME, getModTime());
 		
 		return result;
 	}
