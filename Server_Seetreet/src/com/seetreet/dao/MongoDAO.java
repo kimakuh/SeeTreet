@@ -204,7 +204,8 @@ public class MongoDAO {
 					.append("StoreTitle", obj.getStoreTitle())
 					.append("StoreType", obj.getStoreType())
 					.append("description", obj.getDescription())
-					.append("modifiedTime", obj.getModTime());
+					.append("modifiedTime", obj.getModTime())
+					.append("StoreAddress", obj.getAddress());
 			col.insert(provider);
 			return provider;
 		}catch(Exception e){
@@ -512,14 +513,16 @@ public class MongoDAO {
 			DBObject dbLocation = (DBObject)dbProvider.get(ProviderBean.KEY_LOCATION);
 			DBObject dbArtist = null;
 			String selectedArtistId = (String)obj.get(ContentBean.KEY_C_ARTIST);
-			
-			for(int n = 0 ; n < dbArtists.size(); n++) {
-				String temp = ((DBObject)dbArtists.get(n)).get("_id").toString();				
-				if(temp.equals(selectedArtistId)) {
-					dbArtist = (DBObject)dbArtists.get(n);
-					break;
+			if(dbArtists!= null){
+				for(int n = 0 ; n < dbArtists.size(); n++) {
+					String temp = ((DBObject)dbArtists.get(n)).get("_id").toString();				
+					if(temp.equals(selectedArtistId)) {
+						dbArtist = (DBObject)dbArtists.get(n);
+						break;
+					}
 				}
-			}
+			}else
+				dbArtists = null;
 			BasicDBList pos = (BasicDBList)dbLocation.get(LocationBean.KEY_COORDINATE);
 			LocationBean location = new LocationBean(
 					(String)dbLocation.get(LocationBean.KEY_NAME),
@@ -530,17 +533,32 @@ public class MongoDAO {
 			
 			BasicDBList images = (BasicDBList)dbProvider.get(ProviderBean.KEY_IMAGES); 	
 			String[] t = {};
-			ProviderBean provider = new ProviderBean(
-					(String)dbProvider.get(ProviderBean.KEY_TYPE),
-					images.toArray(t),
-					location,
-					genre,
-					(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
-					(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
-					(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
-					(String)dbProvider.get(ProviderBean.KEY_ADDRESS)
-					);
+			ProviderBean provider;
+			if(images != null){
+				provider = new ProviderBean(
+						(String)dbProvider.get(ProviderBean.KEY_TYPE),
+						images.toArray(t),
+						location,
+						genre,
+						(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
+						(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
+						(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
+						(String)dbProvider.get(ProviderBean.KEY_ADDRESS)
+						);	
+			}else{
+				provider = new ProviderBean(
+						(String)dbProvider.get(ProviderBean.KEY_TYPE),
+						null,
+						location,
+						genre,
+						(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
+						(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
+						(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
+						(String)dbProvider.get(ProviderBean.KEY_ADDRESS)
+						);
+			}
 			
+			if(dbArtist != null){
 			images = (BasicDBList)dbArtist.get(ArtistBean.KEY_IMAGES);
 			String[] t2 = {};
 			ArtistBean[] artist = {new ArtistBean(
@@ -552,8 +570,8 @@ public class MongoDAO {
 						(String)obj.get(ContentBean.KEY_TITLE),
 						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
 						(String)obj.get(ContentBean.KEY_TYPE),
-						Integer.parseInt((String)obj.get(ContentBean.KEY_STARTTIME)),
-						Integer.parseInt((String)obj.get(ContentBean.KEY_ENDTIME)),
+						(String)obj.get(ContentBean.KEY_STARTTIME),
+						(String)obj.get(ContentBean.KEY_ENDTIME),
 						provider,
 						artist,
 						selectedArtistId,
@@ -561,6 +579,22 @@ public class MongoDAO {
 						(boolean)obj.get(ContentBean.KEY_FINISHIED),
 						null				
 					);
+			}else{
+				res[i++] = new ContentBean(
+						(String)obj.get(ContentBean.KEY_TITLE),
+						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
+						(String)obj.get(ContentBean.KEY_TYPE),
+						(String)obj.get(ContentBean.KEY_STARTTIME),
+						(String)obj.get(ContentBean.KEY_ENDTIME),
+						provider,
+						null,
+						selectedArtistId,
+						(String)obj.get(ContentBean.KEY_C_TIME),
+						(boolean)obj.get(ContentBean.KEY_FINISHIED),
+						null				
+					);
+			}
+				
 		}
 		
 		
@@ -737,8 +771,8 @@ public class MongoDAO {
 					(String) obj.get(ContentBean.KEY_TITLE), 
 					new GenreBean("", (String) obj.get(ContentBean.KEY_GENRE)), 
 					(String) obj.get(ContentBean.KEY_TYPE), 
-					Integer.parseInt((String) obj.get(ContentBean.KEY_STARTTIME)), 
-					Integer.parseInt((String) obj.get(ContentBean.KEY_ENDTIME)), provider);		
+					(String) obj.get(ContentBean.KEY_STARTTIME), 
+					(String) obj.get(ContentBean.KEY_ENDTIME), provider);		
 		}
 		return res;
 	}
@@ -854,8 +888,8 @@ public class MongoDAO {
 						(String)obj.get(ContentBean.KEY_TITLE),
 						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
 						(String)obj.get(ContentBean.KEY_TYPE),
-						Integer.parseInt((String)obj.get(ContentBean.KEY_STARTTIME)),
-						Integer.parseInt((String)obj.get(ContentBean.KEY_ENDTIME)),
+						(String)obj.get(ContentBean.KEY_STARTTIME),
+						(String)obj.get(ContentBean.KEY_ENDTIME),
 						provider,
 						artistResult,
 						selectedArtistId,

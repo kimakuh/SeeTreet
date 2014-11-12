@@ -30,7 +30,7 @@ public class ContentBean extends ContentArtistBean{
 	
 	/* description : 유저가 볼 때
 	 * */
-	public ContentBean(String title , GenreBean genre , String type, int start, int end ,
+	public ContentBean(String title , GenreBean genre , String type, String start, String end ,
 			ProviderBean provider , ArtistBean[] artist , String confirmed_artist , String confirmed_time ,
 			boolean isFinished , ReplyBean[] replies) {
 		// TODO Auto-generated constructor stub

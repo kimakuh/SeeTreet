@@ -81,7 +81,7 @@ public class ProviderBean implements BeanJson{
 	public ProviderBean(JSONObject obj){
 		//怨듦났 API Bean 媛앹껜
 		try{
-			this.contentType = "공공";
+			this.contentType = "PUBLIC";
 			if(obj.has("firstimage")){
 				if(obj.has("firstimage2")){
 					String[] tempImage = {obj.getString("firstimage"),obj.getString("firstimage2")};
@@ -91,27 +91,36 @@ public class ProviderBean implements BeanJson{
 					String[] tempImage = {obj.getString("firstimage"), "null"};
 					this.images = tempImage;
 				}
-			}			
-			if(obj.has("title")){
-				this.StoreTitle = obj.getString("title");
+			}else{
+				this.images = null;
 			}
+				
+			
+			if(obj.has("telname") && obj.has("tel")){
+				this.StoreTitle = obj.getString("telname") + "(" + obj.getString("tel") + ")";
+			}else if(obj.has("telname")){
+				this.StoreTitle = obj.getString("telname");
+			}else
+				this.StoreTitle = obj.getString("title");
+			
+			
 			if(obj.has("overview")){
 				this.description = obj.getString("overview");
 			}
 			if(obj.has("mapx") && obj.has("mapy")){
-				//double[] temp={obj.getDouble("mapx"), obj.getDouble("mapy")};
-				//public LocationBean(String name, String description , double latitude, double longitude) {
 				LocationBean loc = new LocationBean(this.StoreTitle, this.description, obj.getDouble("mapx"), obj.getDouble("mapy"));
 				this.location = loc;
 			}
 			if(obj.has("cat3")){
 				this.StoreType = ContentPublicApiBean.getCategoryTocontentGenre(obj.getString("cat3"));
-				//new GenreBean("", (String)dbProvider.get(ProviderBean.KEY_GENRE))
 				GenreBean[] genre = {new GenreBean("public", ContentPublicApiBean.getCategoryTocontentGenre(obj.getString("cat3")))};
 				this.favoriteGenre = genre;
 			}
 			if(obj.has("modifiedtime")){
-				this.modTime = obj.getString("modifiedtime");
+				this.modTime = String.valueOf(obj.getLong("modifiedtime"));
+			}	
+			if(obj.has("addr1")){
+				this.address = obj.getString("addr1");
 			}	
 		}catch(Exception e){
 			e.printStackTrace();
@@ -160,9 +169,12 @@ public class ProviderBean implements BeanJson{
 		JSONObject result = new JSONObject();
 		JSONArray images = new JSONArray();
 		JSONArray genres = new JSONArray();
-		for(String image : getImages()) {
-			images.put(image);
-		}
+		if(getImages() != null){
+			for(String image : getImages()) {
+				images.put(image);
+			}
+		}else
+			images.put("");
 		
 		for(GenreBean genre : getFavoriteGenre()){
 			genres.put(new JSONObject()

@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.seetreet.bean.ContentPublicApiBean;
 import com.seetreet.http.HttpControl;
+import com.seetreet.util.C;
 /**
  * Servlet implementation class FrontController
  */
@@ -35,8 +36,8 @@ public class ApiReceiveController extends HttpServlet {
     	
     	response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		//PrintWriter out = response.getWriter();
-		//System.out.println("DataReceiver--------------------");
+		System.out.println("DataReceiver--------------------");
+		
 		
 		try {
 			HttpControl.getContents();
@@ -46,6 +47,8 @@ public class ApiReceiveController extends HttpServlet {
 		}
     	//HttpDAO a = new HttpDAO();
     	//a.getContentsId();
+
+    	
 		System.out.println("Receiving data End");
     	
     }

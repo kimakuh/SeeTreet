@@ -21,9 +21,9 @@ public class MongoDB {
 	public static final String COLLECTION_REPLY = "reply";
 	
 	
-	public static final String TEST_COLLECTION_CONTENT = "test_content";	
-	public static final String TEST_COLLECTION_PROVIDER = "test_provider";
-	public static final String TEST_COLLECTION_ARTIST = "test_artist";
+	public static final String TEST_COLLECTION_CONTENT = "content";	
+	public static final String TEST_COLLECTION_PROVIDER = "provider";
+	public static final String TEST_COLLECTION_ARTIST = "artist";
 	public static final String TEST_COLLECTION_REPLY = "test_reply";
 	
 	private static MongoClient mongo;

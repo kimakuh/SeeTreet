@@ -51,7 +51,7 @@ public  class HttpCall {
 		try{
 			
 			String url = C.APISERVER + C.DETAILCOMMON+ C.SERVICEKEY+ C.CONTENTID +notExistContent.getInt("contentid")
-					+C.DEFAULTYN + C.FIRSTIMAGEYN + C.MAPINFOYN + C.CATCODEYN + C.OVERVIEWYN + C.SETTINGVALUE;
+					+C.DEFAULTYN + C.FIRSTIMAGEYN + C.MAPINFOYN + C.CATCODEYN + C.ADDRESSYN + C.OVERVIEWYN + C.SETTINGVALUE;
 			//System.out.println(url);
 			HttpGet httpget = new HttpGet(url);
 			HttpResponse response = httpclient.execute(httpget);
