@@ -15,8 +15,8 @@ import com.seetreet.util.C;
 public class MongoDB {	
 	public static final String COLLECTION_USER = "user";
 	//public static final String COLLECTION_CONTENT = "content";
-	public static final String COLLECTION_CONTENTS = "content";
-	public static final String COLLECTION_PROVIDER = "provider";
+	public static final String COLLECTION_CONTENTS = "test_content";
+	public static final String COLLECTION_PROVIDER = "test_provider";
 	public static final String COLLECTION_ARTIST = "artist";
 	public static final String COLLECTION_REPLY = "reply";
 	
@@ -25,6 +25,12 @@ public class MongoDB {
 	public static final String TEST_COLLECTION_PROVIDER = "test_provider";
 	public static final String TEST_COLLECTION_ARTIST = "test_artist";
 	public static final String TEST_COLLECTION_REPLY = "test_reply";
+	
+	public static final String COLLECTION_RECOMMEND_HISTORY = "test_recommend_history";
+	public static final String COLLECTION_RECOMMEND_VALUE= "test_recommend_value";
+	public static final String COLLECTION_SIMILARITY_MAP = "test_similarity_map";
+	public static final String COLLECTION_LOVE_HISTORY = "test_love_history";
+	
 	
 	private static MongoClient mongo;
     private static DB db;

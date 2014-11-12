@@ -97,10 +97,10 @@ public class JoinController extends HttpServlet {
 	
 	private boolean joinUser(HttpServletRequest req, HttpServletResponse res , String e) {
 		String  email	= e;
-		String 	pw 		= req.getHeader("password");
-		String 	name 	= req.getHeader("name");
-		String  age		= req.getHeader("age");
-		String 	phone 	= req.getHeader("phone");
+		String 	pw 		= req.getParameter("password");
+		String 	name 	= req.getParameter("name");
+		String  age		= req.getParameter("age");
+		String 	phone 	= req.getParameter("phone");
 		
 		UserBean bean = new UserBean(email, name, age == null? -1 : Integer.parseInt(age), phone, pw);
 		

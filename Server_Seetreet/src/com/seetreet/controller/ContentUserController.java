@@ -55,11 +55,10 @@ public class ContentUserController extends HttpServlet {
 			float l_lat = Float.parseFloat(latStr);
 			int page	= Integer.parseInt(req.getParameter("page"));	
 			
-			ContentBean[] beans = MongoDAO.getContentsByLocation(l_lat, l_long , page);
-			System.out.println(beans.length);
+			ContentBean[] beans = MongoDAO.getContentsByLocation(l_lat, l_long , page);			
 			
 			JSONArray result = new JSONArray();
-			for(ContentBean bean : beans) {	
+			for(ContentBean bean : beans) {					
 				result.put(bean.getJson());
 			}
 			out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, result));			
