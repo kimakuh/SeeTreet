@@ -564,7 +564,8 @@ public class MongoDAO {
 						selectedArtistId,
 						(String)obj.get(ContentBean.KEY_C_TIME),
 						(boolean)obj.get(ContentBean.KEY_FINISHIED),
-						null				
+						null ,
+						(int)obj.get(ContentBean.KEY_LIKECOUNT)
 					);
 		}
 		
@@ -868,7 +869,8 @@ public class MongoDAO {
 						selectedArtistId,
 						(String)obj.get(ContentBean.KEY_C_TIME),
 						(boolean)obj.get(ContentBean.KEY_FINISHIED),						
-						null				
+						null,
+						(int)obj.get(ContentBean.KEY_LIKECOUNT)
 					);
 		}		
 		return res;
