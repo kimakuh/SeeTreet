@@ -37,6 +37,10 @@ public class JoinController extends HttpServlet {
 	private final String PREFIX_ARTIST 			= "/user/join/artist/";
 	private final String PREFIX_PROVIDER 		= "/user/join/provider/";
 	
+	private final String PREFIX_IS_USER			= "/user/check/user/";
+	private final String PREFIX_IS_ARTIST		= "/user/check/artist/";
+	private final String PREFIX_IS_PROVIDER		= "/user/check/provider/";
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -50,6 +54,22 @@ public class JoinController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String reqURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String cmd = reqURI.substring(contextPath.length());
+		
+		PrintWriter out = res.getWriter();
+		try {
+			if(cmd.contains(PREFIX_IS_USER)) {
+				
+			} else if(cmd.contains(PREFIX_IS_ARTIST)) {		
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.isArtist((String)req.getAttribute(UserBean.KEY_EMAIL), req.getHeader(UserBean.KEY_TOKEN))));
+			} else if(cmd.contains(PREFIX_IS_PROVIDER)) {
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.isProvider((String)req.getAttribute(UserBean.KEY_EMAIL), req.getHeader(UserBean.KEY_TOKEN))));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	/**
@@ -67,6 +87,7 @@ public class JoinController extends HttpServlet {
 		try {
 			if(cmd.contains(PREFIX_USER)) {
 				String 	email 	= cmd.replace(PREFIX_USER, "");
+				System.out.println(email);
 				if(joinUser(req, res , email)) {
 					out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, true));
 				}else {
@@ -97,10 +118,10 @@ public class JoinController extends HttpServlet {
 	
 	private boolean joinUser(HttpServletRequest req, HttpServletResponse res , String e) {
 		String  email	= e;
-		String 	pw 		= req.getHeader("password");
-		String 	name 	= req.getHeader("name");
-		String  age		= req.getHeader("age");
-		String 	phone 	= req.getHeader("phone");
+		String 	pw 		= req.getParameter("password");
+		String 	name 	= req.getParameter("name");
+		String  age		= req.getParameter("age");
+		String 	phone 	= req.getParameter("phone");
 		
 		UserBean bean = new UserBean(email, name, age == null? -1 : Integer.parseInt(age), phone, pw);
 		

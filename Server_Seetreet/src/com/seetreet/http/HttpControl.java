@@ -29,7 +29,7 @@ public class HttpControl {
 			for(int i = 0;i<size;i++){
 				JSONObject existObject = jArray.getJSONObject(i);
 				// true이면 없는거, false면 기존에 있는거				
-				boolean resultContent = MongoDAO.checkPublicApiContentId(existObject.getInt("contentid"));
+				boolean resultContent = MongoDAO.checkPublicApiContentId(existObject.getInt("contentId"));
 
 				if(resultContent != false){
 					// 새로 삽입
