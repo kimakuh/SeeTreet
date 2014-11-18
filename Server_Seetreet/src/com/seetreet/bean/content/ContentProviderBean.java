@@ -24,7 +24,7 @@ public class ContentProviderBean implements BeanJson{
 	private ProviderBean provider = null;
 	/* description : 이거는 프로바이더가 처음 콘텐츠를 처음 만들었을 때
 	 * */
-	public ContentProviderBean(String title , GenreBean genre , String type, String start, String end ,
+	public ContentProviderBean(String contentId , String title , GenreBean genre , String type, String start, String end ,
 			ProviderBean provider) {
 		// TODO Auto-generated constructor stub
 		this.title = title;
@@ -35,7 +35,7 @@ public class ContentProviderBean implements BeanJson{
 		this.provider = provider;		
 	}
 	
-	public ContentProviderBean(String title , String genre , String type, String start, String end ,
+	public ContentProviderBean(String contentId , String title , String genre , String type, String start, String end ,
 			ProviderBean provider) throws JSONException {
 		// TODO Auto-generated constructor stub
 		JSONObject g = new JSONObject(genre);

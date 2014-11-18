@@ -19,6 +19,7 @@ public class ContentBean extends ContentArtistBean{
 	private String confirmedTime = null;
 	private boolean isFinished = false;
 	private ReplyBean[] replies = null;
+	private int 	likeCount;
 	
 	
 	
@@ -28,20 +29,22 @@ public class ContentBean extends ContentArtistBean{
 	public static final String KEY_FINISHIED= "isFinished";
 	public static final String KEY_REPLY 	= "reply";
 	public static final String KEY_CONTENTID= "_id";
+	public static final String KEY_LIKECOUNT= "likecount";
 	
 	
 	/* description : 유저가 볼 때
 	 * */
-	public ContentBean(String title , GenreBean genre , String type, String start, String end ,
+	public ContentBean(String contentId, String title , GenreBean genre , String type, String start, String end ,
 			ProviderBean provider , ArtistBean[] artist , String confirmed_artist , String confirmed_time ,
-			boolean isFinished , ReplyBean[] replies, String contentId) {
+			boolean isFinished , ReplyBean[] replies,int likecount) {
 		// TODO Auto-generated constructor stub
-		super(title, genre, type, start, end, provider, artist);		
+		super(contentId, title, genre, type, start, end, provider, artist);		
 		this.confirmedTime = confirmed_time;
 		this.isConfirmed_artistId = confirmed_artist;
 		this.isFinished = isFinished;
 		this.replies = replies;
 		this.contentId = contentId;
+		this.likeCount = likecount;
 	}
 	
 	public String getContentId(){
@@ -59,6 +62,10 @@ public class ContentBean extends ContentArtistBean{
 	}
 	public ReplyBean[] getReplies() {
 		return replies;
+	}
+	
+	public int getLikeCount() {
+		return likeCount;
 	}
 	
 	@Override
@@ -87,6 +94,7 @@ public class ContentBean extends ContentArtistBean{
 			result.put(KEY_PROVIDER, getProvider().getJson());
 			result.put(KEY_ARTIST, jsArtist);
 			result.put(KEY_C_ARTIST, getIsConfirmed_artistId());
+			result.put(KEY_LIKECOUNT, getLikeCount());
 			System.out.println("ContentBean GetJson END: ");
 		} catch (Exception e) {
 			// TODO: handle exception

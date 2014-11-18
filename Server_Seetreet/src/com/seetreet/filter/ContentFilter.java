@@ -55,6 +55,7 @@ public class ContentFilter implements Filter {
 		String uri = httpReq.getRequestURI();
 		String contextPath = httpReq.getContextPath();
 		String cmd = uri.substring(contextPath.length());
+//		adasd
 		
 		String postfix = cmd.replace(PRIFIX, "");
 		String[] postfixes = postfix.split("/");

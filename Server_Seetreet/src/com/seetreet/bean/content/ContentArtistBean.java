@@ -7,9 +7,9 @@ import com.seetreet.bean.ProviderBean;
 public class ContentArtistBean extends ContentProviderBean{
 	public static final String KEY_ARTIST 	= "artists";
 	private ArtistBean[] artist = null;
-	public ContentArtistBean(String title, GenreBean genre, String type,
+	public ContentArtistBean(String contentId , String title, GenreBean genre, String type,
 			String start, String end, ProviderBean provider , ArtistBean[] artist) {
-		super(title, genre, type, start, end, provider);
+		super(contentId, title, genre, type, start, end, provider);
 		// TODO Auto-generated constructor stub
 		this.artist = artist;
 	}

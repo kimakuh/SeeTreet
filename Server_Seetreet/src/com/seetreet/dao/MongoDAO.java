@@ -57,6 +57,8 @@ public class MongoDAO {
 		//System.out.println(newUser.toString());
 		col.insert(newUser);
 		
+		MongoRecDAO.insertDefaultUserGenome(newUser.getObjectId(UserBean.KEY_TOKEN).toString());
+		
 		return true;
 	}
 	
@@ -508,6 +510,8 @@ public class MongoDAO {
 		while(iter.hasNext()){
 			DBObject obj = iter.next();			
 			
+			System.out.println(obj.toString());
+			
 			DBObject dbProvider = (DBObject)obj.get(ContentBean.KEY_PROVIDER);						
 			BasicDBList dbArtists = (BasicDBList)obj.get(ContentBean.KEY_ARTIST);
 			DBObject dbLocation = (DBObject)dbProvider.get(ProviderBean.KEY_LOCATION);
@@ -570,6 +574,7 @@ public class MongoDAO {
 					(String)dbArtist.get(ArtistBean.KEY_DESCRIPT))};
 			
 			res[i++] = new ContentBean(
+						obj.get(ContentBean.KEY_ID).toString(),
 						(String)obj.get(ContentBean.KEY_TITLE),
 						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
 						(String)obj.get(ContentBean.KEY_TYPE),
@@ -580,11 +585,12 @@ public class MongoDAO {
 						selectedArtistId,
 						(String)obj.get(ContentBean.KEY_C_TIME),
 						(boolean)obj.get(ContentBean.KEY_FINISHIED),
-						null,
-						obj.get(ContentBean.KEY_ID).toString()
+						null,						
+						(int)obj.get(ContentBean.KEY_LIKECOUNT)						
 					);
 			}else{
 				res[i++] = new ContentBean(
+						obj.get(ContentBean.KEY_ID).toString(),
 						(String)obj.get(ContentBean.KEY_TITLE),
 						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
 						(String)obj.get(ContentBean.KEY_TYPE),
@@ -596,7 +602,7 @@ public class MongoDAO {
 						(String)obj.get(ContentBean.KEY_C_TIME),
 						(boolean)obj.get(ContentBean.KEY_FINISHIED),
 						null,
-						obj.get(ContentBean.KEY_ID).toString()
+						(int)obj.get(ContentBean.KEY_LIKECOUNT)
 					);
 			}
 				
@@ -775,11 +781,13 @@ public class MongoDAO {
 					);			
 			
 			res[i] = new ContentProviderBean(
+					obj.get(ContentBean.KEY_ID).toString(),
 					(String) obj.get(ContentBean.KEY_TITLE), 
 					new GenreBean("", (String) obj.get(ContentBean.KEY_GENRE)), 
 					(String) obj.get(ContentBean.KEY_TYPE), 
 					(String) obj.get(ContentBean.KEY_STARTTIME), 
-					(String) obj.get(ContentBean.KEY_ENDTIME), provider);		
+					(String) obj.get(ContentBean.KEY_ENDTIME), 
+					provider);		
 		}
 		return res;
 	}
@@ -894,6 +902,7 @@ public class MongoDAO {
 			
 			
 			res[i++] = new ContentBean(
+						obj.get(ContentBean.KEY_ID).toString(),
 						(String)obj.get(ContentBean.KEY_TITLE),
 						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
 						(String)obj.get(ContentBean.KEY_TYPE),
@@ -903,9 +912,9 @@ public class MongoDAO {
 						artistResult,
 						selectedArtistId,
 						(String)obj.get(ContentBean.KEY_C_TIME),
-						(boolean)obj.get(ContentBean.KEY_FINISHIED),
+						(boolean)obj.get(ContentBean.KEY_FINISHIED),						
 						null,
-						obj.get(ContentBean.KEY_ID).toString()
+						(int)obj.get(ContentBean.KEY_LIKECOUNT)
 					);
 		}		
 		return res;
