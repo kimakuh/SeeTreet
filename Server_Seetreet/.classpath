@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_20">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
@@ -26,11 +26,11 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/httpcore-4.3.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/httpmime-4.3.5.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/java-json.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SeongJun/git/SeeTreet/Server_Seetreet/WebContent/WEB-INF/lib/quartz-jobs-2.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SeongJun/git/SeeTreet/Server_Seetreet/WebContent/WEB-INF/lib/quartz-2.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SeongJun/git/SeeTreet/Server_Seetreet/WebContent/WEB-INF/lib/slf4j-api-1.6.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SeongJun/git/SeeTreet/Server_Seetreet/WebContent/WEB-INF/lib/slf4j-log4j12-1.6.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SeongJun/git/SeeTreet/Server_Seetreet/WebContent/WEB-INF/lib/c3p0-0.9.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/SeongJun/git/SeeTreet/Server_Seetreet/WebContent/WEB-INF/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Limjiuk/workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Server_Seetreet/WEB-INF/lib/quartz-jobs-2.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Limjiuk/workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Server_Seetreet/WEB-INF/lib/quartz-2.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Limjiuk/workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Server_Seetreet/WEB-INF/lib/slf4j-api-1.6.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Limjiuk/workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Server_Seetreet/WEB-INF/lib/slf4j-log4j12-1.6.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Limjiuk/workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Server_Seetreet/WEB-INF/lib/c3p0-0.9.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Limjiuk/workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Server_Seetreet/WEB-INF/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

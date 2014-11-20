@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>SeeTreet 정부 3.0 지역 문화 진흥 컨텐츠 서비스</title>
+    <!--javascripts 선언입니다.-->
+
+    <script src="javascripts/common/jquery-2.0.2.js" type="text/javascript"></script>
+    <script src="javascripts/common/bootstrap.js" type="text/javascript"></script>
+    <script src="javascripts/common/moment.js" type="text/javascript"></script>
+    <script src="javascripts/common/cookie_manager.js" type="text/javascript"></script>
+    <script src="javascripts/common/gateway.js" type="text/javascript"></script>
+
+    <script src="javascripts/common/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://openapi.map.naver.com/openapi/naverMap.naver?ver=2.0&key=dfe29cc274fa11eed5acb155733a60a2"></script>
+
+    <script src="javascripts/pc/pc.index.js" type = "text/javascript"></script>
+    <script src="javascripts/pc/pc.boxFactory.js" type = "text/javascript"></script>
+    <script src="javascripts/pc/pc.modalFactory.js" type = "text/javascript"></script>
+    <script src="javascripts/pc/pc.map.js" type = "text/javascript"></script>
+    <script src="javascripts/pc/pc.content.js" type = "text/javascript"></script>
+    <script src="javascripts/pc/pc.provider.js" type = "text/javascript"></script>
+    <script src="javascripts/pc/pc.artist.js" type = "text/javascript"></script>
+    <!--css 선언입니다.-->
+    <link href="css/common/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="css/common/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css"/>
+
+    <link href="css/pc/pc.index.css" rel = "stylesheet" type = "text/css" />
+    <!--<link href="css/pc/pc.provider.css" rel = "stylesheet" type = "text/css"/>-->
+</head>
+<body>
+    <nav class="seetreet-navbar seetreet-navbar-fixed">
+        <div class="seetreet-topbar-container">
+            <div class="seetreet-topbar-content">
+                <div class = "topbar-logo">
+                    <img class = "logo-image" src = "./images/seetreetimg/seetreetLogo.png"/>
+                </div>
+                <ul style = "padding-left : 40px;padding-right : 25px;">
+                    <li>
+                        <a class = "topbar-user">공연/전시</a>
+                    </li>
+                    <li>
+                        <a class = "topbar-provider">장소제공자</a>
+                    </li>
+                    <li>
+                        <a class = "topbar-artist">거리예술가</a>
+                    </li>
+                    <li>
+                        <div class="input-group">
+                            <input type="text" class="form-control">
+                                <span class="input-group-btn">
+                                    <button class = "btn btn-default" type = "button">
+                                        <span class = "glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class = "location-button" id = "search-location">
+                            <span>지도검색</span>
+                            <img class = "location-image" src = "./images/seetreetimg/map_point.png"/>
+                        </div>
+                    </li>
+                    <li>
+                        <div class = "user-info">
+                            <img class = "user-image" src = "./images/seetreetimg/btn-person-grey.png"/>
+                            <span class = "user-name">임지욱</span>
+                            <img class = "user-logout" src = "./images/seetreetimg/btn-on-grey.png"/>
+                        </div>
+                    </li>
+                </ul>
+                <!--<div class="seetreet-topbar-user">-->
+                    <!--<button type = "button" id = "user-id">임지욱</button>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </nav>
+    <!--<div class = "seetreet-container container">-->
+    <div class = "seetreet-container container">
+        <div class = "container-title">
+            SeeTreet 추천 리스트
+        </div>
+        <div class = "recommend">
+            <div class = "recommend-place recommend-box">
+                <div class = "recommend-title">인기장소랭킹</div>
+                <ul>
+                    <li>
+                        <div>1</div>
+                        <div>경복궁</div>
+                    </li>
+                    <li>
+                        <div>2</div>
+                        <div>Think Coffee</div>
+                    </li>
+                    <li>
+                        <div>3</div>
+                        <div>석촌호수</div>
+                    </li>
+                    <li>
+                        <div>4</div>
+                        <div>제비다방</div>
+                    </li>
+                    <li>
+                        <div>5</div>
+                        <div>반포한강공원</div>
+                    </li>
+                    <li>
+                        <div>6</div>
+                        <div>동대문디자인플라자</div>
+                    </li>
+                    <li>
+                        <div>7</div>
+                        <div>홍대입구역</div>
+                    </li>
+                    <li>
+                        <div>8</div>
+                        <div>주커피</div>
+                    </li>
+                </ul>
+            </div>
+            <div class = "recommend-artist recommend-box">
+                <div class = "recommend-title">인기아티스트랭킹</div>
+                <ul >
+                    <li>
+                        <div>1</div>
+                        <div>재주소년</div>
+                    </li>
+                    <li>
+                        <div>2</div>
+                        <div>게토밤즈</div>
+                    </li>
+                    <li>
+                        <div>3</div>
+                        <div>슈퍼키드</div>
+                    </li>
+                    <li>
+                        <div>4</div>
+                        <div>장기하와얼굴들</div>
+                    </li>
+                    <li>
+                        <div>5</div>
+                        <div>럭스</div>
+                    </li>
+                    <li>
+                        <div>6</div>
+                        <div>이한철</div>
+                    </li>
+                    <li>
+                        <div>7</div>
+                        <div>캐스커</div>
+                    </li>
+                    <li>
+                        <div>8</div>
+                        <div>허밍어반스테레오</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class = "content-list-area">
+            <!--<div class = "contentlist" group-list = "1">-->
+            <!--<div class = "largesize-area">-->
+            <!--<div class = "content public" data-index = "123123123">-->
+            <!--<img class = "content-image" src = "./images/providerimage/public8.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">2015 S/S Seoul Fashion Week</div>-->
+            <!--<div class = "artist-title">동대문 디자인 플라자(DDP)</div>-->
+            <!--<div class = "showtime-title">10월 17일 ~ 10월 22일</div>-->
+            <!--<div class = "location-title">서울특별시 중구 을지로7가 2-1번지</div>-->
+            <!--<div class = "description-title">서울시가 주최하는 글로벌 패션 비지니스 이벤트로-->
+            <!--SS/FW 시즌 년 2회 3월, 10월에 개최되며 뉴욕, 파리, 런던, 밀라노에 이은 세계-->
+            <!--5대 패션위크로의 도약을 위하여 매시즌 전략적인 비지니스를 진행하고 있습니다.-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "smallsize-area">-->
+            <!--<div class = "content private" data-index = "123123123">-->
+            <!--<img class = "content-image" src = "./images/providerimage/alohatable.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">다섯 손가락</div>-->
+            <!--<div class = "artist-title">장기하와얼굴들</div>-->
+            <!--<div class = "showtime-title">10월 31월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content public">-->
+            <!--<img class = "content-image" src = "./images/providerimage/public4.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">ddp 동대문 축제</div>-->
+            <!--<div class = "artist-title">동대문 디자인 플라자(DDP)</div>-->
+            <!--<div class = "showtime-title">10월 25일 10:00AM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">서울시 중구</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/cafe2.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">3호선 여행</div>-->
+            <!--<div class = "artist-title">3호선 버터플라이</div>-->
+            <!--<div class = "showtime-title">11월 4월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content public">-->
+            <!--<img class = "content-image" src = "./images/providerimage/public6.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">러버덕 프로젝트 서울</div>-->
+            <!--<div class = "artist-title">잠실 석촌호수</div>-->
+            <!--<div class = "showtime-title">10월 14일 ~ 11월 14일</div>-->
+            <!--<div class = "location-title">서울시 송파구 잠실동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/paint5.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">돌담길의 가을그림</div>-->
+            <!--<div class = "artist-title">조용준 할아버지</div>-->
+            <!--<div class = "showtime-title">9월 31일 11:00AM~06:00PM</div>-->
+            <!--<div class = "location-title">서울특별시 중구 세종대로</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content public">-->
+            <!--<img class = "content-image" src = "./images/providerimage/public1.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">여의도불꽃축제</div>-->
+            <!--<div class = "artist-title">여의도 한강공원</div>-->
+            <!--<div class = "showtime-title">9월 21일 06:00PM~10:00PM</div>-->
+            <!--<div class = "location-title">서울시 영등포구 여의도동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "contentlist" group-list = "2">-->
+            <!--<div class = "largesize-area">-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/8.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">제비다방DJ</div>-->
+            <!--<div class = "artist-title">조원선</div>-->
+            <!--<div class = "showtime-title">9월 21일 06:00PM~10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "smallsize-area">-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/samchungdong.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">허밍어반스테레오의 허밍</div>-->
+            <!--<div class = "artist-title">허밍어반스테레오</div>-->
+            <!--<div class = "showtime-title">9월 28월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/busking4.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">뮤직캐스팅</div>-->
+            <!--<div class = "artist-title">캐스커</div>-->
+            <!--<div class = "showtime-title">9월 29월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/artist1.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">제비다방DJ</div>-->
+            <!--<div class = "artist-title">장기하와 얼굴들</div>-->
+            <!--<div class = "showtime-title">9월 25월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/cafe3.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">심야식당 with 장기하</div>-->
+            <!--<div class = "artist-title">장기하와 얼굴들</div>-->
+            <!--<div class = "showtime-title">9월 21월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/artist3.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">길거리 캐스팅</div>-->
+            <!--<div class = "artist-title">이한철</div>-->
+            <!--<div class = "showtime-title">2014/09/21 08:00PM~10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/streetartist.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">거리화보</div>-->
+            <!--<div class = "artist-title">박윤정</div>-->
+            <!--<div class = "showtime-title">09월 25일 ~ 10월 25일</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "contentlist" group-list = "3">-->
+            <!--<div class = "largesize-area">-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/8.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">제비다방</div>-->
+            <!--<div class = "artist-title">장기하와 얼굴들</div>-->
+            <!--<div class = "showtime-title">9월 21월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "smallsize-area">-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/alohatable.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">alohatable</div>-->
+            <!--<div class = "artist-title">버스킹공연</div>-->
+            <!--<div class = "showtime-title">9월 21월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/busking4.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">Zoo Coffee</div>-->
+            <!--<div class = "artist-title">장기하와 얼굴들</div>-->
+            <!--<div class = "showtime-title">9월 21월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/cafe2.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">Zoo Coffee</div>-->
+            <!--<div class = "artist-title">장기하와 얼굴들</div>-->
+            <!--<div class = "showtime-title">9월 21월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/cafe3.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">Zoo Coffee</div>-->
+            <!--<div class = "artist-title">장기하와 얼굴들</div>-->
+            <!--<div class = "showtime-title">9월 21월 08:00PM ~ 10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/artist3.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">Zoo Coffee</div>-->
+            <!--<div class = "artist-title">장기하와 얼굴들</div>-->
+            <!--<div class = "showtime-title">2014/09/21 08:00PM~10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class = "content private">-->
+            <!--<img class = "content-image" src = "./images/providerimage/public1.jpg"/>-->
+            <!--<div class = "content-info">-->
+            <!--<div class = "place-title">여의도불꽃축제</div>-->
+            <!--<div class = "artist-title">공공데이터</div>-->
+            <!--<div class = "showtime-title">2014/09/21 08:00PM~10:00PM</div>-->
+            <!--<div class = "location-title">수원시 팔달구 인계동</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class = "content-append-area">
+            <img src = "./images/seetreetimg/btn-plus-grey.png">
+        </div>
+    </div>
+    <div class = "seetreet-makecontent-container container">
+        <div class = "tabinfo main-provider" style = "display : none;">
+            <div class = "start-area">
+                <div class = "start-input-first" style = "display : none;">
+                    <div class = "start-title">
+                        SeeTreet
+                    </div>
+                    <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
+                    <form class = "form-horizontal" role = "form">
+                        <div class = "form-group">
+                            <div class = "col-lg-4 col-lg-offset-4">
+                                <input type = "text" class = "form-control" class = "start-input" id = "input-storename" placeholder = "가게명을 입력해주세요">
+                            </div>
+                        </div>
+                    </form>
+                    <div class = "choose-photo-area">
+                        <form class = "form-horizontal" role = "form">
+                            <div class = "form-group">
+                                <div class = "col-lg-4 col-lg-offset-4">
+                                    <label>가게의 사진을 넣어주세요</label>
+                                </div>
+                                <div class = "col-lg-4 col-lg-offset-4">
+                                    <button type = "button" class = "btn btn-lg btn-primary" id = "picture-button">
+                                        추가
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class = "start-pic-list provider">
+                            <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                            <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                            <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                            <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                            <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                        </div>
+                    </div>
+                    <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                        다음
+                    </button>
+                </div>
+                <div class = "start-input-second" style = "display : none;">
+                    <div class = "start-title">
+                        SeeTreet
+                    </div>
+                    <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
+                    <form class = "form-horizontal" role = "form">
+                        <div class = "form-group">
+                            <div class = "col-lg-4 col-lg-offset-4">
+                                <label>좋아하는 장르를 선택해주세요</label>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-2 col-lg-offset-4">
+                                <select class = "start-main-category form-control">
+                                    <!--<option>장르</option>-->
+                                    <option>Music</option>
+                                    <option>Art</option>
+                                </select>
+                            </div>
+                            <div class = "col-lg-2">
+                                <select class = "start-sub-category form-control">
+                                    <!--<option>세부장르</option>-->
+                                    <option>hiphop</option>
+                                    <option>guitar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-4 col-lg-offset-4">
+                                <button type = "button" class = "btn btn-primary btn-lg next-btn">
+                                    다음
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class = "start-input-third" style = "display : none;">
+                    <div class = "start-title">
+                        SeeTreet
+                    </div>
+                    <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
+                    <form class = "form-horizontal" role = "form">
+                        <label class = "input-information">상호의 위치를 선택해주세요</label>
+                        <div class = "row">
+                            <div class = "col-lg-6 col-lg-offset-3">
+                                <div class = "input-group">
+                                    <input type = "text" class = "form-control">
+                                    <span class = "input-group-btn">
+                                        <button class = "btn btn-default start-chain-button" type = "button">Search</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "provider start-map" style = "background-color : red;">
+                                map
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <label>마포구 서교동 232-21</label>
+                        </div>
+                        <div class = "form-group">
+                            <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                                다음
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class = "start-input-fourth" style = "display : none;">
+                    <div class = "start-title">
+                        SeeTreet
+                    </div>
+                    <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
+                    <form class = "form-horizontal" role = "form">
+                        <div class = "form-group">
+                            <div class = "col-lg-2 col-lg-offset-4">
+                                업종을 선택해주세요
+                            </div>
+                            <div class = "col-lg-2">
+                                <select class = "form-control">
+                                    <option>Coffee</option>
+                                    <option>Food</option>
+                                    <option>Pub</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-2 col-lg-offset-5">
+                                <label>간단한 소개를 부탁드려요</label>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-4 col-lg-offset-4">
+                                <textarea class = "form-control" rows = "3">
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                                완료
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class = "modifytab provider">
+                <div class = "tabtitle">
+                    제공자 정보
+                </div>
+                <div class = "tabdetailinfo">
+                    <div class = "pic-youtube">
+                        <div class = "carousel slide">
+                            <!--indicator-->
+                            <ol class = "carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class = "active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            </ol>
+                            <!--Wrapper for slides-->
+                            <div class = "carousel-inner">
+                                <div class = "item active">
+                                    <img src = "./images/seetreetimg/default_image.jpg"/>
+                                </div>
+                                <div class = "item">
+                                    <img src = "./images/seetreetimg/default_image.jpg"/>
+                                </div>
+                                <div class = "item">
+                                    <img src = "./images/seetreetimg/default_image.jpg"/>
+                                </div>
+                            </div>
+                            <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                <span class = "icon-prev"></span>
+                            </a>
+                            <a class = "right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                <span class = "icon-next"></span>
+                            </a>
+                            <!--<img src = "./images/providerimage/test2.jpg"/>-->
+                            <!--<img src = "./images/providerimage/test3.jpg"/>-->
+                        </div>
+                    </div>
+                    <div class = "modify-name">
+                        <span>상호명</span>
+                        <span class = "modifycolon">:</span>
+                        <input type = "text" class = "form-control" value = "5Mile">
+                    </div>
+                    <div class = "modify-category">
+                        <span>업종</span>
+                        <span class = "modifycolon">:</span>
+                        <select class = "form-control">
+                            <option>Coffee</option>
+                        </select>
+                    </div>
+                    <div class = "modify-location">
+                        <span>지역</span>
+                        <span class = "modifycolon">:</span>
+                        <input type = "text" class = "form-control" value = "수원시 팔달구 인계동 1125번지" disabled>
+                        <button type = "button" class = "btn btn-default">Map</button>
+                    </div>
+                    <div class = "modify-favorite">
+                        <span>선호장르</span>
+                        <span class = "modifycolon">:</span>
+                        <select class = "form-control">
+                            <option>Music</option>
+                        </select>
+                        <select class = "form-control">
+                            <option>Pop</option>
+                        </select>
+                    </div>
+                    <div class = "modify-description">
+                        <span>소개말</span>
+                        <textarea class = "form-control" rows = "3" value = "안녕하세요 맛있는 브런치와 커피가 있는 곳 5마일 카페입니다.">
+                        </textarea>
+                    </div>
+                    <div class = "modify-button">
+                        <button class = "btn btn-lg btn-primary" id = "modify-provider-confirmed">
+                            modify
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class = "listtab provider">
+                <div class = "provider-create-area">
+                    <div class = "listboxgroup provider" data-group = "0">
+                        <div class = "listbox createbox provider">
+                            <div class = "beforecreate">
+                                <img src = "./images/seetreetimg/create_icon.png"/>
+                            </div>
+                            <div class = "input-time" style = "display : none;">
+                                <div class = "start-time">
+                                    <div class = "picker-title">
+                                        시작시간
+                                    </div>
+                                    <div class='input-group date' id='datetimepicker-provider-starttime'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="end-time">
+                                    <div class = "picker-title">
+                                        종료시간
+                                    </div>
+                                    <div class='input-group date' id='datetimepicker-provider-endtime'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <button type = "button" class = "btn btn-primary" id = "time-setting-finish">완료</button>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        $('#datetimepicker-provider-starttime').datetimepicker();
+                                        $('#datetimepicker-provider-endtime').datetimepicker();
+                                    });
+                                </script>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class = "provider-list-area">
+                    <!--<div class = "listboxgroup provider" data-group = "2">-->
+                        <!--<div class = "listbox createbox provider">-->
+                            <!--<div class = "beforecreate" style = "display : none;">-->
+                                <!--<img src = "./images/providerimage/create_icon.png"/>-->
+                            <!--</div>-->
+                            <!--<div class = "input-time" style = "display : none;">-->
+                            <!--</div>-->
+                            <!--<div class = "finish-create">-->
+                                <!--<img class = "content-image" src = "./images/providerimage/alohatable.jpg"/>-->
+                                <!--<div class = "content-info">-->
+                                    <!--<div class = "place-title">5Mile</div>-->
+                                    <!--<div class = "showdate-title">2014/11/10</div>-->
+                                    <!--<div class = "showtime-title">08:00PM ~ 10:00PM</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class = "listbox artist">-->
+                            <!--<img class = "image" src = "./images/providerimage/artist7.jpg"/>-->
+                            <!--<div class = "info">-->
+                                <!--<div class = "title">브로콜리너마저</div>-->
+                                <!--<div class = "category">Music-Pop</div>-->
+                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class = "listbox artist">-->
+                            <!--<img class = "image" src = "./images/providerimage/artist8.jpg"/>-->
+                            <!--<div class = "info">-->
+                                <!--<div class = "title">버스커버스커</div>-->
+                                <!--<div class = "category">Music-Pop</div>-->
+                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class = "listbox artist">-->
+                            <!--<img class = "image" src = "./images/providerimage/artist9.jpg"/>-->
+                            <!--<div class = "info">-->
+                                <!--<div class = "title">3호선버터플라이</div>-->
+                                <!--<div class = "category">Music-Pop</div>-->
+                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class = "listbox artist">-->
+                            <!--<img class = "image" src = "./images/providerimage/artist10.jpg"/>-->
+                            <!--<div class = "info">-->
+                                <!--<div class = "title">게토밤즈</div>-->
+                                <!--<div class = "category">Music-Pop</div>-->
+                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class = "listbox artist">-->
+                            <!--<img class = "image" src = "./images/providerimage/artist11.jpg"/>-->
+                            <!--<div class = "info">-->
+                                <!--<div class = "title">허밍어반스테레오</div>-->
+                                <!--<div class = "category">Music-Pop</div>-->
+                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class = "listbox artist">-->
+                            <!--<img class = "image" src = "./images/providerimage/artist12.jpg"/>-->
+                            <!--<div class = "info">-->
+                                <!--<div class = "title">재주소년</div>-->
+                                <!--<div class = "category">Music-Pop</div>-->
+                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class = "listbox artist">-->
+                            <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                            <!--<div class = "info">-->
+                                <!--<div class = "title">Maroon5</div>-->
+                                <!--<div class = "category">Music-Pop</div>-->
+                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class = "listbox artist">-->
+                            <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                            <!--<div class = "info">-->
+                                <!--<div class = "title">슈퍼키드</div>-->
+                                <!--<div class = "category">Music-Rock</div>-->
+                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+
+
+                <!--<div class = "listboxgroup provider" data-status = "beforecreate">-->
+                    <!--<div class = "listbox createbox provider">-->
+                        <!--<div class = "beforecreate" style = "display : none;">-->
+                            <!--<img src = "./images/providerimage/create_icon.png"/>-->
+                        <!--</div>-->
+                        <!--<div class = "input-time" style = "display : none;">-->
+                        <!--</div>-->
+                        <!--<div class = "finish-create">-->
+                            <!--<img class = "content-image" src = "./images/providerimage/8.jpg"/>-->
+                            <!--<div class = "content-info">-->
+                                <!--<div class = "place-title">Zoo Coffee</div>-->
+                                <!--<div class = "showdate-title">2014/09/21</div>-->
+                                <!--<div class = "showtime-title">08:00PM ~ 10:00PM</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "title">Maroon5</div>-->
+                            <!--<div class = "category">Music-Pop</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "title">Maroon5</div>-->
+                            <!--<div class = "category">Music-Pop</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "title">Maroon5</div>-->
+                            <!--<div class = "category">Music-Pop</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "title">Maroon5</div>-->
+                            <!--<div class = "category">Music-Pop</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "title">Maroon5</div>-->
+                            <!--<div class = "category">Music-Pop</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "title">Maroon5</div>-->
+                            <!--<div class = "category">Music-Pop</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "title">Maroon5</div>-->
+                            <!--<div class = "category">Music-Pop</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "title">Maroon5</div>-->
+                            <!--<div class = "category">Music-Pop</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+        <div class = "tabinfo main-artist" style = "display : none">
+            <div class = "start-area" style="display : none;">
+                <div class = "start-input-first" style = "display : none;">
+                    <div class = "start-title">
+                        SeeTreet
+                    </div>
+                    <div class = "start-info">artist 정보를 입력해주세요</div>
+                    <form class = "form-horizontal" role = "form">
+                        <div class = "form-group">
+                            <div class = "col-lg-4 col-lg-offset-4">
+                                <input type = "text" class = "form-control" class = "start-input" placeholder = "아티스트명을 입력해주세요">
+                            </div>
+                        </div>
+                    </form>
+                    <div class = "choose-photo-area">
+                        <form class = "form-horizontal" role = "form">
+                            <div class = "form-group">
+                                <div class = "col-lg-4 col-lg-offset-4">
+                                    <label>Artist의 사진을 넣어주세요</label>
+                                </div>
+                                <div class = "col-lg-4 col-lg-offset-4">
+                                    <button type = "button" class = "btn btn-lg btn-primary" id = "picture-button">
+                                        추가
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class = "start-pic-list provider">
+                            <!--<img src = "./images/providerimage/8.jpg"/>-->
+                            <!--<img src = "./images/providerimage/8.jpg"/>-->
+                            <!--<img src = "./images/providerimage/8.jpg"/>-->
+                            <!--<img src = "./images/providerimage/8.jpg"/>-->
+                            <!--<img src = "./images/providerimage/8.jpg"/>-->
+                        </div>
+                    </div>
+                    <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                        다음
+                    </button>
+                </div>
+                <div class = "start-input-second" style = "display : none;">
+                    <div class = "start-title">
+                        SeeTreet
+                    </div>
+                    <div class = "start-info">artist 정보를 입력해주세요</div>
+                    <form class = "form-horizontal" role = "form">
+                        <div class = "form-group">
+                            <div class = "col-lg-4 col-lg-offset-4">
+                                <label>아티스트의 장르를 선택해주세요</label>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-2 col-lg-offset-4">
+                                <select class = "start-main-category form-control">
+                                    <!--<option>장르</option>-->
+                                    <option>Music</option>
+                                    <option>Art</option>
+                                </select>
+                            </div>
+                            <div class = "col-lg-2">
+                                <select class = "start-sub-category form-control">
+                                    <!--<option>세부장르</option>-->
+                                    <option>hiphop</option>
+                                    <option>guitar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-4 col-lg-offset-4">
+                                <button type = "button" class = "btn btn-primary btn-lg next-btn">
+                                    다음
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class = "start-input-third" style = "display : none;">
+                    <div class = "start-title">
+                        SeeTreet
+                    </div>
+                    <div class = "start-info">artist 정보를 입력해주세요</div>
+                    <form class = "form-horizontal" role = "form">
+                        <label class = "input-information">선호하는 위치를 선택해주세요</label>
+                        <div class = "row">
+                            <div class = "col-lg-6 col-lg-offset-3">
+                                <div class = "input-group">
+                                    <input type = "text" class = "form-control">
+                                    <span class = "input-group-btn">
+                                        <button class = "btn btn-default start-chain-button" type = "button">Search</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "provider start-map" style = "background-color : red;">
+                                map
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <label>마포구 서교동 232-21</label>
+                        </div>
+                        <div class = "form-group">
+                            <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                                다음
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class = "start-input-fourth">
+                    <div class = "start-title">
+                        SeeTreet
+                    </div>
+                    <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
+                    <form class = "form-horizontal" role = "form">
+                        <div class = "form-group">
+                            <div class = "col-lg-2 col-lg-offset-4">
+                                업종을 선택해주세요
+                            </div>
+                            <div class = "col-lg-2">
+                                <select class = "form-control">
+                                    <option>Coffee</option>
+                                    <option>Food</option>
+                                    <option>Pub</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-2 col-lg-offset-5">
+                                <label>YouTube URL을 입력해주세요</label>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-4 col-lg-offset-4">
+                                <input type = "text" class = "form-control" placeholder="YouTube URL">
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-2 col-lg-offset-5">
+                                <label>간단한 소개를 해주세요</label>
+                            </div>
+                        </div>
+                        <div class = "form-group">
+                            <div class = "col-lg-4 col-lg-offset-4">
+                                <textarea class = "form-control" placeholder="소개말" rows = "3">
+
+                                </textarea>
+                            </div>
+                        </div>
+
+                        <div class = "form-group">
+                            <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                                완료
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class = "modifytab artist">
+                <div class = "tabtitle">
+                    Artist
+                </div>
+                <div class = "tabdetailinfo">
+                    <div class = "pic-youtube">
+                        <div class = "carousel slide">
+                            <!--indicator-->
+                            <ol class = "carousel-indicators">
+                                <li data-target="#carousel-example-generic" data-slide-to="0" class = "active"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            </ol>
+                            <!--Wrapper for slides-->
+                            <div class = "carousel-inner">
+                                <div class = "item active">
+                                    <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                                </div>
+                                <div class = "item">
+                                    <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                                </div>
+                                <div class = "item">
+                                    <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                                </div>
+                            </div>
+                            <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                <span class = "icon-prev"></span>
+                            </a>
+                            <a class = "right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                <span class = "icon-next"></span>
+                            </a>
+                            <!--<img src = "./images/providerimage/test2.jpg"/>-->
+                            <!--<img src = "./images/providerimage/test3.jpg"/>-->
+                        </div>
+                    </div>
+                    <div class = "modify-name">
+                        <span> 아티스트 : </span>
+                        <input type = "text" class = "form-control" value = "Maroon5">
+                    </div>
+                    <div class = "modify-category">
+                        <span>장르 : </span>
+                        <select class = "form-control">
+                            <option>Music</option>
+                        </select>
+                        <select class = "form-control">
+                            <option>Pop</option>
+                        </select>
+                    </div>
+                    <div class = "modify-location">
+                        <span>선호지역 : </span>
+                        <input type = "text" class = "form-control" value = "수원시 팔달구 인계동" disabled>
+                        <button type = "button" class = "btn btn-default">Map</button>
+                    </div>
+                    <div class = "modify-favorite">
+                        <span>선호업종 : </span>
+                        <select class = "form-control">
+                            <option>Music</option>
+                        </select>
+                    </div>
+                    <div class = "modify-youtube">
+                        <span>YouTube : </span>
+                        <input type = "text" class = "form-control" value = "youtubeUrl">
+                    </div>
+                    <div class = "modify-description">
+                        <span>소개말</span>
+                        <textarea class = "form-control" rows = "3">
+                        </textarea>
+                    </div>
+
+                    <div class = "modify-button">
+                        <button class = "btn btn-lg btn-primary" id = "modify-artist-confirmed">
+                            modify
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class = "listtab artist">
+                <div class = "listboxgroup artist busking">
+                    <!--<div class = "group-title">busking</div>-->
+                    <div class = "listbox createbox artist">
+                        <div class = "beforecreate">
+                            <img src = "./images/providerimage/create_icon.png"/>
+                        </div>
+                        <div class = "input-time" style = "display : none;">
+                        </div>
+                        <div class = "finish-create" style = "display : none;">
+                            <img class = "content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "content-info">
+                                <div class = "place-title">Zoo Coffee</div>
+                                <div class = "showdate-title">2014/09/21</div>
+                                <div class = "showtime-title">08:00PM ~ 10:00PM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class = "listboxgroup artist">
+                    <!--<div class = "group-title"></div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/8.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "place-title">Zoo Coffee</div>-->
+                            <!--<div class = "showdate-title">2014/09/21</div>-->
+                            <!--<div class = "showtime-title"> 08:00PM ~ 10:00PM</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/8.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "place-title">Zoo Coffee</div>-->
+                            <!--<div class = "showdate-title">2014/09/21</div>-->
+                            <!--<div class = "showtime-title"> 08:00PM ~ 10:00PM</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/8.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "place-title">Zoo Coffee</div>-->
+                            <!--<div class = "showdate-title">2014/09/21</div>-->
+                            <!--<div class = "showtime-title"> 08:00PM ~ 10:00PM</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/8.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "place-title">Zoo Coffee</div>-->
+                            <!--<div class = "showdate-title">2014/09/21</div>-->
+                            <!--<div class = "showtime-title"> 08:00PM ~ 10:00PM</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/8.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "place-title">Zoo Coffee</div>-->
+                            <!--<div class = "showdate-title">2014/09/21</div>-->
+                            <!--<div class = "showtime-title"> 08:00PM ~ 10:00PM</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class = "listbox artist">-->
+                        <!--<img class = "image" src = "./images/providerimage/8.jpg"/>-->
+                        <!--<div class = "info">-->
+                            <!--<div class = "place-title">Zoo Coffee</div>-->
+                            <!--<div class = "showdate-title">2014/09/21</div>-->
+                            <!--<div class = "showtime-title"> 08:00PM ~ 10:00PM</div>-->
+                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-sm" id="content-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!--<button type="button" class="close" data-dismiss="modal">-->
+                        <!--<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>-->
+                    <!--</button>-->
+                    <!--<h4 class="modal-title" id="myModalLabel">JOIN</h4>-->
+                    <div class = "image-area">
+                        <div class = "provider-image-slider">
+                            <div class = "carousel slide">
+                                <!--indicator-->
+                                <ol class = "carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class = "active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                </ol>
+                                <!--Wrapper for slides-->
+                                <div class = "carousel-inner">
+                                    <div class = "item active">
+                                        <img class = "pic1" src = "./images/seetreetimg/default_image.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img class = "pic2" src = "./images/seetreetimg/default_image.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img class = "pic3" src = "./images/seetreetimg/default_image.jpg"/>
+                                    </div>
+                                </div>
+                                <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                    <span class = "icon-prev"></span>
+                                </a>
+                                <a class = "right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                    <span class = "icon-next"></span>
+                                </a>
+                                <!--<img src = "./images/providerimage/test2.jpg"/>-->
+                                <!--<img src = "./images/providerimage/test3.jpg"/>-->
+                            </div>
+                        </div>
+                        <div class = "artist-image-slider">
+                            <div class = "carousel slide">
+                                <!--indicator-->
+                                <ol class = "carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class = "active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                </ol>
+                                <!--Wrapper for slides-->
+                                <div class = "carousel-inner">
+                                    <div class = "item active">
+                                        <img class = "pic1" src = "./images/seetreetimg/default_image.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img class = "pic2" src = "./images/seetreetimg/default_image.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img class = "pic3" src = "./images/seetreetimg/default_image.jpg"/>
+                                    </div>
+                                </div>
+                                <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                    <span class = "icon-prev"></span>
+                                </a>
+                                <a class = "right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                    <span class = "icon-next"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class = "content-detail-area">
+                        <div class = "content-detail-title">
+                            <span class = "detail-title">공연/전시명 : </span><span class = "detail-body" style="position : relative; top : -3px;">채널 1969</span>
+                        </div>
+                        <div class = "content-detail-artisttitle">
+                            <span class = "detail-title">아티스트명 : </span><span class = "detail-body" style="position : relative; top : -3px;">공공데이터</span>
+                        </div>
+                        <div class = "content-detail-showtime">
+                            <span class = "detail-title">시간 : </span><span class = "detail-body">2014년 11월 03일 20:00 ~ 23:00</span>
+                        </div>
+                        <div class = "content-detail-provider">
+                            <span class = "detail-title">장소 : </span><span class = "detail-body">AlohaTable(커피숍)</span>
+                        </div>
+                        <div class = "content-detail-address">
+                            <span class = "detail-title">주소 : </span><span class = "detail-body">수원시 팔달구 인계동 1125번지</span>
+                        </div>
+                        <div class = "content-detail-artistdescription">
+                            <div class = "detail-title">아티스트소개 :</div>
+                            <div class = "description">
+                                아티스트 소개가 없습니다.
+                            </div>
+                        </div>
+                        <div class = "content-detail-providerdescription">
+                        <div class = "detail-title">장소소개 :</div>
+                        <div class = "description">
+                            장소 정보가 없습니다.
+                        </div>
+                    </div>
+                        <div class = "content-detail-commentcount">
+                            <img src = "./images/providerimage/comment_icon.png"/>
+                            <span>100</span>
+                        </div>
+                        <div class = "content-detail-likecount">
+                            <img src = "./images/providerimage/like.png"/>
+                            <span>85</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class = "write-comment-area">
+                        <span class = "comment-title  topofcomment">댓글작성</span>
+                        <span class = "comment-id">seetreetEditor</span>
+                        <textarea class = "form-control" id = "content-comment" rows = "4" placeholder="댓글을 작성해주세요!"></textarea>
+                        <button type = "button" class = "btn btn-primary">댓글등록</button>
+                    </div>
+                    <div class = "content-comment-area">
+                        <div class = "comment-title">댓글</div>
+                        <div class = "comment-object">
+                            <img  class = "user-upload-image" src = "./images/providerimage/artist1.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공연 너무 기대되네요!
+                            </div>
+                        </div>
+                        <div class = "comment-object">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "additional-info-area">
+                        <div class = "map-title">
+                            위치 정보
+                        </div>
+                        <div class = "map-area" id = "content-location-map"></div>
+                        <div class = "provider-info-area">
+                            <img src = "./images/seetreetimg/default_image.jpg"/>
+                            <span class = "provider-name">AlohaTable</span>
+                        </div>
+                        <div class = "artist-info-area">
+                            <img src = "./images/seetreetimg/default_image.jpg"/>
+                            <span class = "artist-name">공공데이터</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bs-example-modal-sm" id="provider-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class = "image-area">
+                        <div class = "provider-image-slider">
+                            <div class = "carousel slide">
+                                <!--indicator-->
+                                <ol class = "carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class = "active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                </ol>
+                                <!--Wrapper for slides-->
+                                <div class = "carousel-inner">
+                                    <div class = "item active">
+                                        <img src = "./images/seetreetimg/5mile1.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img src = "./images/seetreetimg/5mile2.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img src = "./images/seetreetimg/5mile3.jpg"/>
+                                    </div>
+                                </div>
+                                <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                    <span class = "icon-prev"></span>
+                                </a>
+                                <a class = "right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                    <span class = "icon-next"></span>
+                                </a>
+                                <!--<img src = "./images/providerimage/test2.jpg"/>-->
+                                <!--<img src = "./images/providerimage/test3.jpg"/>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class = "detail-area">
+                        <div class = "provider-detail-title">
+                            <span>Alohatable</span>
+                        </div>
+                        <div class = "detail-category">
+                            <span class = "detail-title">업종 : </span><span>커피숍</span>
+                        </div>
+                        <div class = "detail-location">
+                            <span class = "detail-title">위치 : </span><span>수원시 팔달구 인계동 1123번지</span>
+                        </div>
+                        <div class = "detail-description">
+                            <span class = "detail-title">소개 : </span><span>안녕하세요 인계동에 위치하고 있는 AlohaTable입니다.</span>
+                        </div>
+                        <div class = "detail-want-category">
+                            <span class = "detail-title">선호장르 : </span><span>인디밴드</span>
+                        </div>
+                        <div class = "detail-history-count">
+                            <img src = "./images/providerimage/number.png"/>
+                            <span>85</span>
+                        </div>
+                        <div class = "detail-like-count">
+                            <img src = "./images/providerimage/like.png"/>
+                            <span>85</span>
+                        </div>
+                        <div class = "additional-info map" id = "provider-location-map"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class = "history-title">
+                        공연개최리스트
+                    </div>
+                    <div class = "history-list">
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/providerimage/jebi1.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/12 18:00PM</div>
+                                <div class = "history-place">AlohaTable</div>
+                                <div class = "history-artist">3호선 버터플라이</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/providerimage/jebi2.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/08/10 20:00PM</div>
+                                <div class = "history-place">AlohaTable</div>
+                                <div class = "history-artist">게토밤즈</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/27 19:00PM</div>
+                                <div class = "history-place">ZOO COFFEE</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/27 19:00PM</div>
+                                <div class = "history-place">ZOO COFFEE</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/27 19:00PM</div>
+                                <div class = "history-place">ZOO COFFEE</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/27 19:00PM</div>
+                                <div class = "history-place">ZOO COFFEE</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bs-example-modal-sm" id="artist-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class = "image-area">
+                        <div class = "artist-image-slider">
+                            <div class = "carousel slide">
+                                <!--indicator-->
+                                <ol class = "carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class = "active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                </ol>
+                                <!--Wrapper for slides-->
+                                <div class = "carousel-inner">
+                                    <div class = "item active">
+                                        <img src = "./images/providerimage/artist4.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img src = "./images/providerimage/artist_5.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img src = "./images/providerimage/artist6.jpg"/>
+                                    </div>
+                                </div>
+                                <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                    <span class = "icon-prev"></span>
+                                </a>
+                                <a class = "right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                    <span class = "icon-next"></span>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class = "detail-area">
+                        <div class = "artist-detail-title">
+                            <span>장기하와 얼굴들</span>
+                        </div>
+                        <div class = "detail-category">
+                            <span class = "detail-title">장르 : </span><span>모던락</span>
+                        </div>
+                        <div class = "detail-location">
+                            <span class = "detail-title">선호지역 : </span><span>수원시 팔달구 인계동</span>
+                        </div>
+                        <div class = "detail-description">
+                            <span class = "detail-title">소개 : </span><span>모던락밴드 장기하와 얼굴들입니다.</span>
+                        </div>
+                        <div class = "detail-want-category">
+                            <span class = "detail-title">선호공연장소 : </span><span>라이브카페</span>
+                        </div>
+                        <div class = "detail-history-count">
+                            <img src = "./images/providerimage/number.png"/>
+                            <span>85</span>
+                        </div>
+                        <div class = "detail-like-count">
+                            <img src = "./images/providerimage/like.png"/>
+                            <span>85</span>
+                        </div>
+                        <div class="additional-info youtube">
+                            <div class="youtube-frame">
+                                <iframe width="410" height="223" src="//www.youtube.com/embed/z_pqa36VHz8" frameborder="0" allowfullscreen=""></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class = "history-title">
+                        공연개최리스트
+                    </div>
+                    <div class = "history-list">
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/providerimage/busking3.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/08/21 20:00PM</div>
+                                <div class = "history-place">제비다방</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/providerimage/livecafe3.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/06 18:00PM</div>
+                                <div class = "history-place">AlohaTable</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/27 19:00PM</div>
+                                <div class = "history-place">ZOO COFFEE</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/27 19:00PM</div>
+                                <div class = "history-place">ZOO COFFEE</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/seetreetimg/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/27 19:00PM</div>
+                                <div class = "history-place">ZOO COFFEE</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/27 19:00PM</div>
+                                <div class = "history-place">ZOO COFFEE</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/providerimage/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bs-example-modal-sm" id="busking-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class = "image-area">
+                        <div class = "provider-image-slider">
+                            <img src = "./images/providerimage/busking_default.jpg"/>
+                        </div>
+                        <div class = "artist-image-slider">
+                            <div class = "carousel slide">
+                                <!--indicator-->
+                                <ol class = "carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class = "active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                </ol>
+                                <!--Wrapper for slides-->
+                                <div class = "carousel-inner">
+                                    <div class = "item active">
+                                        <img src = "./images/providerimage/IU.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img src = "./images/providerimage/alohatable.jpg"/>
+                                    </div>
+                                    <div class = "item">
+                                        <img src = "./images/providerimage/thinkcoffee.jpg"/>
+                                    </div>
+                                </div>
+                                <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                    <span class = "icon-prev"></span>
+                                </a>
+                                <a class = "right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                    <span class = "icon-next"></span>
+                                </a>
+                                <!--<img src = "./images/providerimage/test2.jpg"/>-->
+                                <!--<img src = "./images/providerimage/test3.jpg"/>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class = "content-detail-area">
+                        <div class = "content-detail-title">
+                            공연/전시명 : <input type = "text" class = "form-control" class = "start-input" id = "input-busking-name" placeholder = "공연명을 입력해주세요">
+                        </div>
+                        <div class = "content-detail-artisttitle">
+                            아티스트명 : <span>유희열</span>
+                        </div>
+                        <div class = "content-detail-showtime">
+                            <span class = "showtime-title">시간 :</span>
+                            <div class='input-group date' id='datetimepicker-busking-starttime'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <span class = "during">~</span>
+                            <div class='input-group date' id='datetimepicker-busking-endtime'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#datetimepicker-busking-starttime').datetimepicker();
+                                    $('#datetimepicker-busking-endtime').datetimepicker();
+                                });
+                            </script>
+                        </div>
+                        <div class = "content-detail-address">
+                            장소 : <span>수원시 팔달구 인계동</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class = "busking-map" id = "busking-location-map">
+                    </div>
+                    <button type = "button" id = "busking-register" class = "btn btn-lg btn-primary">등록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bs-example-modal-sm" id="location-search-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">위치 검색</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id = "location-search-body">
+                        <span class="input-group-btn">
+                            <button class = "btn btn-default" type = "button" id = "location-search-button">
+                                <span class = "glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <div id = "search-map">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="common-button save-button" id="finish-search">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

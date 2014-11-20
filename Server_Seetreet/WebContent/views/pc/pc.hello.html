@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Hello Seetreet</title>
+    <script src="javascripts/common/jquery-2.0.2.js" type="text/javascript"></script>
+    <script src="javascripts/common/bootstrap.js" type="text/javascript"></script>
+    <script src="javascripts/common/cookie_manager.js" type="text/javascript"></script>
+    <script src="javascripts/common/gateway.js" type="text/javascript"></script>
+
+    <script src="javascripts/pc/pc.hello.js" type="text/javascript"></script>
+
+    <link href="css/common/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="css/pc/pc.hello.css" rel = "stylesheet" type = "text/css"/>
+</head>
+<body id = "hellomain">
+    <div class = "container col-lg-8 col-lg-offset-2">
+        <div class = "seetreet-main-title">
+            <div class = "seetreet-title">SeeTreet</div>
+            <div class = "seetreet-info">내 지역에 있는 문화정보와 소규모 문화 공연을 검색하고 참여하세요</div>
+            <div class = "login-input-group">
+                <form class = "form-horizontal" role = "form">
+                    <div class = "form-group">
+                        <div class = "col-lg-4 col-lg-offset-4">
+                            <input type = "text" class = "form-control" id = "input-email" placeholder = "Email">
+                        </div>
+                    </div>
+                    <div class = "form-group">
+                        <div class = "col-lg-4 col-lg-offset-4">
+                            <input type = "password" class = "form-control" id = "input-password" placeholder = "Password">
+                        </div>
+                    </div>
+                </form>
+                <div class = "button-group">
+                    <div class = "checkbox">
+                        <label>
+                            <input type = "checkbox" name = "remember" value = "remember-me">Remember me
+                        </label>
+                    </div>
+                    <button type = "button" class = "btn btn-primary btn-lg" id = "login-button">
+                        LOGIN
+                    </button>
+                </div>
+                <!--<div class = "bottom-group">-->
+                    <!--<div class = "gotojoin bottom-element col-lg-3">-->
+                        <!--<button type = "button" class = "btn btn-primary btn-lg " id = "join-button">-->
+                            <!--JOIN-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <!--<div class = "waiting-play-count bottom-element col-lg-3">-->
+                        <!--<div>대기중인 공연</div>-->
+                        <!--<div>10</div>-->
+                    <!--</div>-->
+                    <!--<div class = "finish-play-count bottom-element col-lg-3">-->
+                        <!--<div>완료된 공연</div>-->
+                        <!--<div>10</div>-->
+                    <!--</div>-->
+                    <!--<div class = "surrounding-play-count bottom-element col-lg-3">-->
+                        <!--<div>주변 10km 공연</div>-->
+                        <!--<div>10</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class = "join-input-group">
+                <form class = "form-horizontal" role = "form">
+                    <div class = "form-group">
+                        <div class = "col-lg-4 col-lg-offset-4">
+                            <input type = "text" class = "form-control" id = "join-input-email" placeholder = "Email">
+                        </div>
+                    </div>
+                    <div id = "iden-input-error">
+                        이미 존재하는 아이디입니다.
+                    </div>
+                    <div class = "form-group">
+                        <div class = "col-lg-4 col-lg-offset-4">
+                            <input type = "password" class = "form-control" id = "join-input-password" placeholder = "Password">
+                        </div>
+                    </div>
+                    <div id = "password-input-error">
+                        비밀번호는 4자리 이상이어야 합니다.
+                    </div>
+                </form>
+                <button type = "button" class = "btn btn-primary btn-lg" id = "join-next">
+                    다음
+                </button>
+            </div>
+            <div class = "join-input-additional-group">
+                <form class = "form-horizontal" role = "form">
+                    <div class = "form-group">
+                        <div class = "col-lg-4 col-lg-offset-4">
+                            <input type = "text" class = "form-control" id = "join-input-name" placeholder = "이름을 입력해주세요">
+                        </div>
+                    </div>
+                </form>
+                <form class = "form-horizontal" role = "form">
+                <div class = "form-group">
+                    <div class = "col-lg-4 col-lg-offset-4">
+                        <input type = "text" class = "form-control" id = "join-input-age" placeholder = "나이를 입력해주세요">
+                    </div>
+                </div>
+                </form>
+                <form class = "form-horizontal" role = "form">
+                    <div class = "form-group">
+                        <div class = "col-lg-4 col-lg-offset-4">
+                            <input type = "text" class = "form-control" id = "join-input-phone" placeholder = "전화번호를 입력해주세요">
+                        </div>
+                    </div>
+                </form>
+                <button type = "button" class = "btn btn-primary btn-lg" id = "join-finish">
+                    완료
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <nav class="seetreet-navbar seetreet-navbar-fixed seetreet-bottom-fixed">
+        <div class="seetreet-bottombar-container">
+            <div class = "gotojoin bottom-element col-lg-3">
+                <button type = "button" class = "btn btn-primary btn-lg " id = "join-button">
+                    JOIN
+                </button>
+            </div>
+            <div class = "col-lg-5">
+                <div class = "waiting-play-count bottom-element">
+                    <div class = "info-number">123</div>
+                    <div class = "info-title">대기중인 공연</div>
+                </div>
+                <div class = "finished-play-count bottom-element">
+                    <div class = "info-number">384</div>
+                    <div class = "info-title">완료한 공연</div>
+                </div>
+                <div class = "surrouned-play-count bottom-element">
+                    <div class = "info-number">25</div>
+                    <div class = "info-title">주변10km 공연</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,147 @@
+@font-face {
+    font-family : OpenSans-Bold;
+    src : url("../../fonts/OpenSans-Bold.ttf");
+}
+
+@font-face {
+    font-family : OpenSans-SemiBold;
+    src : url("../../fonts/OpenSans-SemiBold.ttf");
+}
+@font-face {
+    font-family: OpenSans-Regular;
+    src : url("../../fonts/OpenSans-Regular.ttf");
+}
+@font-face{
+    font-family : malgun_gothic;
+    src : url("../../fonts/malgun.ttf")
+}
+@font-face{
+    font-family : nanum-gothic;
+    src : url("../../fonts/NanumBarunGothic.ttf")
+}
+@font-face{
+    font-family : nanum-gothic-Bold;
+    src : url("../../fonts/NanumBarunGothicBold.ttf")
+}
+html {height:94%;}
+body#hellomain{
+    /*margin : 56px 0 0 0 ;*/
+    font-family : OpenSans-Bold, nanum-gothic, OpenSans-SemiBold, OpenSans-Regular;
+    background-color : #eaeeed;
+    padding-bottom : 56px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 100%;
+    overflow: auto;
+}
+
+.container .seetreet-main-title{
+    margin-top : 250px;
+    text-align: center;
+}
+
+.container .seetreet-main-title .seetreet-title{
+    font-size : 50px;
+}
+
+.container .seetreet-main-title form{
+    margin-top : 20px;
+}
+
+.container .seetreet-main-title input[type="text"]{
+    height : 40px;
+}
+.container .seetreet-main-title input[type="password"]{
+    height : 40px;
+}
+
+.container .seetreet-main-title button {
+    width : 120px;
+}
+
+.container .seetreet-main-title .login-input-group .button-group .checkbox{
+    display : inline-block;
+    margin-right : 90px;
+    height : 0px;
+}
+
+.container .seetreet-main-title .login-input-group .bottom-group{
+    margin-top : 310px;
+}
+.container .seetreet-main-title .login-input-group .bottom-group .bottom-element{
+    display : inline-block;
+}
+.container .seetreet-main-title .join-input-group #iden-input-error{
+   visibility: hidden;
+}
+.container .seetreet-main-title .join-input-group #password-input-error{
+    visibility: hidden;
+}
+
+.container .seetreet-main-title .join-input-group{
+    display : none;
+}
+.container .seetreet-main-title .join-input-additional-group{
+    display : none;
+}
+.seetreet-navbar {
+    /*box-shadow: 0px 0px 2px;*/
+    /*background-color: #fff;*/
+    width : 100%;
+    z-index : 1000;
+}
+.seetreet-navbar.seetreet-navbar-fixed.seetreet-bottom-fixed{
+    position :fixed;
+    bottom: 0;
+    top : auto;
+    left :0;
+}
+
+.seetreet-navbar.seetreet-navbar-fixed .seetreet-bottombar-container{
+    width : 100%;
+    height : 90px;
+    /*background-color:  #245269;*/
+    /*background-color:  #334961;*/
+    text-align : center;
+}
+.seetreet-navbar .seetreet-bottombar-container #join-button{
+    width : 120px;
+}
+/*.seetreet-navbar .seetreet-bottombar-container .bottom-element:nth-child(2),*/
+/*.seetreet-navbar .seetreet-bottombar-container .bottom-element:nth-child(3),*/
+/*.seetreet-navbar .seetreet-bottombar-container .bottom-element:nth-child(4){*/
+    /**/
+/*}*/
+.seetreet-navbar .seetreet-bottombar-container .bottom-element{
+    display : inline-block;
+    margin : 0px 30px;
+    /*margin-right : 10px;*/
+}
+.seetreet-navbar .seetreet-bottombar-container .bottom-element button{
+    margin-top : 20px;
+}
+.seetreet-navbar .seetreet-bottombar-container .info-number{
+    font-weight : bold;
+    font-size : 40px;
+}
+.seetreet-navbar .seetreet-bottombar-container .info-title{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1143 @@
+@font-face {
+    font-family: OpenSans-Bold;
+    src : url("../../fonts/OpenSans-Bold.ttf");
+}
+@font-face {
+    font-family: OpenSans-SemiBold;
+    src : url("../../fonts/OpenSans-SemiBold.ttf");
+}
+@font-face {
+    font-family : OpenSans-Regular;
+    src : url("../../fonts/OpenSans-Regular.ttf");
+}
+@font-face {
+    font-family : mokyoktang;
+    src : url("../../fonts/세지니-옛날목욕탕체.ttf");
+}
+@font-face{
+    font-family : malgun_gothic;
+    src : url("../../fonts/malgun.ttf")
+}
+@font-face{
+    font-family : nanum-gothic;
+    src : url("../../fonts/NanumBarunGothic.ttf")
+}
+@font-face{
+    font-family : nanum-gothic-Bold;
+    src : url("../../fonts/NanumBarunGothicBold.ttf")
+}
+
+.common-button {
+    width : 130px;
+    height : 40px;
+    color : #fff;
+    border :none;
+    border-radius: 5px;
+}
+.common-button.save-button {
+    background-color: #34495e;
+}
+.common-button.cancel-button {
+    background-color: #a9b9c5;
+}
+
+html {height:94%;}
+body {font-family : OpenSans-Bold, nanum-gothic, OpenSans-SemiBold, OpenSans-Regular; background-color : #eaeeed;}
+
+body{
+    /*margin : 56px 0 0 0;*/
+    /*padding-bottom : 56px;*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /*height: 100%;*/
+    overflow-y: scroll;
+}
+
+img{
+    object-fit : cover;
+}
+
+/*top navbar 에 대한 css입니다.*/
+.seetreet-navbar{
+    box-shadow : 0px 0px 2px;
+    background-color : #fff;
+    width : 100%;
+    z-index : 1000;
+}
+.seetreet-navbar .seetreet-navbar-fixed{
+    position : fixed;
+    top : 0;
+    left : 0;
+}
+.seetreet-navbar .seetreet-topbar-container{
+    margin : auto;
+    position : relative;
+    /*margin-left : 263px;*/
+    width : 1417px;
+    height : 56px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content .topbar-logo{
+    float : left;
+    margin-top : 5px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content .topbar-logo img{
+    width : 190px;
+}
+
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li{
+    font-size : 13px;
+    display : inline-block;
+    margin-top : 20px;
+    /*margin-right : 10px;*/
+    /*float : left;*/
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li:nth-child(1){
+    margin-left : 30px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li:nth-child(1),
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li:nth-child(2),
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li:nth-child(3){
+    float : left;
+    margin-top : 30px;
+    margin-right : 20px;
+    cursor : pointer;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li:nth-child(3){
+    /*margin-right : 160px;*/
+    margin-right : 0px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li:nth-child(4){
+    margin-top : 10px;
+    margin-left : 160px;
+    position : relative;
+    top : 7px;
+    float : left;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li:nth-child(5){
+    /*float : left;*/
+    cursor : pointer;
+    margin-top : 19px;
+    height : 30px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li:nth-child(6){
+    float : right;
+    margin-top : 0px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content .input-group{
+    width : 270px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li .location-button{
+    position : relative;
+    width : 50px;
+    text-align : center;
+    top : -4px;
+    float : left;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li .location-button span{
+    font-size : 10px;
+    position : absolute;
+    top : -13px;
+    left : 7px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content ul li .location-button img{
+    width : 23px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content .user-info{
+    margin-top : 8px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content .user-info img.user-image{
+    width : 45px;
+    margin-right : 10px;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content .user-info .user-name{
+    margin-right : 65px;
+    font-size : 17px;
+    cursor : pointer;
+}
+.seetreet-navbar .seetreet-topbar-container .seetreet-topbar-content .user-info img.user-logout{
+    width : 30px;
+    cursor : pointer;
+}
+/*여기까지*/
+.container{
+    margin : auto;
+    position : relative;
+    width : 1450px;
+    height : 100%;
+    margin-top: 15px;
+}
+
+.seetreet-container .container-title{
+    font-size : 20px;
+    margin : 20px 0px 10px 16px;
+}
+.seetreet-container .recommend{
+    /*background-color : blue;*/
+    display : inline-block;
+    width : 236px;
+    height : 100%;
+    float: left;
+}
+.seetreet-container .recommend ul{
+    list-style : none;
+    padding-left : 0px;
+}
+.seetreet-container .recommend .recommend-title{
+    border-bottom: 1px solid;
+    height : 30px;
+}
+.seetreet-container .recommend ul li{
+    margin : 10px 0px;
+}
+.seetreet-container .recommend ul li *{
+    display : inline-block;
+}
+.seetreet-container .recommend .recommend-place ul li div:nth-child(1){
+    margin-right : 10px;
+    background-color: #ffffff;
+    width : 20px;
+    text-align: center;
+    border-radius : 2px;
+    color : #000000;
+}
+.seetreet-container .recommend .recommend-artist ul li div:nth-child(1){
+    margin-right : 10px;
+    background-color: #000000;
+    width : 20px;
+    text-align: center;
+    border-radius : 2px;
+    color : #ffffff;
+}
+.seetreet-container .recommend .recommend-place{
+    padding : 10px;
+    background-color : red;
+    color : white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+.seetreet-container .recommend .recommend-artist{
+    margin-top : 10px;
+    padding : 10px;
+    background-color : white;
+    color : #000000;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    /*float : left*/
+}
+.seetreet-container .contentlist:nth-child(n+2){
+    margin-top : 20px;
+    margin-left : 239px;
+}
+.seetreet-container .contentlist{
+    display : inline-block;
+}
+
+
+.seetreet-container .contentlist .content{
+    position : relative;
+    border-radius : 10px;
+    box-shadow : 5px 5px 8px #aaaaaa;
+    cursor : pointer;
+}
+
+.seetreet-container .contentlist .largesize-area{
+    width : 472px;
+    height : 627px;
+    display : inline-block;
+    padding : 0px 10px;
+    float : left;
+}
+.seetreet-container .contentlist .largesize-area .content{
+    border-radius : 10px;
+}
+.seetreet-container .contentlist .largesize-area .content .content-image{
+    width : 452px;
+    height : 422px;
+    border-top-left-radius : 7px;
+    border-top-right-radius : 7px;
+}
+.seetreet-container .contentlist .largesize-area .content .content-info{
+    background-color : #ffffff;
+    height : 204px;
+    border-bottom-left-radius : 10px;
+    border-bottom-right-radius : 10px;
+    color : #999999;
+}
+.seetreet-container .contentlist .largesize-area .content .place-title{
+    font-size : 20px;
+    border-bottom : 2px solid #E5E5E5;
+    padding-left: 20px;
+    color : #333333;
+}
+.seetreet-container .contentlist .largesize-area .content .artist-title{
+    /*font-size : 30px;*/
+    padding-left: 20px;
+    margin-bottom : 7px;
+    color : #333333;
+}
+.seetreet-container .contentlist .largesize-area .content .showtime-title{
+    /*font-size : 20px;*/
+    padding-left: 20px;
+    margin-bottom : 7px;
+}
+.seetreet-container .contentlist .largesize-area .content .location-title{
+    /*font-size : 20px;*/
+    padding-left: 20px;
+    margin-bottom : 7px;
+}
+.seetreet-container .contentlist .largesize-area .content .description-title{
+    padding : 0px 20px;
+    overflow : hidden;
+    height : 80px;
+}
+
+.seetreet-container .contentlist .smallsize-area {
+    position : relative;
+    display : inline-block;
+    width : 700px;
+    height : 627px;
+    padding-left : 2px;
+}
+.seetreet-container .contentlist .smallsize-area .content{
+    display : inline-block;
+    width : 220px;
+    padding : 0px 0px 0px 0px;
+    margin-right : 10px;
+}
+.seetreet-container .contentlist .smallsize-area .content:nth-child(1),
+.seetreet-container .contentlist .smallsize-area .content:nth-child(2),
+.seetreet-container .contentlist .smallsize-area .content:nth-child(3){
+    position : relative;
+    /*top : -305px;*/
+}
+.seetreet-container .contentlist .smallsize-area .content:nth-child(4),
+.seetreet-container .contentlist .smallsize-area .content:nth-child(5),
+.seetreet-container .contentlist .smallsize-area .content:nth-child(6){
+    position : relative;
+    top : 18px;
+}
+.seetreet-container .contentlist .smallsize-area .content .content-image {
+    width : 220px;
+    height : 220px;
+}
+.seetreet-container .contentlist .smallsize-area .content .content-info{
+    background-color : #ffffff;
+    height : 83px;
+    border-bottom-left-radius : 10px;
+    border-bottom-right-radius : 10px;
+    color : #999999;
+}
+.seetreet-container .contentlist .smallsize-area .content .place-title{
+    border-bottom: 1px solid #E5E5E5;
+    color : #333333;
+}
+.seetreet-container .contentlist .smallsize-area .content .artist-title{
+    color : #333333;
+}
+.seetreet-container .contentlist .smallsize-area .content .content-image{
+    border-top-left-radius : 7px;
+    border-top-right-radius : 7px;
+}
+.seetreet-container .contentlist .smallsize-area .content .content-info div{
+    padding-left : 10px;
+    height : 20px;
+    overflow : hidden;
+    text-overflow: ellipsis;
+}
+.seetreet-container .contentlist .content.public .place-title{
+    /*border : 2px solid #237EA9;*/
+    /*border-bottom : 2px solid #237EA9;*/
+    background-color: #237EA9;
+    color : #ffffff;
+
+}
+.seetreet-container .contentlist .content.private .place-title{
+    /*border : 2px solid #DC2F11;*/
+    /*border-bottom : 2px solid #FF0000;*/
+    background-color: #FE6246;
+    color : #ffffff;
+}
+.seetreet-container .content-append-area{
+    text-align : center;
+    margin : 30px 0px 30px 250px;
+}
+.seetreet-container .content-append-area img{
+    cursor : pointer;
+}
+
+/*여기부터 provider, artist에 관한 css입니다.*/
+.seetreet-makecontent-container .start-title,
+.seetreet-makecontent-container .start-info{
+    font-family : OpenSans-Bold;
+    text-align : center;
+}
+.start-title{
+    font-size : 50px;
+}
+.start-info{
+    font-size : 15px;
+    margin-bottom : 10px;
+}
+.seetreet-makecontent-container .start-area input{
+    text-align : center;
+    height : 40px;
+}
+.start-chain-button {
+    height : 40px;
+}
+.start-area {
+    text-align : center;
+}
+.start-pic-list img{
+    margin : 10px 10px;
+    width : 200px;
+    height : 200px;
+    border : 1px solid;
+}
+.start-map{
+    width : 600px;
+    height : 400px;
+    margin : auto;
+    margin-top : 30px;
+    /*text-align : center;*/
+}
+
+.start-main-category, .start-sub-category{
+    height : 40px;
+}
+.start-area .start-input-first{
+    margin-top : 160px;
+}
+
+.start-area .start-input-second{
+    margin-top : 250px;
+}
+.start-area .start-input-third{
+    margin-top : 100px;
+}
+.start-area .start-input-third .input-group{
+
+}
+.start-area .start-input-fourth{
+    margin-top : 250px;
+}
+.start-area .start-input-fourth .form-horizontal{
+    margin-top : 20px;
+}
+
+.tabinfo .modifytab{
+    width : 400px;
+    height : 720px;
+    background-color : white;
+    padding : 10px;
+    border-radius : 10px;
+    display : inline-block;
+    float : left;
+}
+.tabinfo .modifytab .tabtitle{
+    text-align: center;
+    font-size : 30px;
+}
+.tabinfo .modifytab .pic-youtube{
+    width : 380px;
+    height : 200px;
+}
+.tabinfo .modifytab .pic-youtube .carousel.slide{
+    width : 380px;
+    height : 200px;
+}
+.tabinfo .modifytab .pic-youtube .carousel.slide img{
+    width : 380px;
+    height : 200px;
+}
+.tabinfo .modifytab span{
+    display : inline-block;
+}
+/*.tabinfo .modifytab div{*/
+    /*margin : 15px 0px;*/
+/*}*/
+.tabinfo .modifytab .tabtitle,
+.tabinfo .modifytab .tabdetailinfo .pic-youtube,
+.tabinfo .modifytab .tabdetailinfo .modify-name,
+.tabinfo .modifytab .tabdetailinfo .modify-category,
+.tabinfo .modifytab .tabdetailinfo .modify-location,
+.tabinfo .modifytab .tabdetailinfo .modify-description,
+.tabinfo .modifytab .tabdetailinfo .modify-favorite,
+.tabinfo .modifytab .tabdetailinfo .modify-button{
+    margin : 15px 0px;
+}
+.tabinfo .modifytab .modify-button{
+    text-align : center;
+}
+
+.tabinfo .listtab{
+    width : 1005px;
+    /*display : inline-block;*/
+    float : left;
+    padding : 0px 10px;
+}
+.tabinfo .listtab .listboxgroup{
+    border-bottom : 1px solid #777777;
+    padding : 0px 0px;
+    clear : both
+}
+.tabinfo .listtab .listboxgroup .listbox{
+    width : 200px;
+    height : 300px;
+    background-color : #ffffff;
+    display : inline-block;
+    margin : 10px 15px;
+    border-radius : 10px;
+}
+/*.tabinfo.main-artist .listtab .listboxgroup .listbox{*/
+/*margin : 10px 25px;*/
+/*}*/
+.tabinfo.main-provider .listtab .listboxgroup .listbox:nth-child(3n+2){
+    margin-left : 300px;
+}
+.tabinfo.main-provider .listtab .listboxgroup .listbox:nth-child(2){
+    margin-left : 70px;
+}
+
+
+.tabinfo .listtab .listboxgroup .listbox.createbox.provider{
+    text-align: center;
+    float : left;
+}
+.tabinfo .listtab .listboxgroup .listbox.createbox.artist{
+    text-align: center;
+    float : left;
+}
+.tabinfo .listtab .listboxgroup .listbox.createbox .beforecreate img{
+    margin-top : 125px;
+    width : 50px;
+    height : 50px;
+}
+.tabinfo .listtab .listboxgroup .listbox.createbox .finish-create .content-image{
+    width : 200px;
+    height : 200px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+/*여기부터 listbox에 대한 css입니다.*/
+.listboxgroup.provider .listbox:nth-child(2){
+    margin-left : 20px;
+}
+.listbox img {
+    width : 200px;
+    height : 200px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.listbox .info {
+    text-align : center;
+}
+
+.listtab .listboxgroup.provider .listbox.createbox .input-time .start-time{
+    margin : 65px 10px 10px 10px;
+}
+.listtab .listboxgroup.provider .listbox.createbox .input-time .end-time{
+    margin : 10px 10px;
+}
+.listtab .listboxgroup.provider .listbox.createbox .input-time #time-setting-finish{
+    margin-top : 50px;
+    width : 100px;
+}
+/*여기까지 listbox에 대한 css입니다.*/
+
+
+/*provider 수정 탭에 대한 css입니다.*/
+
+
+.provider .tabdetailinfo .modifycolon span:nth-child(1){
+    margin : 0px 3px;
+    color : #999999;
+}
+.provider .tabdetailinfo .modify-name span:nth-child(1){
+    margin-left : 16px;
+    color : #999999;
+}
+.provider .tabdetailinfo .modify-category span:nth-child(1){
+    margin-left : 26px;
+    color : #999999;
+}
+.provider .tabdetailinfo .modify-location span:nth-child(1){
+    margin-left : 26px;
+    color : #999999;
+}
+.provider .tabdetailinfo .modify-favorite span:nth-child(1){
+    color : #999999;
+}
+.provider .tabdetailinfo .modify-description span:nth-child(1){
+    color : #999999;
+}
+.provider .modify-name input{
+    display : inline-block;
+    width : 314px;
+}
+.provider .tabdetailinfo .modify-category select{
+    display : inline-block;
+    width : 150px;
+}
+
+.provider .tabdetailinfo .modify-location input{
+    display : inline-block;
+    width : 255px;
+}
+
+.provider .tabdetailinfo .modify-favorite select{
+    width : 120px;
+    display : inline-block;;
+    /*float : left;*/
+}
+.provider.modifytab .tabdetailinfo .modify-category span{
+    /*margin-left : 14px;*/
+}
+.provider.modifytab .tabdetailinfo .modify-location span{
+    /*margin-left: 14px;*/
+}
+.provider.modifytab .tabdetailinfo .modify-description textarea{
+    resize : none;
+}
+.provider.modifytab .tabdetailinfo .modify-favorite span{
+    /*margin-left : 15px;*/
+}
+.provider .listbox .content-info *{
+    margin : 5px 0px;
+}
+.provider .listbox .info *{
+    margin : 5px 0px;
+}
+.provider .listbox .info button{
+    width : 100px;
+}
+/*artist 수정 탭에 대한 css입니다.*/
+.artist .modify-name input{
+    display : inline-block;
+    width : 310px;
+}
+
+.artist .tabdetailinfo .modify-category select{
+    display : inline-block;
+    width : 150px;
+}
+.artist .tabdetailinfo .modify-location input{
+    display : inline-block;
+    width : 250px;
+}
+
+.artist .tabdetailinfo .modify-favorite select{
+    width : 120px;
+    display : inline-block;;
+    /*float : left;*/
+}
+.artist .tabdetailinfo .modify-youtube input{
+    width : 270px;
+    display : inline-block;
+}
+.artist.modifytab .tabdetailinfo .modify-description textarea{
+    resize : none;
+}
+.artist.modifytab .tabdetailinfo .modify-category span{
+    margin-left : 27px;
+}
+
+
+
+
+/*여기부터 팝업창 정의 입니다.*/
+#content-popup .modal-dialog{
+    width : 1000px;
+}
+#content-popup .modal-header{
+    padding : 0px;
+    height : 345px;
+}
+#content-popup .modal-header .image-area .provider-image-slider{
+    display : inline-block;
+    width : 500px;
+    height : 344px;
+    border-right : 2px solid;
+}
+#content-popup .modal-header .image-area .artist-image-slider{
+    display : inline-block;
+    width : 491px;
+    height : 344px;
+}
+
+#content-popup .modal-body{
+    position : relative;
+    /*height : 273px;*/
+    display : table;
+}
+
+#content-popup .modal-footer{
+    position : relative;
+    padding : 0px;
+    height : 348px;
+    overflow-y : auto;
+    text-align : left;
+}
+#content-popup .modal-footer .content-comment-area{
+    display : inline-block;
+    padding : 0px 10px;
+    width : 660px;
+
+}
+#content-popup .modal-footer .additional-info-area{
+    position : absolute;
+    width : 308px;
+    top : 18px;
+    right : 10px;
+
+}
+#content-popup .modal-header .image-area .provider-image-slider img{
+    width : 500px;
+    height : 344px;
+    border-top-left-radius: 5px;
+}
+#content-popup .modal-header .image-area .artist-image-slider img{
+    width : 494px;
+    height : 344px;
+    border-top-right-radius: 5px;
+}
+
+#content-popup .modal-body .content-detail-area div{
+    /*font-size : 20px;*/
+}
+#content-popup .modal-body .content-detail-area .detail-title{
+    margin-right : 10px;
+}
+#content-popup .modal-body .content-detail-area .content-detail-commentcount{
+    position : absolute;
+    right : -70px;
+    bottom : 20px;
+}
+#content-popup .modal-body .content-detail-area .content-detail-likecount{
+    position : absolute;
+    right : -140px;
+    bottom : 20px;
+}
+#content-popup .modal-body .content-detail-area .content-detail-title{
+    margin-bottom : 5px;
+    font-size : 20px;
+    margin-left : 29px;
+}
+#content-popup .modal-body .content-detail-area .content-detail-artisttitle{
+    margin-bottom : 5px;
+    font-size : 20px;
+    margin-left : 35px;
+}
+#content-popup .modal-body .content-detail-area .content-detail-showtime{
+    margin-bottom : 5px;
+    margin-left : 75px;
+}
+#content-popup .modal-body .content-detail-area .content-detail-provider{
+    margin-bottom : 5px;
+    margin-left : 75px;
+}
+#content-popup .modal-body .content-detail-area .content-detail-address{
+    margin-bottom : 5px;
+    margin-left : 75px;
+}
+
+#content-popup .modal-body .content-detail-area .detail-title{
+    font-size : 15px;
+    float : left;
+    color : #999999;
+}
+
+#content-popup .modal-body .content-detail-area .description{
+    width : 670px;
+    display : inline-block;
+}
+#content-popup .modal-body .content-detail-area .content-detail-artistdescription{
+    margin-bottom : 5px;
+    margin-left : 22px;
+}
+#content-popup .modal-body .content-detail-area .content-detail-providerdescription{
+    margin-bottom : 5px;
+    margin-left : 48px;
+    clear : both;
+}
+#content-popup .modal-body .content-detail-area .content-detail-providerdescription .description{
+    width : 680px;
+}
+#content-popup .modal-footer .write-comment-area{
+    display : inline-block;
+    padding : 10px;
+    width : 660px;
+}
+#content-popup .modal-footer .write-comment-area .comment-title{
+    margin : 10px;
+}
+#content-popup .modal-footer .write-comment-area textarea{
+    margin : 10px;
+    width : 622px;
+    resize : none;
+}
+#content-popup .modal-footer .write-comment-area button{
+    margin-left : 534px;
+}
+#content-popup .modal-footer .content-comment-area .comment-title{
+    font-size : 20px;
+}
+#content-popup .modal-footer .content-comment-area .comment-object{
+    position : relative;
+    margin-bottom: 10px;
+}
+#content-popup .modal-footer .content-comment-area .comment-object .user-upload-image{
+    width : 190px;
+    height : 135px;
+}
+#content-popup .modal-footer .content-comment-area .comment-object .comment-user-name{
+    position : absolute;
+    top : 0px;
+    left : 200px;
+    font-size : 15px;
+}
+#content-popup .modal-footer .content-comment-area .comment-object .comment-upload-time{
+    position : absolute;
+    top : 0px;
+    left : 250px;
+    font-size : 15px;
+}
+#content-popup .modal-footer .content-comment-area .comment-object .comment-user-content{
+    position : absolute;
+    top : 30px;
+    left : 200px;
+    width : 436px;
+    height : 104px;
+    box-shadow: 0px 0px 2px;
+    padding: 10px 10px;
+}
+
+#content-popup .modal-footer .additional-info-area .map-title{
+    text-align : center;
+    font-size : 20px;
+}
+#content-popup .modal-footer .additional-info-area .map-area{
+    height : 195px;
+}
+
+#content-popup .modal-footer .additional-info-area .provider-info-area{
+    margin : 20px 0px;
+    overflow : hidden;
+    text-overflow : ellipsis;
+    height : 85px;
+}
+#content-popup .modal-footer .additional-info-area .provider-info-area img{
+    width : 80px;
+    height : 80px;
+    border-radius : 50%;
+    margin-right : 30px;
+}
+#content-popup .modal-footer .additional-info-area .provider-info-area span{
+    font-size : 20px;
+}
+#content-popup .modal-footer .additional-info-area .artist-info-area{
+    margin : 20px 0px;
+    overflow : hidden;
+    text-overflow : ellipsis;
+    height : 85px;
+}
+#content-popup .modal-footer .additional-info-area .artist-info-area img{
+    width : 80px;
+    height : 80px;
+    border-radius : 50%;
+    margin-right : 30px;
+
+}
+#content-popup .modal-footer .additional-info-area .artist-info-area span{
+    font-size : 20px;
+}
+
+/*여기부터는 provider , artist 에 대한 공통 부분 css 입니다.*/
+.modal-body .detail-area{
+    position : relative;
+    height : 209px;
+}
+.modal-body .detail-area div{
+    /*font-size : 20px;*/
+    /*margin-bottom : 13px;*/
+    font-size : 13px;
+    margin-bottom : 5px;
+}
+.modal-body .detail-area .detail-history-count{
+    position : absolute;
+    bottom : 12px;
+    left : 400px;
+}
+.modal-body .detail-area .detail-like-count{
+    position : absolute;
+    bottom : 10px;
+    left : 500px;
+}
+.modal-body .detail-area .additional-info{
+    position : absolute;
+    top : -15px;
+    right : -15px;
+    width : 410px;
+    height : 223px;
+}
+.modal-footer .history-title{
+}
+.modal-footer .history-list{
+    font-size : 20px;
+}
+.modal-footer .history-list .history-content{
+    position : relative;
+    border-bottom : 1px solid #E5E5E5;
+}
+.modal-footer .history-list .history-content .history-content-image{
+    width : 230px;
+    height : 180px;
+    display : inline-block;
+}
+.modal-footer .history-list .history-content .history-info{
+    position : absolute;
+    top : 0px;
+    left : 250px;
+}
+.modal-footer .history-list .history-content .history-info div{
+    margin : 13px 10px;
+}
+.modal-footer .history-list .history-content .history-like-count {
+    position : absolute;
+    bottom : 10px;
+    right : 30px;
+}
+/*여기부터 provider 팝업에 대한 css입니다.*/
+#provider-popup .detail-title{
+    color : #999999;
+}
+#provider-popup .modal-dialog{
+    width : 1000px;
+}
+#provider-popup .modal-header{
+    padding : 0px;
+    height : 345px;
+}
+#provider-popup .modal-header .image-area .provider-image-slider{
+    height : 344px;
+}
+#provider-popup .modal-header .image-area .provider-image-slider img{
+    width : 998px;
+    height : 345px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+#provider-popup .modal-body{
+    position : relative;
+    height : 223px;
+}
+#provider-popup .modal-body .detail-area .detail-title{
+    margin-left : 20px;
+}
+#provider-popup .modal-body .provider-detail-title{
+    font-size : 30px;
+    font-weight : bold;
+}
+#provider-popup .modal-body .detail-area .detail-category{
+    margin-left : 36px;
+}
+#provider-popup .modal-body .detail-area .detail-location{
+    margin-left : 36px;
+}
+#provider-popup .modal-body .detail-area .detail-description{
+    margin-left : 36px;
+}
+#provider-popup .modal-body .detail-area .detail-want-category{
+    margin-left : 12px;
+}
+#provider-popup .modal-footer{
+    position : relative;
+    padding : 0px;
+    height : 348px;
+    overflow-y : auto;
+    text-align : left;
+}
+
+/*여기부터 artist 팝업에 대한 css입니다.*/
+#artist-popup .detail-title{
+    color : #999999;
+}
+#artist-popup .modal-dialog{
+    width : 1000px;
+}
+#artist-popup .modal-header{
+    padding : 0px;
+    height : 345px;
+}
+#artist-popup .modal-header .image-area .artist-image-slider{
+    height : 344px;
+}
+#artist-popup .modal-header .image-area .artist-image-slider img{
+    width : 998px;
+    height : 345px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+#artist-popup .modal-body{
+    position : relative;
+    height : 223px;
+}
+
+#artist-popup .detail-area .artist-detail-title{
+    font-size : 30px;
+    font-weight:bold;
+}
+#artist-popup .detail-area .detail-title{
+
+}
+#artist-popup .detail-area .detail-category{
+    margin-left : 49px;
+}
+#artist-popup .detail-area .detail-location{
+    margin-left : 25px;
+}
+#artist-popup .detail-area .detail-description{
+    margin-left : 48px;
+}
+
+#artist-popup .modal-footer{
+    position : relative;
+    padding : 0px;
+    height : 348px;
+    overflow-y : auto;
+    text-align : left;
+}
+
+/*여기부터 busking popup입니다.*/
+
+#busking-popup .modal-dialog{
+    width : 1000px;
+}
+#busking-popup .modal-header{
+    padding : 0px;
+    height : 345px;
+}
+#busking-popup .modal-header .image-area .provider-image-slider{
+    display : inline-block;
+    width : 380px;
+    height : 344px;
+    border-right : 2px solid;
+}
+#busking-popup .modal-header .image-area .artist-image-slider{
+    display : inline-block;
+    width : 614px;
+    height : 344px;
+}
+
+#busking-popup .modal-body{
+    position : relative;
+    height : 223px;
+}
+
+#busking-popup .modal-footer{
+    position : relative;
+    padding : 0px;
+    height : 348px;
+    overflow-y : auto;
+    text-align: center;
+}
+
+#busking-popup .modal-header .image-area .provider-image-slider img{
+    width : 380px;
+    height : 344px;
+    border-top-left-radius: 5px;
+    float : left;
+}
+#busking-popup .modal-header .image-area .artist-image-slider img{
+    width : 614px;
+    height : 344px;
+    border-top-right-radius: 5px;
+}
+
+#busking-popup .modal-body .content-detail-area div{
+    font-size : 20px;
+}
+#busking-popup .modal-body #input-busking-name{
+    display : inline-block;
+    width : 400px;
+}
+#busking-popup .modal-body #input-busking-date{
+    display : inline-block;
+    width : 400px;
+}
+#busking-popup .modal-body .content-detail-area .content-detail-title{
+    margin-bottom : 25px;
+}
+#busking-popup .modal-body .content-detail-area .content-detail-artisttitle{
+    margin-bottom : 25px;
+    margin-left : 8px;
+}
+#busking-popup .modal-body .content-detail-area .content-detail-showtime{
+    margin-bottom : 25px;
+    margin-left : 61px;
+}
+#busking-popup .modal-body .content-detail-area .content-detail-showtime .showtime-title{
+    float:left;
+    margin-right: 8px;
+}
+#busking-popup .modal-body .content-detail-area .content-detail-showtime #datetimepicker-busking-starttime{
+    width: 300px;
+    float : left;
+}
+#busking-popup .modal-body .content-detail-area .content-detail-showtime .during{
+    margin : 0px 20px;
+    float : left;
+}
+#busking-popup .modal-body .content-detail-area .content-detail-showtime #datetimepicker-busking-endtime{
+    width: 300px;
+}
+#busking-popup .modal-body .content-detail-area .content-detail-address{
+    margin-bottom : 25px;
+    margin-left : 61px;
+}
+#busking-popup .modal-footer{
+
+}
+
+#busking-popup .modal-footer .busking-map{
+    width : 998px;
+    height : 290px;
+}
+
+#busking-popup .modal-footer button{
+    margin-top : 5px;
+    width : 110px;
+}
+
+#location-search-popup .input-group{
+    margin-bottom : 20px;
+}
+#location-search-popup #search-map{
+    /*background-color : red;*/
+    width : 100%;
+    height : 460px;
+}
+#location-search-popup .modal-footer {
+    text-align: center;
+}
+
+::-webkit-scrollbar {
+    width:7px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 9px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+    background: rgba(200,200,200,1);
+}
