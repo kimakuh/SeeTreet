@@ -42,7 +42,7 @@ public class ContentUserController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub	
 		PrintWriter out = res.getWriter();
-		
+//		
 		try {			
 			String longStr = req.getParameter(LocationBean.KEY_LONGITUDE);
 			String latStr = req.getParameter(LocationBean.KEY_LATITUDE);
