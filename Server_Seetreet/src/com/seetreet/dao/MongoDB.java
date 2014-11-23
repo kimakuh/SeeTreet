@@ -49,7 +49,7 @@ public class MongoDB {
     	
     	MongoCredential credential = MongoCredential.createMongoCRCredential(C.DBID, C.DBTABLE, C.DBPW);
         try {
-		    mongo = new MongoClient(new ServerAddress("localhost", C.DBPORT), Arrays.asList(credential));
+		    mongo = new MongoClient(new ServerAddress(C.DBIP, C.DBPORT), Arrays.asList(credential));
 		    
 			db = mongo.getDB(C.DBTABLE);		
 		} catch (UnknownHostException e) {
