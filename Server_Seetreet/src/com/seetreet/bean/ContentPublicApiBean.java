@@ -17,7 +17,7 @@ public class ContentPublicApiBean {
 	private boolean isFinished;
 	
 		
-	public static final String KEY_CONTENTID 			= "contentId";
+	public static final String KEY_CONTENTID 			= "publicContentId";
 	public static final String KEY_CONTENTTITLE 		= "contentTitle";
 	public static final String KEY_GENRE				= "contentGenre";
 	public static final String KEY_TYPE					= "contentType";
@@ -31,7 +31,7 @@ public class ContentPublicApiBean {
 	public static final String KEY_CONFIRMEDTIME		= "confirmedTime";
 	public static final String KEY_FINISHEDTIME			= "isFinished";
 	public static final String KEY_REPLY				= "reply";
-	public static final String KEY_LIKECOUNT 			= "likeCount";
+	public static final String KEY_LIKECOUNT 			= "likecount";
 	
 	
 

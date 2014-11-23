@@ -114,8 +114,11 @@ public class MongoDAO {
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);		
 	
 		//같은게 있으면 false
-		if(col.findOne(new BasicDBObject(ContentPublicApiBean.KEY_CONTENTID, contentId)) != null)
+		if(col.findOne(new BasicDBObject(ContentPublicApiBean.KEY_CONTENTID, String.valueOf(contentId))) != null){
+			System.out.println("FALSE");
 			return false;	
+		}
+			
 
 		//없으면 true
 		return true;

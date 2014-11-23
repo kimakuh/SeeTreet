@@ -123,6 +123,12 @@ public class JoinController extends HttpServlet {
 		String  age		= req.getParameter("age");
 		String 	phone 	= req.getParameter("phone");
 		
+		System.out.println("PW : " + pw);
+		System.out.println("NAME : " + name);
+		System.out.println("AGE : " + age);
+		System.out.println("PHONE : " + phone);
+		
+				
 		UserBean bean = new UserBean(email, name, age == null? -1 : Integer.parseInt(age), phone, pw);
 		
 		return MongoDAO.signinUser(bean);
