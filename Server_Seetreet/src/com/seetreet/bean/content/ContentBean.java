@@ -25,7 +25,7 @@ public class ContentBean extends ContentArtistBean{
 	
 	
 	public static final String KEY_C_ARTIST = "isConfirmed_artistId";
-	public static final String KEY_C_TIME	= "ConfirmedTime";
+	public static final String KEY_C_TIME	= "confirmedTime";
 	public static final String KEY_FINISHIED= "isFinished";
 	public static final String KEY_REPLY 	= "reply";
 	public static final String KEY_CONTENTID= "_id";
