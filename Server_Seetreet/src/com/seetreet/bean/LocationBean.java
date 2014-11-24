@@ -12,10 +12,6 @@ public class LocationBean {
 	public static final String KEY_DESCRIPT 	= "l_descript";
 	public static final String KEY_COORDINATE	= "coordinates";
 	
-	/* latitude  : maximum -> 120
-	 * longitude : maximum -> 90
-	 * 
-	 * */
 	public static final int LAT = 0;
 	public static final int LONG = 1;
 	

@@ -26,12 +26,7 @@ public class ReplyBean implements BeanJson {
 		this.replyimage = replyimage;
 	}
 	
-	public ReplyBean(
-			String email , 
-			String replyId,
-			String contentId, 
-			String replytext, 
-			String replyimage) {
+	public ReplyBean(String email , String replyId, String contentId, String replytext, String replyimage) {
 		// TODO Auto-generated constructor stub
 		this.userEmail = email;
 		this.contentId = contentId;

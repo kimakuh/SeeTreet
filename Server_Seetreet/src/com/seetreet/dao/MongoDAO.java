@@ -444,7 +444,7 @@ public class MongoDAO {
 		JSONArray result = new JSONArray();		
 		
 		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		DBCollection col = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
 		
 		BasicDBList position = new BasicDBList();
 		position.put(0, l_long);
@@ -479,7 +479,7 @@ public class MongoDAO {
 	
 	public static ReplyBean[] getReplyByContentId(String contentId, int page) {
 		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection(MongoDB.COLLECTION_REPLY);
+		DBCollection col = db.getCollection("test_reply");
 		
 		DBCursor iter =col.find(new BasicDBObject()
 									.append(ReplyBean.KEY_CONTENTID, contentId))
@@ -541,7 +541,7 @@ public class MongoDAO {
 	
 	public static boolean deleteReply(ReplyBean bean) {		
 		DB db = MongoDB.getDB();
-		DBCollection colReply = db.getCollection(MongoDB.COLLECTION_REPLY);
+		DBCollection colReply = db.getCollection(MongoDB.TEST_COLLECTION_REPLY);
 		DBCollection colContent = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		
 		System.out.println("bean : " + bean.getReplyId() + " , " +bean.getUserEmail() + " , " + bean.getContentId());;
@@ -582,13 +582,15 @@ public class MongoDAO {
 		ContentProviderBean[] res = null;
 
 		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		DBCollection col = db.getCollection("content");
 
 		BasicDBList position = new BasicDBList();
-		position.put(LocationBean.LAT, l_lat);
-		position.put(LocationBean.LONG, l_long);
+		position.put(0, l_lat);
+		position.put(1, l_long);
 		
-		System.out.println(l_lat + " ; " + l_long);
+//		BasicDBList confirmedQuery = new BasicDBList();
+//		confirmedQuery.add(new BasicDBObject("$eq" , ""));
+//		confirmedQuery.add(new BasicDBObject("$eq" , null));
 		
 		DBCursor iter = col.find(
 						new BasicDBObject("provider.location", 
@@ -603,9 +605,7 @@ public class MongoDAO {
 
 		res = new ContentProviderBean[iter.size()];
 		
-		if(iter.size() <= 0 ) {
-			return null;
-		}
+		if(iter.size() <= 0 ) return null;
 		
 		List<DBObject> list = iter.toArray();
 		

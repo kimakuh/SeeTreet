@@ -208,9 +208,8 @@ public class JoinController extends HttpServlet {
 								storeTitle, 
 								storeType, 
 								descript, 
-								address,
-								modTime
-								);
+								modTime,
+								address);
 			
 			if(MongoDAO.isUser(email, token)) {
 				if(MongoPersonDAO.isProvider(email, token)) {

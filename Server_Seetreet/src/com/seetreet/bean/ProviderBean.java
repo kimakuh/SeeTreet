@@ -35,16 +35,8 @@ public class ProviderBean implements BeanJson{
 	public static final String KEY_MODTIME = "modifiedTime";
 	
 	
-	public ProviderBean(
-			String contentType, 
-			String[] images ,
-			LocationBean location, 
-			GenreBean[] genre, 
-			String storeTitle, 
-			String storeType, 
-			String description, 
-			String address, 
-			String modTime) {
+	public ProviderBean(String contentType, String[] images ,LocationBean location, GenreBean[] genre, 
+			String storeTitle, String storeType, String description, String address, String modTime) {
 		// TODO Auto-generated constructor stub
 		this.contentType = contentType;
 		this.images = images;
@@ -57,18 +49,9 @@ public class ProviderBean implements BeanJson{
 		this.modTime = modTime;
 	}
 		
-	public ProviderBean(
-			String contentType, 
-			String[] images ,
-			LocationBean location, 
-			String storeTitle, 
-			String storeType, 
-			String description,
-			String providerId, 
-			GenreBean[] genre, 
-			ContentBean[] history, 
-			String modTime, 
-			String address) {
+	public ProviderBean(String contentType, String[] images ,LocationBean location, 
+			String storeTitle, String storeType, String description,
+			String providerId, GenreBean[] genre, ContentBean[] history, String modTime, String address) {
 		// TODO Auto-generated constructor stub
 		this.contentType = contentType;
 		this.images = images;
