@@ -29,7 +29,7 @@ public class MongoDB {
 	public static final String COLLECTION_RECOMMEND_HISTORY = "test_recommend_history";
 	public static final String COLLECTION_RECOMMEND_VALUE= "test_recommend_value";
 	public static final String COLLECTION_SIMILARITY_MAP = "test_similarity_map";
-	public static final String COLLECTION_LOVE_HISTORY = "test_love_history";
+	public static final String COLLECTION_LOVE_HISTORY = "test_love_history";	
 	
 	
 	private static MongoClient mongo;

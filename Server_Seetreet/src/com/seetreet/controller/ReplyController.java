@@ -48,9 +48,7 @@ public class ReplyController extends HttpServlet {
 		String contextPath = req.getContextPath();
 		String cmd = reqURI.substring(contextPath.length());
 		
-		if(cmd.contains(SEARCH)) {			
-			
-			
+		if(cmd.contains(SEARCH)) {					
 			PrintWriter out = res.getWriter();
 			
 			try {

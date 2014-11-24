@@ -28,6 +28,8 @@ public class ContentUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     public static final String PREFIX = "/user/content/user/";
     
+    private static final String SEARCH = "/user/content/user/search/";    
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -41,34 +43,46 @@ public class ContentUserController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub	
+		String reqURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String cmd = reqURI.substring(contextPath.length());
+		
+		if(cmd.contains(SEARCH)) {
+			searchContentByLocation(req, res);
+		}				
+	}
+	
+	private void searchContentByLocation(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		PrintWriter out = res.getWriter();
-//		
-		try {			
+		try {
 			String longStr = req.getParameter(LocationBean.KEY_LONGITUDE);
 			String latStr = req.getParameter(LocationBean.KEY_LATITUDE);
-			if(latStr == null || longStr == null) {
-				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, new JsonObject()));
+			if (latStr == null || longStr == null) {
+				out.write(ResBodyFactory.create(false,ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, null));
 				return;
 			}
-			
+
 			float l_long = Float.parseFloat(longStr);
 			float l_lat = Float.parseFloat(latStr);
-			int page	= Integer.parseInt(req.getParameter("page"));	
+			int page = Integer.parseInt(req.getParameter("page"));
+
+//			ContentBean[] beans = MongoDAO.getContentsByLocation(l_lat, l_long, page);
+//
+//			JSONArray result = new JSONArray();
+//			for (ContentBean bean : beans) {
+//				result.put(bean.getJson());
+//			}
 			
-			ContentBean[] beans = MongoDAO.getContentsByLocation(l_lat, l_long , page);			
+			JSONArray result = MongoDAO.getContentsByLocation(l_lat, l_long, page);
 			
-			JSONArray result = new JSONArray();
-			for(ContentBean bean : beans) {					
-				result.put(bean.getJson());
-			}
-			out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, result));			
+			out.write(ResBodyFactory.create(true,
+					ResBodyFactory.STATE_GOOD_WITH_DATA, result));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		} finally {
-			if(out != null) out.close();
-		}	
-		
-				
+			if (out != null)
+				out.close();
+		}
 	}
 }

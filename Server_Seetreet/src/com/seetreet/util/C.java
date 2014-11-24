@@ -77,4 +77,16 @@ public class C {
 		
 		return cmd.replace(prefix, ""); 
 	}
+	
+	/* 대박!!
+	 * public static final String REX_ID = "\\{\\s'\\$oid'\\s:\\s'+([a-zA-Z0-9]+)'}";
+	 * String temp = "_id" : { "$oid" : "a87df9a8ff8a7e987fae8"}
+	 * temp.replaceAll(REX_ID : "$1"); 
+	 * $1 이란 결국  group 1.
+	 * */
+	public static final String REX_ID = "\\{\\s\"\\$oid\"\\s:\\s\"+([a-zA-Z0-9]+)\"}";
+	
+	public static final String convertObjectId(String dbobject) {
+		return dbobject.replaceAll(REX_ID, "$1");
+	}
 }

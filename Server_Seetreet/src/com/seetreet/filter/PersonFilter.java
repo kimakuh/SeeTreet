@@ -15,23 +15,22 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.JsonObject;
 import com.seetreet.bean.UserBean;
-import com.seetreet.bean.content.ContentBean;
+import com.seetreet.controller.PersonController;
 import com.seetreet.dao.MongoDAO;
 import com.seetreet.util.C;
 import com.seetreet.util.ResBodyFactory;
 
 /**
- * Servlet Filter implementation class ContentFilter
+ * Servlet Filter implementation class PersonFilter
  */
-@WebFilter("/user/content/*")
-public class ContentFilter implements Filter {
-	private final String PRIFIX = "/user/content/";
+@WebFilter("/user/person/*")
+public class PersonFilter implements Filter {
+	private final String PRIFIX = "/user/person/";
     /**
      * Default constructor. 
      */
-    public ContentFilter() {
+    public PersonFilter() {
         // TODO Auto-generated constructor stub
     }
 
@@ -48,34 +47,35 @@ public class ContentFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		// place your code here
-		
 		HttpServletRequest httpReq = (HttpServletRequest)req;
 		res.setCharacterEncoding(C.ENCODING);
 		httpReq.setCharacterEncoding(C.ENCODING);
 		String uri = httpReq.getRequestURI();
 		String contextPath = httpReq.getContextPath();
 		String cmd = uri.substring(contextPath.length());
-
+		
 		String postfix = cmd.replace(PRIFIX, "");
 		String[] postfixes = postfix.split("/");
 		String email = postfixes[postfixes.length -1];		
-		String token = httpReq.getHeader(UserBean.KEY_TOKEN);
-		
-		System.out.println(token);
-		if(!MongoDAO.isUser(email, token)) {
-			System.out.println("> FILTER : ERROR");
-			PrintWriter out = res.getWriter();
-			try {
-				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_UNKNOWN_TOKEN ,new JSONObject()));
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				out.close();
-			}
-			return;
-		}
 		httpReq.setAttribute(UserBean.KEY_EMAIL, email);
+		
+		if(cmd.contains(PersonController.PREFIX_IS_USER) == false) {			
+			String token = httpReq.getHeader(UserBean.KEY_TOKEN);			
+			System.out.println(token);
+			if(!MongoDAO.isUser(email, token)) {
+				System.out.println("> FILTER : ERROR");
+				PrintWriter out = res.getWriter();
+				try {
+					out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_UNKNOWN_TOKEN ,new JSONObject()));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					out.close();
+				}
+				return;
+			}			
+		}
 		
 		// pass the request along the filter chain
 		chain.doFilter(req, res);
@@ -87,5 +87,5 @@ public class ContentFilter implements Filter {
 	public void init(FilterConfig fConfig) throws ServletException {
 		// TODO Auto-generated method stub
 	}
-	
+
 }

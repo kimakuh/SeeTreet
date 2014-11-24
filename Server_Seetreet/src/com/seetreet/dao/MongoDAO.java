@@ -2,10 +2,13 @@ package com.seetreet.dao;
 
 
 import java.util.ArrayList;
+
 import javax.swing.text.AbstractDocument.Content;
+
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,9 +29,10 @@ import com.seetreet.bean.UserBean;
 import com.seetreet.bean.UserLoginBean;
 import com.seetreet.bean.content.ContentBean;
 import com.seetreet.bean.content.ContentProviderBean;
+import com.seetreet.util.C;
 
 public class MongoDAO {
-	public static final int MAX_LIMIT = 10;
+	public static final int MAX_LIMIT = 7;
 	public static boolean insertUser() {
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection("user");
@@ -272,62 +276,51 @@ public class MongoDAO {
 		return false;
 	}
 	
-	/*param : email , pw
-	 * description : 
-	 * notice : MongoDB의 _id 값을 토큰 값으로 사용함. 다만 JAVA에서 받은 ObjectId 객체를 toString으로 하면 변환 됨 */
-	public static UserLoginBean hasUser(String email, String pw) {
+	/* 2014.11.20 
+	 * */
+	public static boolean hasUser(String email) {
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
 		
 		BasicDBObject user
 			= new BasicDBObject()
-					.append(UserBean.KEY_EMAIL, email)
-					.append(UserBean.KEY_PW, pw);
+					.append(UserBean.KEY_EMAIL, email);		
 		
-		DBObject res;
-		if((res = col.findOne(user)) != null) {
-			UserBean bean 
-				= new UserBean(
-						(String)res.get(UserBean.KEY_EMAIL),
-						(String)res.get(UserBean.KEY_NAME),
-						(int)res.get(UserBean.KEY_AGE),
-						(String)res.get(UserBean.KEY_PHONE),
-						(String)res.get(UserBean.KEY_MODTIME),
-						res.get(UserBean.KEY_TOKEN).toString());
-			
-			return bean;
-		}
-				
-		return null;
+		if(col.findOne(user) != null) return true;				
+		return false;
 	}
 	
-	public static boolean isArtist(String email , String token) {
-		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
-		
-		DBObject user = col.findOne(new BasicDBObject().append(UserBean.KEY_EMAIL, email)
-													   .append(UserBean.KEY_TOKEN, new ObjectId(token)));
-		
-		
-		DBObject artist = (DBObject)user.get(UserBean.KEY_ARTIST);
-		
-		if(artist == null) return false;		
-		return true;
-	}
-	
-	public static boolean isProvider(String email , String token) {
-		DB db = MongoDB.getDB();
-		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
-		
-		DBObject user = col.findOne(new BasicDBObject().append(UserBean.KEY_EMAIL, email)
-													   .append(UserBean.KEY_TOKEN, new ObjectId(token)));
-		
-		
-		DBObject provider = (DBObject)user.get(UserBean.KEY_PROVIDER);
-		
-		if(provider == null) return false;
-		return true;
-	}
+	/* 2014.11.20
+	 * description : MongoPersonDAO.java 로 이동.
+	 * 
+	 * */
+//	public static boolean isArtist(String email , String token) {
+//		DB db = MongoDB.getDB();
+//		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
+//		
+//		DBObject user = col.findOne(new BasicDBObject().append(UserBean.KEY_EMAIL, email)
+//													   .append(UserBean.KEY_TOKEN, new ObjectId(token)));
+//		
+//		
+//		DBObject artist = (DBObject)user.get(UserBean.KEY_ARTIST);
+//		
+//		if(artist == null) return false;		
+//		return true;
+//	}
+//	
+//	public static boolean isProvider(String email , String token) {
+//		DB db = MongoDB.getDB();
+//		DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);
+//		
+//		DBObject user = col.findOne(new BasicDBObject().append(UserBean.KEY_EMAIL, email)
+//													   .append(UserBean.KEY_TOKEN, new ObjectId(token)));
+//		
+//		
+//		DBObject provider = (DBObject)user.get(UserBean.KEY_PROVIDER);
+//		
+//		if(provider == null) return false;
+//		return true;
+//	}
 	
 	public static boolean joinArtist(ArtistBean bean , String token) {
 		DB db = MongoDB.getDB();
@@ -439,44 +432,6 @@ public class MongoDAO {
 	}
 	
 	/* date 		: 2014.10.12
-	 * description 	: provider ���섑빐 �깅줉�⑸땲��
-	 * param		: provider Bean
-	 * notice		:
-	 * */
-	public static ContentProviderBean enrollContent(ContentProviderBean bean) {		
-		ContentProviderBean result = null;
-//		DB db = MongoDB.getDB();
-//		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
-//		
-//		BasicDBObject content
-//			= new BasicDBObject()
-//					.append(ContentProviderBean.KEY_TITLE, bean.getTitle())
-//					.append(ContentProviderBean.KEY_TYPE, bean.getType())
-//					.append(ContentProviderBean.KEY_PROVIDER, bean.getProviderId())
-//					.append(ContentProviderBean.KEY_GENRE, bean.getGenre())
-//					.append(ContentProviderBean.KEY_STARTTIME, bean.getStartTime())
-//					.append(ContentProviderBean.KEY_ENDTIME, bean.getEndTime());
-//		
-//		ObjectId id = (ObjectId) col.insert(content).getUpsertedId();
-//		
-//		DBObject res = col.findOne(new BasicDBObject(ContentProviderBean.KEY_ID, id));
-//		try {
-//			result = new ContentProviderBean(
-//					(String)res.get(ContentProviderBean.KEY_TITLE), 
-//					(String)res.get(ContentProviderBean.KEY_GENRE),
-//					(String)res.get(ContentProviderBean.KEY_TYPE), 
-//					Integer.parseInt((String)res.get(ContentProviderBean.KEY_STARTTIME)), 
-//					Integer.parseInt((String)res.get(ContentProviderBean.KEY_ENDTIME)), 
-//					res.get(ContentProviderBean.KEY_ID).toString());
-//		} catch (JSONException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		return result;
-	}
-	
-	/* date 		: 2014.10.12
 	 * description 	: �꾩튂 媛믪뿉 �곕씪 ContentBean��異쒕젰�⑸땲��
 	 * param		: double long, double lat
 	 * notice		: �꾩옱 �ㅽ뿕�쇱븘 collection 'test_content' �ъ슜
@@ -484,8 +439,9 @@ public class MongoDAO {
 	 * */
 	
 	static double[] InGyae = {127.00111, 37.26711 };
-	public static ContentBean[] getContentsByLocation(float l_lat, float l_long , int page) {
-		ContentBean[] res = null;		
+
+	public static JSONArray getContentsByLocation(float l_lat, float l_long , int page) {
+		JSONArray result = new JSONArray();		
 		
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.TEST_COLLECTION_CONTENT);
@@ -506,113 +462,19 @@ public class MongoDAO {
 						.append(ContentBean.KEY_FINISHIED, false)
 						.append(ContentBean.KEY_C_ARTIST, new BasicDBObject("$ne", null))
 				).skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
-				
+			
+		try {
+			while(iter.hasNext()) {
+				DBObject item = iter.next();
+				String str = item.toString().replaceAll(C.REX_ID, "$1");				
+				result.put(new JSONObject(str));
+			}		
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}		
 		
-		res = new ContentBean[iter.size()];
-		int i = 0;
-		while(iter.hasNext()){
-			DBObject obj = iter.next();			
-			
-			System.out.println(obj.toString());
-			
-			DBObject dbProvider = (DBObject)obj.get(ContentBean.KEY_PROVIDER);						
-			BasicDBList dbArtists = (BasicDBList)obj.get(ContentBean.KEY_ARTIST);
-			DBObject dbLocation = (DBObject)dbProvider.get(ProviderBean.KEY_LOCATION);
-			DBObject dbArtist = null;
-			String selectedArtistId = (String)obj.get(ContentBean.KEY_C_ARTIST);
-			if(dbArtists!= null){
-				for(int n = 0 ; n < dbArtists.size(); n++) {
-					String temp = ((DBObject)dbArtists.get(n)).get("_id").toString();				
-					if(temp.equals(selectedArtistId)) {
-						dbArtist = (DBObject)dbArtists.get(n);
-						break;
-					}
-				}
-			}else
-				dbArtists = null;
-			BasicDBList pos = (BasicDBList)dbLocation.get(LocationBean.KEY_COORDINATE);
-			LocationBean location = new LocationBean(
-					(String)dbLocation.get(LocationBean.KEY_NAME),
-					(String)dbLocation.get(LocationBean.KEY_DESCRIPT),
-					(double)pos.get(0), 
-					(double)pos.get(1));
-			GenreBean[] genre = {new GenreBean("", (String)dbProvider.get(ProviderBean.KEY_GENRE))};
-			
-			BasicDBList images = (BasicDBList)dbProvider.get(ProviderBean.KEY_IMAGES); 	
-			String[] t = {};
-			ProviderBean provider;
-			if(images != null){
-				provider = new ProviderBean(
-						(String)dbProvider.get(ProviderBean.KEY_TYPE),
-						images.toArray(t),
-						location,
-						genre,
-						(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
-						(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
-						(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
-						(String)dbProvider.get(ProviderBean.KEY_ADDRESS),
-						(String)dbProvider.get(ProviderBean.KEY_MODTIME)
-						);	
-			}else{
-				provider = new ProviderBean(
-						(String)dbProvider.get(ProviderBean.KEY_TYPE),
-						null,
-						location,
-						genre,
-						(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
-						(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
-						(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
-						(String)dbProvider.get(ProviderBean.KEY_ADDRESS),
-						(String)dbProvider.get(ProviderBean.KEY_MODTIME)
-						);
-			}
-			
-			if(dbArtist != null){
-			images = (BasicDBList)dbArtist.get(ArtistBean.KEY_IMAGES);
-			String[] t2 = {};
-			ArtistBean[] artist = {new ArtistBean(
-					(String)dbArtist.get(ArtistBean.KEY_NAME),
-					images.toArray(t2), 
-					(String)dbArtist.get(ArtistBean.KEY_VIDEO), 
-					(String)dbArtist.get(ArtistBean.KEY_DESCRIPT))};
-			
-			res[i++] = new ContentBean(
-						obj.get(ContentBean.KEY_ID).toString(),
-						(String)obj.get(ContentBean.KEY_TITLE),
-						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
-						(String)obj.get(ContentBean.KEY_TYPE),
-						(String)obj.get(ContentBean.KEY_STARTTIME),
-						(String)obj.get(ContentBean.KEY_ENDTIME),
-						provider,
-						artist,
-						selectedArtistId,
-						(String)obj.get(ContentBean.KEY_C_TIME),
-						(boolean)obj.get(ContentBean.KEY_FINISHIED),
-						null,						
-						(int)obj.get(ContentBean.KEY_LIKECOUNT)						
-					);
-			}else{
-				res[i++] = new ContentBean(
-						obj.get(ContentBean.KEY_ID).toString(),
-						(String)obj.get(ContentBean.KEY_TITLE),
-						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
-						(String)obj.get(ContentBean.KEY_TYPE),
-						(String)obj.get(ContentBean.KEY_STARTTIME),
-						(String)obj.get(ContentBean.KEY_ENDTIME),
-						provider,
-						null,
-						selectedArtistId,
-						(String)obj.get(ContentBean.KEY_C_TIME),
-						(boolean)obj.get(ContentBean.KEY_FINISHIED),
-						null,
-						(int)obj.get(ContentBean.KEY_LIKECOUNT)
-					);
-			}
-				
-		}
-		
-		
-		return res;
+		return result;
 	}
 	
 	public static ReplyBean[] getReplyByContentId(String contentId, int page) {
@@ -999,4 +861,42 @@ public class MongoDAO {
 		contentCol.update(findContentQuery, updateContentQuery);		
 		return true;
 	}
+	
+	public static int countLikesByContentId(String contentId) {		
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		
+		DBObject content = col.findOne(new BasicDBObject().append(ContentBean.KEY_ID, new ObjectId(contentId)));
+		
+		if(content == null) return -1;
+		
+		return (int)content.get(ContentBean.KEY_LIKECOUNT);		
+	}
+	
+	public static boolean updateLikesByContentId(String token, String contentId, boolean isLike) {
+		if(isLike == MongoRecDAO.hasLove(token, contentId)) return false;
+		
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		
+		int inc = isLike?1:-1;
+		
+		BasicDBObject findQuery = new BasicDBObject(ContentBean.KEY_ID, new ObjectId(contentId));
+		BasicDBObject updateQuery = new BasicDBObject().append("$inc", new BasicDBObject().append(ContentBean.KEY_LIKECOUNT, inc));
+		
+		col.update(findQuery, updateQuery);		
+		
+		DBObject content = col.findOne(new BasicDBObject(ContentBean.KEY_ID, new ObjectId(contentId)));		
+		String property = (String)content.get(ContentBean.KEY_GENRE);
+				
+		if(isLike) {
+			MongoRecDAO.plusUserLove(token, property);
+			MongoRecDAO.loveContent(token, contentId);
+		} else {			
+			MongoRecDAO.minusUserLove(token, property);
+			MongoRecDAO.hateContent(token, contentId);
+		}
+		
+		return true;
+	}	
 }
