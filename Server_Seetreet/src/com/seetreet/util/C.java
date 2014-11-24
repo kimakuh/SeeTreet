@@ -41,7 +41,8 @@ public class C {
 	public static final String ADDRESSYN = "&addrinfoYN=Y";
 	
 	public static final String DAUMKEY = "apikey=c985a6f0fd53e30658dff074b97ef9a4238287d0";
-	public static final String DAUMAPISERVER = "http://apis.daum.net/local/geo/addr2coord?";
+	public static final String DAUMADDTOCOORD = "http://apis.daum.net/local/geo/addr2coord?";
+	public static final String DAUMCOORDTOADD = "http://apis.daum.net/local/geo/coord2addr?";
 	
 	public static String currentDate(){
 		DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");

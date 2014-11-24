@@ -22,14 +22,16 @@ import com.seetreet.util.ResBodyFactory;
 /**
  * Servlet implementation class mapinfo
  */
-@WebServlet("/admin/mapinfo")
-public class mapinfo extends HttpServlet {
+@WebServlet("/admin/map/*")
+public class MapinfoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	public static final String PREFIX = "/admin/map/";
+    public final String ADDTOCOORD = "/admin/map/addtocoord";
+    public final String COORDTOADD = "/admin/map/coordtoadd";
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public mapinfo() {
+    public MapinfoController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,11 +48,18 @@ public class mapinfo extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		req.setCharacterEncoding("utf-8");
+		String reqURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String cmd = reqURI.substring(contextPath.length());
 		PrintWriter out = res.getWriter();
-		System.out.println("> SERVLET : Map Info");
+		System.out.println("> SERVLET : " + PREFIX);
 		try{
-			out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, convertMapXY(req, res)));
+			if(cmd.contains(ADDTOCOORD)){
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, convertAddToCoord(req, res)));	
+			}
+			else if(cmd.contains(COORDTOADD)){
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, convertCoordToAdd(req, res)));
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
@@ -58,10 +67,16 @@ public class mapinfo extends HttpServlet {
 		}
 	}
 	
-	private JSONArray convertMapXY(HttpServletRequest req , HttpServletResponse res) throws IOException {
+	private JSONArray convertAddToCoord(HttpServletRequest req , HttpServletResponse res) throws IOException {
 		String Address = (String)req.getParameter("address");
-		return HttpCall.getMapInfo(Address);
+		return HttpCall.getAddToCoord(Address);
 	}
+	private JSONObject convertCoordToAdd(HttpServletRequest req , HttpServletResponse res) throws IOException {
+		String longitude = (String)req.getParameter("longitude");
+		String latitude = (String)req.getParameter("latitude");
+		return HttpCall.getCoordToAdd(longitude, latitude);
+	}
+	
 	
 
 }
