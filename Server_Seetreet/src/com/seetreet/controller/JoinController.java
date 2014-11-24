@@ -23,6 +23,7 @@ import com.seetreet.bean.LocationBean;
 import com.seetreet.bean.ProviderBean;
 import com.seetreet.bean.UserBean;
 import com.seetreet.dao.MongoDAO;
+import com.seetreet.dao.MongoPersonDAO;
 import com.seetreet.util.C;
 import com.seetreet.util.ResBodyFactory;
 
@@ -37,9 +38,7 @@ public class JoinController extends HttpServlet {
 	private final String PREFIX_ARTIST 			= "/user/join/artist/";
 	private final String PREFIX_PROVIDER 		= "/user/join/provider/";
 	
-	private final String PREFIX_IS_USER			= "/user/check/user/";
-	private final String PREFIX_IS_ARTIST		= "/user/check/artist/";
-	private final String PREFIX_IS_PROVIDER		= "/user/check/provider/";
+	
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -54,22 +53,7 @@ public class JoinController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String reqURI = req.getRequestURI();
-		String contextPath = req.getContextPath();
-		String cmd = reqURI.substring(contextPath.length());
 		
-		PrintWriter out = res.getWriter();
-		try {
-			if(cmd.contains(PREFIX_IS_USER)) {
-				
-			} else if(cmd.contains(PREFIX_IS_ARTIST)) {		
-				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.isArtist((String)req.getAttribute(UserBean.KEY_EMAIL), req.getHeader(UserBean.KEY_TOKEN))));
-			} else if(cmd.contains(PREFIX_IS_PROVIDER)) {
-				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.isProvider((String)req.getAttribute(UserBean.KEY_EMAIL), req.getHeader(UserBean.KEY_TOKEN))));
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
 	}
 
 	/**
@@ -157,13 +141,14 @@ public class JoinController extends HttpServlet {
 			
 			GenreBean[] genres = new GenreBean[genre.length()];
 			for(int i = 0 ; i < genre.length(); i++) {
-				genres[i] = new GenreBean("", genre.getString(i));
+				JSONObject obj = genre.getJSONObject(i);
+				genres[i] = new GenreBean(obj.getString(GenreBean.KEY_CATEGORY), obj.getString(GenreBean.KEY_DETAIL));
 			}
 			
 			ArtistBean bean = new ArtistBean(imageURLs, name, videoUrl, descript, modTime, locs,genres);
 			
 			if(MongoDAO.isUser(email, token)) {
-				if(MongoDAO.isArtist(email, token)) {
+				if(MongoPersonDAO.isArtist(email, token)) {
 					return false;
 				}else {
 					return MongoDAO.joinArtist(bean , token);
@@ -205,7 +190,8 @@ public class JoinController extends HttpServlet {
 						
 			GenreBean[] genres = new GenreBean[genre.length()];
 			for(int i = 0 ; i < genre.length(); i++) {
-				genres[i] = new GenreBean("", genre.getString(i));
+				JSONObject obj = genre.getJSONObject(i);
+				genres[i] = new GenreBean(obj.getString(GenreBean.KEY_CATEGORY), obj.getString(GenreBean.KEY_DETAIL));
 			}
 			
 			ProviderBean bean 
@@ -220,7 +206,7 @@ public class JoinController extends HttpServlet {
 								address);
 			
 			if(MongoDAO.isUser(email, token)) {
-				if(MongoDAO.isProvider(email, token)) {
+				if(MongoPersonDAO.isProvider(email, token)) {
 					return false;
 				}else {
 					return MongoDAO.joinProvider(bean , token);

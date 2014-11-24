@@ -52,9 +52,9 @@ public class LogoutController extends HttpServlet {
 				if((sess = req.getSession(false)) != null) {
 					sess.invalidate(); // 로그아웃! 모든 세션 삭제.				
 				}			
-				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, new JsonObject()));
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, null));
 			}else {
-				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_UNKNOWN_TOKEN, new JsonObject()));
+				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_UNKNOWN_TOKEN, null));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
