@@ -109,18 +109,20 @@ public class ContentProviderController extends HttpServlet {
 		String contentEndTime = (String)req.getParameter(ContentProviderBean.KEY_ENDTIME);
 		String tempPId = (String)req.getHeader(UserBean.KEY_TOKEN);
 		DBObject providerObject = MongoDAO.checkProviderId(tempPId);
-	
+		if(providerObject == null)
+			return null;
+		//System.out.println(providerObject.toString());
 		return MongoDAO.insertContentByProvider(contentTitle, contentStartTime, contentEndTime, providerObject);
 	}
 	
 	private JSONArray searchContentByProvider(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		String providerId = (String)req.getHeader(UserBean.KEY_TOKEN);
-		ContentBean[] beans = MongoDAO.searchContentByProvider(providerId);
+		JSONObject[] beans = MongoDAO.searchContentByProvider(providerId);
 		JSONArray arr= new JSONArray();
 		try{
-			for(ContentBean bean : beans){
+			for(JSONObject bean : beans){
 				if(bean != null){
-					arr.put(bean.getJson());	
+					arr.put(bean);	
 				}
 			}
 		}catch(Exception e){
