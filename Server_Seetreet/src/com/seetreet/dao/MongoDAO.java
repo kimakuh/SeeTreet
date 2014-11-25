@@ -362,13 +362,16 @@ public class MongoDAO {
 		}				
 		
 		LocationBean loc = bean.getLocation();
-		BasicDBObject location = new BasicDBObject()
-		  .append(LocationBean.KEY_NAME, loc.getName())
-		  .append(LocationBean.KEY_DESCRIPT, loc.getDescription())
-		  .append(LocationBean.KEY_LATITUDE, loc.getLatitude())
-		  .append(LocationBean.KEY_LONGITUDE, loc.getLongitude());
+		BasicDBList coords = new BasicDBList();
+		coords.add(loc.getLatitude());
+		coords.add(loc.getLongitude());
 		
-				
+		BasicDBObject location = new BasicDBObject()
+				  .append(LocationBean.KEY_NAME, loc.getName())
+				  .append(LocationBean.KEY_DESCRIPT, loc.getDescription())
+				  .append("type", "Point")
+				  .append(LocationBean.KEY_COORDINATE, coords);
+						
 		BasicDBList genres = new BasicDBList();
 		for(GenreBean genre : bean.getFavoriteGenre()) {
 			genres.add(new BasicDBObject()
@@ -575,7 +578,7 @@ public class MongoDAO {
 						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
 
 		res = new ContentProviderBean[iter.size()];
-		
+		System.out.println(iter.count());
 		if(iter.size() <= 0 ) {
 			return null;
 		}
@@ -642,6 +645,7 @@ public class MongoDAO {
 		   	   .append(ContentProviderBean.KEY_STARTTIME, _contentStartTime)
 		   	   .append(ContentProviderBean.KEY_ENDTIME, _contentEndTime)
 			   .append(ContentProviderBean.KEY_PROVIDER, _providerObject)
+			   .append(ContentBean.KEY_C_ARTIST, null)
 			   .append(ContentBean.KEY_FINISHIED, false);
 		
 		col.insert(content);
