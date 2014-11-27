@@ -135,50 +135,23 @@ public class MongoDAO {
 	 * 
 	 * */
 	public static DBObject checkProviderId(String providerId) {
-		
+		DBObject res = null;
+		DBObject res2 = null;
 		try{
 			DB db = MongoDB.getDB();
-			DBCollection col = db.getCollection(MongoDB.COLLECTION_PROVIDER);		
-			DBObject res;
-			if((res = col.findOne(new ObjectId(providerId))) != null)
-				return res;
+			DBCollection col = db.getCollection(MongoDB.COLLECTION_USER);		
 			
-			return res;
-			/*{
-				
-				
-				
-				DBObject dbLocation = (DBObject)res.get(ProviderBean.KEY_LOCATION);
-				BasicDBList pos = (BasicDBList)dbLocation.get(LocationBean.KEY_COORDINATE);
-				
-				LocationBean location = new LocationBean(
-						(String)dbLocation.get(LocationBean.KEY_NAME),
-						(String)dbLocation.get(LocationBean.KEY_DESCRIPT),
-						(double)pos.get(0), 
-						(double)pos.get(1));
-				
-				BasicDBList images = (BasicDBList)res.get(ProviderBean.KEY_IMAGES);
-				String[] t = {};
-				
-				GenreBean[] genre = {new GenreBean("", (String)res.get(ProviderBean.KEY_GENRE))};
-				
-				bean = new ProviderBean(
-						(String)res.get(ProviderBean.KEY_TYPE),
-						images.toArray(t),
-						location,
-						genre,
-						(String)res.get(ProviderBean.KEY_STORETITLE),
-						(String)res.get(ProviderBean.KEY_STORETYPE),
-						(String)res.get(ProviderBean.KEY_DESCRIPT)						
-						);
-				
-				
-			}*/
-			
+			BasicDBObject findQuery = new BasicDBObject(UserBean.KEY_TOKEN, new ObjectId(providerId));		
+			if((res = col.findOne(findQuery)) != null){
+				res2 = (DBObject) res.get("user_provider");
+			}
+			else
+				res2 = null;
 		}catch(Exception e){
 			e.printStackTrace();
-			return null;
+			
 		}		
+		return res2;
 	}
 	
 	
@@ -389,13 +362,16 @@ public class MongoDAO {
 		}				
 		
 		LocationBean loc = bean.getLocation();
-		BasicDBObject location = new BasicDBObject()
-		  .append(LocationBean.KEY_NAME, loc.getName())
-		  .append(LocationBean.KEY_DESCRIPT, loc.getDescription())
-		  .append(LocationBean.KEY_LATITUDE, loc.getLatitude())
-		  .append(LocationBean.KEY_LONGITUDE, loc.getLongitude());
+		BasicDBList coords = new BasicDBList();
+		coords.add(loc.getLatitude());
+		coords.add(loc.getLongitude());
 		
-				
+		BasicDBObject location = new BasicDBObject()
+				  .append(LocationBean.KEY_NAME, loc.getName())
+				  .append(LocationBean.KEY_DESCRIPT, loc.getDescription())
+				  .append("type", "Point")
+				  .append(LocationBean.KEY_COORDINATE, coords);
+						
 		BasicDBList genres = new BasicDBList();
 		for(GenreBean genre : bean.getFavoriteGenre()) {
 			genres.add(new BasicDBObject()
@@ -601,7 +577,7 @@ public class MongoDAO {
 						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
 
 		res = new ContentProviderBean[iter.size()];
-		
+		System.out.println(iter.count());
 		if(iter.size() <= 0 ) {
 			return null;
 		}
@@ -664,21 +640,11 @@ public class MongoDAO {
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		BasicDBObject content = new BasicDBObject();
 		
-		/*
-		BasicDBObject provider = new BasicDBObject();
-		provider.append("_id", new ObjectId(_providerId))
-				.append("providerImage", _tempProvider.getImages())
-				.append("contentType", _tempProvider.getContentType())
-				.append("favoriteGenre", _tempProvider.getFavoriteGenre())
-				.append("location", _tempProvider.getLocation())
-				.append("StoreTitle", _tempProvider.getStoreTitle())
-				.append("StoreType", _tempProvider.getStoreType())
-				.append("description", _tempProvider.getDescription());
-		*/
 		content.append(ContentProviderBean.KEY_TITLE, _contentTitle)
 		   	   .append(ContentProviderBean.KEY_STARTTIME, _contentStartTime)
 		   	   .append(ContentProviderBean.KEY_ENDTIME, _contentEndTime)
 			   .append(ContentProviderBean.KEY_PROVIDER, _providerObject)
+			   .append(ContentBean.KEY_C_ARTIST, null)
 			   .append(ContentBean.KEY_FINISHIED, false);
 		
 		col.insert(content);
@@ -698,89 +664,39 @@ public class MongoDAO {
 	
 	
  
-	public static ContentBean[] searchContentByProvider(String _id){
-		ContentBean[] res = null;
+	public static JSONObject[] searchContentByProvider(String user_id){
+		JSONObject[] res=null;
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
-
-		DBCursor iter = 
-				col.find(new BasicDBObject("provider._id", new ObjectId(_id)));
-		System.out.println(iter.toString());
-		System.out.println("Iter Count :"+ iter.count());
-		res = new ContentBean[iter.size()];
-		int i = 0;
-		while(iter.hasNext()){
-			DBObject obj = iter.next();
-			DBObject dbProvider = (DBObject)obj.get(ContentBean.KEY_PROVIDER);
-			System.out.println(obj.get(ContentBean.KEY_PROVIDER));
-			BasicDBList dbArtists = (BasicDBList)obj.get(ContentBean.KEY_ARTIST);
-			DBObject dbLocation = (DBObject)dbProvider.get(ProviderBean.KEY_LOCATION);
-			DBObject dbArtist = null;
-			String selectedArtistId = (String)obj.get(ContentBean.KEY_C_ARTIST);
-			if(dbArtists!=null){
-				for(int n = 0 ; n < dbArtists.size(); n++) {
-					String temp = ((DBObject)dbArtists.get(n)).get("_id").toString();
-					System.out.println(temp + " :: " + selectedArtistId);
-					if(temp.equals(selectedArtistId)) {
-						dbArtist = (DBObject)dbArtists.get(n);
-						break;
-					}
-				}	
-			}else{
-				dbArtist = null;
+		DBCollection userCol = db.getCollection(MongoDB.COLLECTION_USER);
+		
+		try{
+			BasicDBObject findQuery = new BasicDBObject(UserBean.KEY_TOKEN, new ObjectId(user_id));
+			DBObject provObj;
+			String _id;
+			if((provObj = userCol.findOne(findQuery)) != null){
+				provObj = (DBObject) provObj.get("user_provider");
+				_id = provObj.get("_id").toString();
 			}
+			else
+				_id = null;
 				
+			DBCursor iter = 
+					col.find(new BasicDBObject("provider._id", new ObjectId(_id)));
+			System.out.println(iter.toString());
+			System.out.println("Iter Count :"+ iter.count());
+			res = new JSONObject[iter.count()];
+			int i = 0;
+			while(iter.hasNext()){
+				DBObject obj = iter.next();
+				System.out.println(obj.toString());
+				res[i++] = new JSONObject(obj.toString());
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 			
-			BasicDBList pos = (BasicDBList)dbLocation.get(LocationBean.KEY_COORDINATE);
-			LocationBean location = new LocationBean(
-					(String)dbLocation.get(LocationBean.KEY_NAME),
-					(String)dbLocation.get(LocationBean.KEY_DESCRIPT),
-					(double)pos.get(LocationBean.LAT), 
-					(double)pos.get(LocationBean.LONG));
-			GenreBean[] genre = {new GenreBean("", (String)dbProvider.get(ProviderBean.KEY_GENRE))};
-			
-			BasicDBList images = (BasicDBList)dbProvider.get(ProviderBean.KEY_IMAGES); 	
-			String[] t = {};
-			ProviderBean provider = new ProviderBean(
-					(String)dbProvider.get(ProviderBean.KEY_TYPE),
-					images.toArray(t),
-					location,
-					genre,
-					(String)dbProvider.get(ProviderBean.KEY_STORETITLE), 
-					(String)dbProvider.get(ProviderBean.KEY_STORETYPE),
-					(String)dbProvider.get(ProviderBean.KEY_DESCRIPT),
-					(String)dbProvider.get(ProviderBean.KEY_ADDRESS), 
-					(String)dbProvider.get(ProviderBean.KEY_MODTIME));
-			ArtistBean[] artistResult;
-			if(dbArtist != null){
-				images = (BasicDBList)dbArtist.get(ArtistBean.KEY_IMAGES);
-				String[] t2 = {};
-				ArtistBean[] artist = {new ArtistBean(
-							(String)dbArtist.get(ArtistBean.KEY_NAME),
-							images.toArray(t2), 
-							(String)dbArtist.get(ArtistBean.KEY_VIDEO), 
-							(String)dbArtist.get(ArtistBean.KEY_DESCRIPT))};
-				artistResult = artist;
-			}else
-				artistResult = null;
-			
-			
-			res[i++] = new ContentBean(
-						obj.get(ContentBean.KEY_ID).toString(),
-						(String)obj.get(ContentBean.KEY_TITLE),
-						new GenreBean("",(String)obj.get(ContentBean.KEY_GENRE)),
-						(String)obj.get(ContentBean.KEY_TYPE),
-						(String)obj.get(ContentBean.KEY_STARTTIME),
-						(String)obj.get(ContentBean.KEY_ENDTIME),
-						provider,
-						artistResult,
-						selectedArtistId,
-						(String)obj.get(ContentBean.KEY_C_TIME),
-						(boolean)obj.get(ContentBean.KEY_FINISHIED),						
-						null,
-						(int)obj.get(ContentBean.KEY_LIKECOUNT)
-					);
-		}		
 		return res;
 	}
 	
