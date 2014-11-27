@@ -195,8 +195,8 @@ public class MongoDAO {
 			BasicDBList list = new BasicDBList();
 			BasicDBObject local = new BasicDBObject();
 			if(obj.getLocation() != null){
-				list.add(0, obj.getLocation().getLatitude());
-				list.add(1, obj.getLocation().getLongitude());
+				list.add(LocationBean.LAT, obj.getLocation().getLatitude());
+				list.add(LocationBean.LONG, obj.getLocation().getLongitude());
 				local.append("type", "Point")
 					.append("coordinates", list);
 			}
@@ -435,7 +435,7 @@ public class MongoDAO {
 	 * description 	: �꾩튂 媛믪뿉 �곕씪 ContentBean��異쒕젰�⑸땲��
 	 * param		: double long, double lat
 	 * notice		: �꾩옱 �ㅽ뿕�쇱븘 collection 'test_content' �ъ슜
-	 * 					�멸퀎���꾩튂 : 127.00111 , 37.26711
+	 * 					lat : 127.00111 , long : 37.26711
 	 * */
 	
 	static double[] InGyae = {127.00111, 37.26711 };
@@ -447,8 +447,8 @@ public class MongoDAO {
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		
 		BasicDBList position = new BasicDBList();
-		position.put(0, l_long);
-		position.put(1, l_lat);		
+		position.put(LocationBean.LAT, l_lat);
+		position.put(LocationBean.LONG, l_long);		
 		
 		DBCursor iter = 
 				col.find(new BasicDBObject("provider.location", 
@@ -588,7 +588,6 @@ public class MongoDAO {
 		position.put(LocationBean.LAT, l_lat);
 		position.put(LocationBean.LONG, l_long);
 		
-		System.out.println(l_lat + " ; " + l_long);
 		
 		DBCursor iter = col.find(
 						new BasicDBObject("provider.location", 
@@ -736,8 +735,8 @@ public class MongoDAO {
 			LocationBean location = new LocationBean(
 					(String)dbLocation.get(LocationBean.KEY_NAME),
 					(String)dbLocation.get(LocationBean.KEY_DESCRIPT),
-					(double)pos.get(0), 
-					(double)pos.get(1));
+					(double)pos.get(LocationBean.LAT), 
+					(double)pos.get(LocationBean.LONG));
 			GenreBean[] genre = {new GenreBean("", (String)dbProvider.get(ProviderBean.KEY_GENRE))};
 			
 			BasicDBList images = (BasicDBList)dbProvider.get(ProviderBean.KEY_IMAGES); 	
