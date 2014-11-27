@@ -60,7 +60,10 @@ body{
 img{
     object-fit : cover;
 }
-
+textarea{
+    resize : none;
+    text-align : left;
+}
 /*top navbar 에 대한 css입니다.*/
 .seetreet-navbar{
     box-shadow : 0px 0px 2px;
@@ -386,7 +389,7 @@ img{
     margin-bottom : 10px;
 }
 .seetreet-makecontent-container .start-area input{
-    text-align : center;
+    text-align : left;
     height : 40px;
 }
 .start-chain-button {
@@ -397,9 +400,10 @@ img{
 }
 .start-pic-list img{
     margin : 10px 10px;
-    width : 200px;
-    height : 200px;
-    border : 1px solid;
+    width : 150px;
+    height : 150px;
+    /*border : 1px solid;*/
+    cursor : pointer;
 }
 .start-map{
     width : 600px;
@@ -832,6 +836,7 @@ img{
     overflow : hidden;
     text-overflow : ellipsis;
     height : 85px;
+    cursor : pointer;
 }
 #content-popup .modal-footer .additional-info-area .provider-info-area img{
     width : 80px;
@@ -847,6 +852,7 @@ img{
     overflow : hidden;
     text-overflow : ellipsis;
     height : 85px;
+    cursor : pointer;
 }
 #content-popup .modal-footer .additional-info-area .artist-info-area img{
     width : 80px;

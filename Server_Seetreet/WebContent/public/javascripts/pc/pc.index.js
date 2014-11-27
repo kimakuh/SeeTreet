@@ -55,16 +55,20 @@ tabmanager.topbarmanager = function(select_menu){
     $('.container').hide();
     if(select_menu == 'topbar-user'){
         $('.seetreet-container').show();
+        box_Factory.content.initContentData(function(){
+            initialize_location(function(){
+                contentshow(latitude, longitude);
+            });
+        });
     }
     else{
         $('.seetreet-makecontent-container').show();
         if(select_menu == 'topbar-provider'){
-            $('.main-provider').show();
-            $('.main-artist').hide();
+            manage_providerinfo.loadpage();
         }
         else{
-            $('.main-provider').hide();
-            $('.main-artist').show();
+            manage_artistinfo.load.loadpage();
+
         }
     }
 };

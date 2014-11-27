@@ -9,10 +9,15 @@ box_Factory.content.contentpagenum = 0;
 box_Factory.content.finishdatanum = 0;
 var testnum = 0;
 //
-box_Factory.content.initContentData = function(){
+box_Factory.content.initContentData = function(cb){
+    $('.seetreet-container').find('.content-list-area').find('.contentlist').remove();
     // contentArray를 비워주고
-
+    box_Factory.content.contentArray = [];
     // page넘버를 1로 만들어준다.
+    box_Factory.content.contentpagenum = 0;
+    current_content_num = 0;
+    current_group_num = 0;
+    cb();
 };
 
 // 더미데이터 넣기

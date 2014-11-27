@@ -27,7 +27,9 @@ html {height:94%;}
 body#hellomain{
     /*margin : 56px 0 0 0 ;*/
     font-family : OpenSans-Bold, nanum-gothic, OpenSans-SemiBold, OpenSans-Regular;
-    background-color : #eaeeed;
+    background-image : url("http://upload.wikimedia.org/wikipedia/commons/6/67/Buskers_on_Royal_Street,_New_Orleans,_2004.jpg");
+    backgroun-repeat : no-repeat;
+    /*background-color : #eaeeed;*/
     padding-bottom : 56px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -43,32 +45,26 @@ body#hellomain{
     margin-top : 250px;
     text-align: center;
 }
-
 .container .seetreet-main-title .seetreet-title{
     font-size : 50px;
 }
-
 .container .seetreet-main-title form{
     margin-top : 20px;
 }
-
 .container .seetreet-main-title input[type="text"]{
     height : 40px;
 }
 .container .seetreet-main-title input[type="password"]{
     height : 40px;
 }
-
 .container .seetreet-main-title button {
     width : 120px;
 }
-
 .container .seetreet-main-title .login-input-group .button-group .checkbox{
     display : inline-block;
     margin-right : 90px;
     height : 0px;
 }
-
 .container .seetreet-main-title .login-input-group .bottom-group{
     margin-top : 310px;
 }
