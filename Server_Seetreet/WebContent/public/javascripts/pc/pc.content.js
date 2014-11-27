@@ -50,39 +50,52 @@ var contentshow = function(latitude_, longitude_){
             else{
                 box_Factory.content.createContent(box_Factory.content.contentArray[i], current_group_num ,'small');
             }
-
         }
     });
 };
 
 $(document).ready(function(){
     initialize_location(function(){
-        console.log(latitude + ' - ' + longitude);
         contentshow(latitude, longitude);
     });
     $(document).on("click", ".content", function(e){
-        var target_dataindex = $(e.currentTarget).attr('data-index');
-        var contentinfo = box_Factory.content.get_a_content(target_dataindex);
+            var target_dataindex = $(e.currentTarget).attr('data-index');
+            var contentinfo = box_Factory.content.get_a_content(target_dataindex);
 //        var contentinfo = box_Factory.content.contentArray[target_dataindex];
 
-        modal_Factory.contentModal.loadModal(contentinfo);
+            modal_Factory.contentModal.loadModal(contentinfo);
     });
     $('.content-append-area').find('img').click(function(){
         contentshow(latitude, longitude);
     });
-    $('#content-popup').find('.provider-info-area').click(function(){
-        $('#content-popup').modal('hide');
-        $('#provider-popup').modal('show');
+    $('#content-popup').find('.provider-info-area').click(function(e){
+        var targetId = $(e.currentTarget).attr('identification-value');
+        modal_Factory.providerModal.getProviderInfo(targetId);
     });
     $('#content-popup').find('.artist-info-area').click(function(){
         $('#content-popup').modal('hide');
         $('#artist-popup').modal('show');
     });
     $('#search-location').click(function(){
+        map_Manage.search_popup_map.clearMap();
+        $('#finish-search').show();
+        $('#provider-finish-search').hide();
         $('#location-search-popup').modal('show');
     });
+    $('#location-search-body').keydown(function(e){
+        var code = e.keyCode || e.which;
+        if(code == 13){
+            var find_location = $('#location-search-body').val();
+            map_Manage.searchlocation(find_location, function(){
+                map_Manage.set_searchMap('search');
+            });
+        }
+    });
 
-
+    $('#finish-search').click(function(){
+        map_Manage.refreshContent(map_Manage.userSelectLocation.getLat(), map_Manage.userSelectLocation.getLng());
+        $('#location-search-popup').modal('hide');
+    });
 });
 
 

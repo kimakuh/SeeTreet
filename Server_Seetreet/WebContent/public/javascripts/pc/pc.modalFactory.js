@@ -17,26 +17,19 @@ modal_Factory.contentModal.loadModal = function(contentinfo){
     if(content_type == 'private'){
         var artist_name = contentinfo.artists[0].name;
     }
-//    var artist_name = "임지욱";
-
     var content_time = modal_Factory.content_convert_time(contentinfo.contentStartTime, contentinfo.contentEndTime);
-//    var content_time = modal_Factory.content_convert_time("1411200300PM", "1411200630PM");
 
     var storeTitle = contentinfo.provider.StoreTitle;
     var providerAddress = contentinfo.provider.StoreAddress;
-//    var providerAddress = '수원시 팔달구 인계동 1125번지';
     var artist_description      = '';
     var provider_description    = '';
     if(content_type == 'public'){
         artist_description = '';
-//        provider_description = modal_Factory.omit_unnecessary_description(contentinfo.provider.description);
         provider_description = modal_Factory.omit_unnecessary_description(contentinfo.provider.description);
     }
     else{
         artist_description = modal_Factory.omit_unnecessary_description(contentinfo.artists[0].description);
         provider_description = modal_Factory.omit_unnecessary_description(contentinfo.provider.description);
-//        artist_description = contentinfo.artists[0].description;
-//        provider_description = contentinfo.provider.description;
     }
     var provider_img_array = new Array();
     for(var index=0 ; index < 3 ; index++){
@@ -55,7 +48,7 @@ modal_Factory.contentModal.loadModal = function(contentinfo){
     var artist_img_array = new Array();
     if(content_type == 'public'){
         for(var index=0 ; index < 3 ; index++){
-            artist_img_array.push('./images/seetreetimg/default_image.jpg');
+            artist_img_array.push('./images/seetreetimg/content_default.jpg');
         }
     }
     else{
@@ -64,7 +57,7 @@ modal_Factory.contentModal.loadModal = function(contentinfo){
                 artist_img_array.push(contentinfo.artists[0].artistImages[index]);
             }
             else{
-                artist_img_array.push('./images/seetreetimg/default_image.jpg');
+                artist_img_array.push('./images/seetreetimg/content_default.jpg');
             }
         }
     }
@@ -72,12 +65,19 @@ modal_Factory.contentModal.loadModal = function(contentinfo){
         latitude : contentinfo.provider.location.coordinates[1],
         longitude : contentinfo.provider.location.coordinates[0],
         contentType : content_type,
-        storeName : storeTitle,
-        target : content_oMap
+        target : content_oMap,
+        storeName : storeTitle
     };
+    var providerId = contentinfo.provider._id;
+    var artistId;
+    if(content_type == "private"){
+        artistId = contentinfo.artists[0]._id;
+    }
+    else{
+        artistId = "seetreet";
+    }
 
     $('#content-popup').modal('show');
-    console.log('모달 열리고 데이터 로딩');
     // 이미지 채우기
     var img_target_provider = $('#content-popup').find('.provider-image-slider');
     modal_Factory.addImageslider(provider_img_array, img_target_provider);
@@ -94,46 +94,103 @@ modal_Factory.contentModal.loadModal = function(contentinfo){
     $('#content-popup').find('.content-detail-area').find('.content-detail-providerdescription').find('.description').text(provider_description);
     $('#content-popup').find('.additional-info-area').find('.provider-info-area').find('img').attr('src', provider_img_array[0]);
     $('#content-popup').find('.additional-info-area').find('.provider-info-area').find('span').text(storeTitle);
+    $('#content-popup').find('.additional-info-area').find('.provider-info-area').attr('identification-value', providerId);
+
     $('#content-popup').find('.additional-info-area').find('.artist-info-area').find('img').attr('src', artist_img_array[0]);
     $('#content-popup').find('.additional-info-area').find('.artist-info-area').find('span').text(artist_name);
+    $('#content-popup').find('.additional-info-area').find('.artist-info-area').attr('identification-value', artistId);
     map_Manage.set_map(mapinfo);
-//    $('#content-popup').on('shown.bs.modal', function(){
-//        console.log('모달 열리고 데이터 로딩');
-//        // 이미지 채우기
-//        var img_target_provider = $('#content-popup').find('.provider-image-slider');
-//        modal_Factory.addImageslider(provider_img_array, img_target_provider);
-//        var img_target_artist = $('#content-popup').find('.artist-image-slider');
-//        modal_Factory.addImageslider(artist_img_array, img_target_artist);
-//        // 내용 채우기
-//        $('#content-popup').find('.write-comment-area').find('.comment-id').text(getCookie(COOKIE_USER_NAME));
-//        $('#content-popup').find('.content-detail-area').find('.content-detail-title').find('.detail-body').text(content_name);
-//        $('#content-popup').find('.content-detail-area').find('.content-detail-artisttitle').find('.detail-body').text(artist_name);
-//        $('#content-popup').find('.content-detail-area').find('.content-detail-showtime').find('.detail-body').text(content_time);
-//        $('#content-popup').find('.content-detail-area').find('.content-detail-provider').find('.detail-body').text(storeTitle);
-//        $('#content-popup').find('.content-detail-area').find('.content-detail-address').find('.detail-body').text(providerAddress);
-//        $('#content-popup').find('.content-detail-area').find('.content-detail-artistdescription').find('.description').text(artist_description);
-//        $('#content-popup').find('.content-detail-area').find('.content-detail-providerdescription').find('.description').text(provider_description);
-//        $('#content-popup').find('.additional-info-area').find('.provider-info-area').find('img').attr('src', provider_img_array[0]);
-//        $('#content-popup').find('.additional-info-area').find('.provider-info-area').find('span').text(storeTitle);
-//        $('#content-popup').find('.additional-info-area').find('.artist-info-area').find('img').attr('src', artist_img_array[0]);
-//        $('#content-popup').find('.additional-info-area').find('.artist-info-area').find('span').text(artist_name);
-//        map_Manage.set_map(mapinfo);
-//    });
+
+    modal_Factory.hideAndshowinfo(content_type);
 };
-var teststring = '2014년 3월부터 매월 셋째 주 목요일마다 성남아트센터 &lt;마티네 콘서트&gt;가 진행된다. 보다 다양한 주제를 통해 폭넓은 클래식 레퍼토리를다루고자 한다. 최수열 지취자가 이끄는 여러 단체의 유려한 연주와 4년 연속 &lt;마티네콘서트&gt;의진행' +
+
+modal_Factory.hideAndshowinfo = function(contentType){
+    if(contentType == 'public'){
+        // 아티스트 소개 (hide)
+        $('#content-popup').find('.content-detail-area').find('.content-detail-artistdescription').hide();
+        // 아티스트 이름 (hide)
+        $('#content-popup').find('.artist-info-area').hide();
+    }
+    else{
+        // 아티스트 소개 (show)
+        $('#content-popup').find('.content-detail-area').find('.content-detail-artistdescription').show();
+        // 아티스트 이름 (show)
+        $('#content-popup').find('.artist-info-area').show();
+    }
+};
+
+modal_Factory.providerModal ={};
+modal_Factory.providerModal.getProviderInfo = function(providerId){
+    $('#content-popup').modal('hide');
+    getProvider(providerId, function(data, status, res){
+        if(status == 'success'){
+            var providerdata = data.data;
+            modal_Factory.providerModal.loadModal(providerdata);
+            $('#provider-popup').modal('show');
+        }
+        else{
+            alert('실패');
+        }
+    });
+};
+modal_Factory.providerModal.loadModal = function(providerInfo){
+//    var providerInfo = {
+//        providerImage : ["./images/seetreetimg/5mile1.jpg", "./images/seetreetimg/5mile2.jpg", "./images/seetreetimg/5mile3.jpg"],
+//        contentType : "SEETREET",
+//        favoriteGenre : {category : "음악", detailGenre : "인디밴드"},
+//        location : {"coordinates" : [127.00947, 37.2754700000006]},
+//        StoreTitle : "ZooCoffee",
+//        StoreAddress : "수원시 팔달구 인계동",
+//        StoreType : "커피전문점",
+//        description : "안녕하세요 주커피입니다."
+//    };
+    // provider Image Array
+    var providerImageSlider = $('#provider-popup').find('.provider-image-slider');
+    modal_Factory.addImageslider(providerInfo.providerImage, providerImageSlider);
+    // StoreTitle
+    var Modal_storeTitle = providerInfo.StoreTitle;
+    $('#provider-popup').find('.detail-area').find('.provider-detail-title').find('span').text(Modal_storeTitle);
+    // StoreType
+    var Modal_storeType = providerInfo.StoreType;
+    $('#provider-popup').find('.detail-area').find('.detail-location').find('.detail-body').text(Modal_storeType);
+    // location address
+    var Modal_storeAddress = providerInfo.StoreAddress;
+    $('#provider-popup').find('.detail-area').find('.detail-category').find('.detail-body').text(Modal_storeAddress);
+    // store description
+    var Modal_description = modal_Factory.omit_unnecessary_description(providerInfo.description);
+    $('#provider-popup').find('.detail-area').find('.detail-description').find('.detail-body').text(Modal_description);
+    // favorite Genre
+    var Modal_favoriteGenre = providerInfo.favoriteGenre.category + ' / ' + providerInfo.favoriteGenre.detailGenre;
+    $('#provider-popup').find('.detail-area').find('.detail-want-category').find('.detail-body').text(Modal_favoriteGenre);
+    // location geography
+    var mapinfo = {
+        latitude : providerInfo.location.coordinates[1],
+        longitude : providerInfo.location.coordinates[0],
+        contentType : "public",
+        target : provider_oMap,
+        storeName : Modal_storeTitle
+    };
+    map_Manage.set_map(mapinfo);
+
+};
+
+modal_Factory.providerModal.loadHistory = function(){
+
+};
+
+var teststring = '2014년 3월부터 매월 셋째 주 목요일마다&lt; 성남아트센터 &lt;마티네 콘서트&gt;가 진행된다. 보&lt;다 다양한 주제를 통해 폭넓은 클래식 레퍼토리를다루고자 한다. 최수열 지취자가 이끄는 여러 단체의 유려한 연주와 4년 연속 &lt;마티네콘서트&gt;의진행' +
     '을 맡은 팝페라 가수 카이의 따뜻한 해설로 클래식에 대한 궁금증을 ' +
     '해결해 나간다.<br>'
-var unnessary_description = ["<br>", "<br />", "&lt;", "&gt;", "&nbsp;", "&nbsp;"];
-
+var unnessary_description = ["<br>", "<br />", "&lt;", "&gt;", "&nbsp;"];
 modal_Factory.omit_unnecessary_description = function(description){
     var result_description = description;
     for(var word in unnessary_description){
-        console.log(unnessary_description[word]);
-        result_description = result_description.replace(unnessary_description[word], "");
+        while(result_description.search(unnessary_description[word]) != -1){
+            result_description = result_description.replace(unnessary_description[word], "");
+        }
     }
     return result_description;
 };
-
 // 모달에 띄우는 시간을 변형시키는 함수
 modal_Factory.content_convert_time = function(starttime, endtime){
     var showday = '';
@@ -143,12 +200,16 @@ modal_Factory.content_convert_time = function(starttime, endtime){
         + endtime.substr(8,2) + ":" + endtime.substr(10,2) + endtime.substr(12,2);
     return showday;
 };
-
 // 모달에 이미지 슬라이더에 그림을 삽입
 modal_Factory.addImageslider = function(imagearray, targetslider){
+    var imageArrLength = imagearray.length;
     for(var index=0;index<3;index++){
-        var number = index+1;
-        $(targetslider).find('.pic' + number).attr('src', imagearray[index]);
+        if(index < imageArrLength){
+            $(targetslider).find('.pic' + index).attr('src', imagearray[index]);
+        }
+        else{
+            $(targetslider).find('.pic' + index).attr('src', './images/seetreetimg/content_default.jpg');
+        }
     }
 };
 

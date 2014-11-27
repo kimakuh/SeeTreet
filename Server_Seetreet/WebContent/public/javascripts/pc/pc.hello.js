@@ -31,8 +31,13 @@ $(document).ready(function(){
             joinfinish();
         }
     });
+    $('#input-password').keydown(function(e){
+        var code = e.keyCode || e.which;
+        if(code == 13){
+            login();
+        }
+    });
 });
-
 var join_id = '';
 var join_body = {
     "password" : "dummypassword",
@@ -40,7 +45,6 @@ var join_body = {
     "age" : "dummyage",
     "phone" : "dummyphone"
 };
-
 // join버튼 이벤트
 
 
@@ -113,18 +117,20 @@ var joinfinish = function(){
     console.log(join_body);
     postUserCreate(join_id, join_body, function(data, status, res){
         if(status == 'success'){
-            if(data.data == true){
-                console.log(data);
+            if(data.state == true){
 //                $('.login-input-group').show();
 //                $('.join-input-group').hide();
 //                $('#join-button').show();
 //                init_joindata();
-//                window.location.href = "./hello.see";
+                if(data.data != true){
+                    alert(data.data);
+                }
+                window.location.href = "./hello.see";
             }
             else{
-                alert('가입에 실패하였습니다.');
+                alert(data.data);
 //                init_joindata();
-//                window.location.href = "./hello.see";
+                window.location.href = "./hello.see";
             }
         }
         else{

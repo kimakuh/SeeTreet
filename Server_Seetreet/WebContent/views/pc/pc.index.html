@@ -6,11 +6,16 @@
     <!--javascripts 선언입니다.-->
 
     <script src="javascripts/common/jquery-2.0.2.js" type="text/javascript"></script>
+    <script src="javascripts/common/jquery-ui.js" type="text/javascript"></script>
     <script src="javascripts/common/bootstrap.js" type="text/javascript"></script>
     <script src="javascripts/common/moment.js" type="text/javascript"></script>
     <script src="javascripts/common/cookie_manager.js" type="text/javascript"></script>
     <script src="javascripts/common/gateway.js" type="text/javascript"></script>
-
+    <script src="javascripts/common/const.js" type="text/javascript"></script>
+	
+	<script src="javascripts/youngwook/dummy.js" type="text/javascript"></script>
+	<script src="javascripts/youngwook/gov3.slider.js" type="text/javascript"></script>
+	
     <script src="javascripts/common/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://openapi.map.naver.com/openapi/naverMap.naver?ver=2.0&key=dfe29cc274fa11eed5acb155733a60a2"></script>
 
@@ -26,6 +31,7 @@
     <link href="css/common/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css"/>
 
     <link href="css/pc/pc.index.css" rel = "stylesheet" type = "text/css" />
+    <link href="css/youngwook/gov3.slider.css" rel = "stylesheet" type = "text/css" />
     <!--<link href="css/pc/pc.provider.css" rel = "stylesheet" type = "text/css"/>-->
 </head>
 <body>
@@ -373,10 +379,10 @@
             <img src = "./images/seetreetimg/btn-plus-grey.png">
         </div>
     </div>
-    <div class = "seetreet-makecontent-container container">
-        <div class = "tabinfo main-provider" style = "display : none;">
+    <div class = "seetreet-makecontent-container container" style = "display:none;" >
+        <div class = "tabinfo main-provider">
             <div class = "start-area">
-                <div class = "start-input-first" style = "display : none;">
+                <div class = "start-input-first">
                     <div class = "start-title">
                         SeeTreet
                     </div>
@@ -394,26 +400,28 @@
                                 <div class = "col-lg-4 col-lg-offset-4">
                                     <label>가게의 사진을 넣어주세요</label>
                                 </div>
-                                <div class = "col-lg-4 col-lg-offset-4">
-                                    <button type = "button" class = "btn btn-lg btn-primary" id = "picture-button">
-                                        추가
-                                    </button>
-                                </div>
+                                <!--<div class = "col-lg-4 col-lg-offset-4">-->
+                                    <!--<button type = "button" class = "btn btn-lg btn-primary" id = "provider-picture-button">-->
+                                        <!--추가-->
+                                    <!--</button>-->
+                                <!--</div>-->
                             </div>
                         </form>
                         <div class = "start-pic-list provider">
-                            <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
-                            <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
-                            <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                            <input id = "imageFileInput" type = "file" onchange = "changeImage(event)" name = "" accept = "image/*" style = "visibility: hidden;position:absolute;">
+                            <!--<input id = "imageFileInput" type = "file" accept = "image/*" style = "visibility: hidden;">-->
+                            <img id = "providerInputimage0" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img id = "providerInputimage1" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img id = "providerInputimage2" src = "./images/seetreetimg/default_image.jpg"/>
                             <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
                             <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
                         </div>
                     </div>
-                    <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                    <button type = "button" id = "providerinput1" class = "btn btn-lg btn-primary next-btn">
                         다음
                     </button>
                 </div>
-                <div class = "start-input-second" style = "display : none;">
+                <div class = "start-input-second">
                     <div class = "start-title">
                         SeeTreet
                     </div>
@@ -427,93 +435,127 @@
                         <div class = "form-group">
                             <div class = "col-lg-2 col-lg-offset-4">
                                 <select class = "start-main-category form-control">
-                                    <!--<option>장르</option>-->
-                                    <option>Music</option>
-                                    <option>Art</option>
                                 </select>
                             </div>
                             <div class = "col-lg-2">
                                 <select class = "start-sub-category form-control">
-                                    <!--<option>세부장르</option>-->
-                                    <option>hiphop</option>
-                                    <option>guitar</option>
                                 </select>
                             </div>
                         </div>
                         <div class = "form-group">
                             <div class = "col-lg-4 col-lg-offset-4">
-                                <button type = "button" class = "btn btn-primary btn-lg next-btn">
+                                <button type = "button" id = "providerinput2" class = "btn btn-primary btn-lg next-btn">
                                     다음
                                 </button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class = "start-input-third" style = "display : none;">
+                <div class = "start-input-third">
                     <div class = "start-title">
                         SeeTreet
                     </div>
                     <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
                     <form class = "form-horizontal" role = "form">
-                        <label class = "input-information">상호의 위치를 선택해주세요</label>
-                        <div class = "row">
-                            <div class = "col-lg-6 col-lg-offset-3">
-                                <div class = "input-group">
-                                    <input type = "text" class = "form-control">
-                                    <span class = "input-group-btn">
-                                        <button class = "btn btn-default start-chain-button" type = "button">Search</button>
-                                    </span>
-                                </div>
+                        <!--<label class = "input-information">상호의 위치를 선택해주세요</label>-->
+                        <div class="input-group">
+                            <input type="text" class="form-control" id = "provider-search-body" placeholder="주소검색">
+                            <span class="input-group-btn">
+                                <!--<button class = "btn btn-default dropdown-toggle" data-toggle = "dropdown" type = "button" id = "location-search-button">-->
+                                <button class = "btn btn-default" type = "button" id = "provider-search-button">
+                                    <span class = "glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                        <!--<div class = "row">-->
+                            <!--<div class = "col-lg-6 col-lg-offset-3">-->
+                                <!--<div class = "input-group" style = "width : 600px;margin-left : 48px;">-->
+                                    <!--<input type = "text" id = "provider-search-body" class = "form-control">-->
+                                    <!--<span class = "input-group-btn">-->
+                                        <!--&lt;!&ndash;<button type = "button" class = "btn btn-default start-chain-button" id = "provider-search-btn" >&ndash;&gt;-->
+                                        <!--<button type = "button" class = "btn btn-default"id = "provider-search-btn">-->
+                                            <!--<span class = "glyphicon glyphicon-search"></span>-->
+                                        <!--</button>-->
+                                    <!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class = "form-group">
+                            <div class = "provider start-map" id = "provider-map">
+                                <script type = "text/javascript">
+                                    var provider_TargetPoint = new nhn.api.map.LatLng(37.567541, 126.9773356);
+                                    var defaultLevel = 10;
+                                    var provider_location_oMap = new nhn.api.map.Map(document.getElementById('provider-map'), {
+                                        point : provider_TargetPoint,
+                                        zoom : defaultLevel,
+                                        enableWheelZoom : true,
+                                        enableDragPan : true,
+                                        enableDblClickZoom : false,
+                                        mapMode : 0,
+                                        activateTrafficMap : false,
+                                        activateBicycleMap : false,
+                                        minMaxLevel : [ 1, 14 ],
+                                        size : new nhn.api.map.Size(600, 400)
+                                    });
+                                    provider_location_oMap.attach('click', function(oCustomEvent){
+                                        provider_location_oMap.clearOverlay();
+                                        var oPoint = oCustomEvent.point;
+                                        var oTarget = oCustomEvent.target;
+                                        var oSize = new nhn.api.map.Size(28, 37);
+                                        var oOffset = new nhn.api.map.Size(14, 37);
+                                        var oIcon = new nhn.api.map.Icon('http://static.naver.com/maps2/icons/pin_spot2.png', oSize, oOffset);
+                                        var oMarker = new nhn.api.map.Marker(oIcon);
+                                        oMarker.setPoint(oPoint);
+                                        provider_location_oMap.addOverlay(oMarker);
+                                        map_Manage.providerSelectLocation = oPoint;
+                                        // map_Manage.providerSelectLocation
+                                        getcoord2locatestr(map_Manage.providerSelectLocation.getLat(), map_Manage.providerSelectLocation.getLng(), function(data, status, res){
+                                            if(status == 'success'){
+                                                var addressname = data.data.name1+ " " + data.data.name2 + " " + data.data.name3;
+                                                $('.main-provider').find('.start-input-third').find('.targetaddress').text(addressname);
+                                            }
+                                        });
+
+                                    });
+                                </script>
                             </div>
                         </div>
                         <div class = "form-group">
-                            <div class = "provider start-map" style = "background-color : red;">
-                                map
-                            </div>
+                            <label class = "targetaddress"></label>
                         </div>
                         <div class = "form-group">
-                            <label>마포구 서교동 232-21</label>
-                        </div>
-                        <div class = "form-group">
-                            <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                            <button type = "button" id = "providerinput3" class = "btn btn-lg btn-primary next-btn">
                                 다음
                             </button>
                         </div>
                     </form>
 
                 </div>
-                <div class = "start-input-fourth" style = "display : none;">
+                <div class = "start-input-fourth">
                     <div class = "start-title">
                         SeeTreet
                     </div>
                     <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
                     <form class = "form-horizontal" role = "form">
                         <div class = "form-group">
-                            <div class = "col-lg-2 col-lg-offset-4">
-                                업종을 선택해주세요
-                            </div>
-                            <div class = "col-lg-2">
-                                <select class = "form-control">
-                                    <option>Coffee</option>
-                                    <option>Food</option>
-                                    <option>Pub</option>
+                            <div class= "col-lg-offset-5">
+                                <select class = "form-control" id = "provider_storetype" style = "width : 240px;">
                                 </select>
                             </div>
                         </div>
-                        <div class = "form-group">
-                            <div class = "col-lg-2 col-lg-offset-5">
-                                <label>간단한 소개를 부탁드려요</label>
-                            </div>
-                        </div>
+                        <!--<div class = "form-group">-->
+                            <!--<div class = "col-lg-2 col-lg-offset-5">-->
+                                <!--<label>간단한 소개를 부탁드려요</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <div class = "form-group">
                             <div class = "col-lg-4 col-lg-offset-4">
-                                <textarea class = "form-control" rows = "3">
-
+                                <textarea class = "form-control" id = "input-provider-description" placeholder = "간단한 가게 소개를 부탁드려요." rows = "4">
                                 </textarea>
                             </div>
                         </div>
                         <div class = "form-group">
-                            <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                            <button type = "button" id = "providerinput4" class = "btn btn-lg btn-primary next-btn">
                                 완료
                             </button>
                         </div>
@@ -536,13 +578,13 @@
                             <!--Wrapper for slides-->
                             <div class = "carousel-inner">
                                 <div class = "item active">
-                                    <img src = "./images/seetreetimg/default_image.jpg"/>
+                                    <img class = "pic0" src = "./images/seetreetimg/default_image.jpg"/>
                                 </div>
                                 <div class = "item">
-                                    <img src = "./images/seetreetimg/default_image.jpg"/>
+                                    <img class = "pic1" src = "./images/seetreetimg/default_image.jpg"/>
                                 </div>
                                 <div class = "item">
-                                    <img src = "./images/seetreetimg/default_image.jpg"/>
+                                    <img class = "pic2" src = "./images/seetreetimg/default_image.jpg"/>
                                 </div>
                             </div>
                             <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -564,23 +606,35 @@
                         <span>업종</span>
                         <span class = "modifycolon">:</span>
                         <select class = "form-control">
-                            <option>Coffee</option>
+                            <option>업종을 선택하세요</option>
+                            <option>커피전문점</option>
+                            <option>호프</option>
+                            <option>음식점</option>
+                            <option>라이브카페</option>
                         </select>
                     </div>
                     <div class = "modify-location">
                         <span>지역</span>
                         <span class = "modifycolon">:</span>
                         <input type = "text" class = "form-control" value = "수원시 팔달구 인계동 1125번지" disabled>
-                        <button type = "button" class = "btn btn-default">Map</button>
+                        <button type = "button" class = "btn btn-default" id = "provider-search-map-button">Map</button>
                     </div>
                     <div class = "modify-favorite">
                         <span>선호장르</span>
                         <span class = "modifycolon">:</span>
-                        <select class = "form-control">
-                            <option>Music</option>
+                        <select class = "form-control category">
+                            <option>장르를 선택하세요</option>
+                            <option>음악</option>
+                            <option>미술</option>
+                            <option>마술</option>
+                            <option>플래시몹</option>
                         </select>
-                        <select class = "form-control">
-                            <option>Pop</option>
+                        <select class = "form-control detailGenre">
+                            <option>세부 장르를 선택하세요</option>
+                            <option>인디밴드</option>
+                            <option>팝</option>
+                            <option>힙합</option>
+                            <option>전시회</option>
                         </select>
                     </div>
                     <div class = "modify-description">
@@ -820,22 +874,22 @@
                         </div>
                     </form>
                     <div class = "choose-photo-area">
-                        <form class = "form-horizontal" role = "form">
-                            <div class = "form-group">
-                                <div class = "col-lg-4 col-lg-offset-4">
-                                    <label>Artist의 사진을 넣어주세요</label>
-                                </div>
-                                <div class = "col-lg-4 col-lg-offset-4">
-                                    <button type = "button" class = "btn btn-lg btn-primary" id = "picture-button">
-                                        추가
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        <!--<form class = "form-horizontal" role = "form">-->
+                            <!--<div class = "form-group">-->
+                                <!--<div class = "col-lg-4 col-lg-offset-4">-->
+                                    <!--<label>Artist의 사진을 넣어주세요</label>-->
+                                <!--</div>-->
+                                <!--<div class = "col-lg-4 col-lg-offset-4">-->
+                                    <!--<button type = "button" class = "btn btn-lg btn-primary" id = "picture-button">-->
+                                        <!--추가-->
+                                    <!--</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</form>-->
                         <div class = "start-pic-list provider">
-                            <!--<img src = "./images/providerimage/8.jpg"/>-->
-                            <!--<img src = "./images/providerimage/8.jpg"/>-->
-                            <!--<img src = "./images/providerimage/8.jpg"/>-->
+                            <img class = "pic0" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img class = "pic1" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img class = "pic2" src = "./images/seetreetimg/default_image.jpg"/>
                             <!--<img src = "./images/providerimage/8.jpg"/>-->
                             <!--<img src = "./images/providerimage/8.jpg"/>-->
                         </div>
@@ -1044,7 +1098,7 @@
                     <!--<div class = "group-title">busking</div>-->
                     <div class = "listbox createbox artist">
                         <div class = "beforecreate">
-                            <img src = "./images/providerimage/create_icon.png"/>
+                            <img src = "./images/seetreetimg/5mile2.jpg"/>
                         </div>
                         <div class = "input-time" style = "display : none;">
                         </div>
@@ -1139,13 +1193,13 @@
                                 <!--Wrapper for slides-->
                                 <div class = "carousel-inner">
                                     <div class = "item active">
+                                        <img class = "pic0" src = "./images/seetreetimg/default_image.jpg"/>
+                                    </div>
+                                    <div class = "item">
                                         <img class = "pic1" src = "./images/seetreetimg/default_image.jpg"/>
                                     </div>
                                     <div class = "item">
                                         <img class = "pic2" src = "./images/seetreetimg/default_image.jpg"/>
-                                    </div>
-                                    <div class = "item">
-                                        <img class = "pic3" src = "./images/seetreetimg/default_image.jpg"/>
                                     </div>
                                 </div>
                                 <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -1169,13 +1223,13 @@
                                 <!--Wrapper for slides-->
                                 <div class = "carousel-inner">
                                     <div class = "item active">
+                                        <img class = "pic0" src = "./images/seetreetimg/default_image.jpg"/>
+                                    </div>
+                                    <div class = "item">
                                         <img class = "pic1" src = "./images/seetreetimg/default_image.jpg"/>
                                     </div>
                                     <div class = "item">
                                         <img class = "pic2" src = "./images/seetreetimg/default_image.jpg"/>
-                                    </div>
-                                    <div class = "item">
-                                        <img class = "pic3" src = "./images/seetreetimg/default_image.jpg"/>
                                     </div>
                                 </div>
                                 <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -1218,11 +1272,11 @@
                         </div>
                     </div>
                         <div class = "content-detail-commentcount">
-                            <img src = "./images/providerimage/comment_icon.png"/>
+                            <img src = "./images/seetreetimg/comment_icon.png"/>
                             <span>100</span>
                         </div>
                         <div class = "content-detail-likecount">
-                            <img src = "./images/providerimage/like.png"/>
+                            <img src = "./images/seetreetimg/like.png"/>
                             <span>85</span>
                         </div>
                     </div>
@@ -1237,7 +1291,7 @@
                     <div class = "content-comment-area">
                         <div class = "comment-title">댓글</div>
                         <div class = "comment-object">
-                            <img  class = "user-upload-image" src = "./images/providerimage/artist1.jpg">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/5mile2.jpg">
                             <div class = "comment-user-name">임지욱</div>
                             <div class = "comment-upload-time">2014/09/07 17:53:00</div>
                             <div class = "comment-user-content">
@@ -1266,11 +1320,28 @@
                             위치 정보
                         </div>
                         <div class = "map-area" id = "content-location-map"></div>
-                        <div class = "provider-info-area">
+                        <script type = "text/javascript">
+                            var oTargetPoint = new nhn.api.map.LatLng(37.567541, 126.9773356);
+                            var defaultLevel = 10;
+                            var content_oMap = new nhn.api.map.Map(document.getElementById('content-location-map'), {
+                                point : oTargetPoint,
+                                zoom : defaultLevel,
+                                enableWheelZoom : false,
+                                enableDragPan : true,
+                                enableDblClickZoom : false,
+                                mapMode : 0,
+                                activateTrafficMap : false,
+                                activateBicycleMap : false,
+                                minMaxLevel : [ 1, 14 ],
+                                size : new nhn.api.map.Size(300, 195)
+                            });
+//                            content_oMarker.setPoints(oTargetPoint);
+                        </script>
+                        <div class = "provider-info-area" identification-value = "123">
                             <img src = "./images/seetreetimg/default_image.jpg"/>
                             <span class = "provider-name">AlohaTable</span>
                         </div>
-                        <div class = "artist-info-area">
+                        <div class = "artist-info-area" identification-value = "123">
                             <img src = "./images/seetreetimg/default_image.jpg"/>
                             <span class = "artist-name">공공데이터</span>
                         </div>
@@ -1295,13 +1366,13 @@
                                 <!--Wrapper for slides-->
                                 <div class = "carousel-inner">
                                     <div class = "item active">
-                                        <img src = "./images/seetreetimg/5mile1.jpg"/>
+                                        <img class = "pic0" src = "./images/seetreetimg/5mile1.jpg"/>
                                     </div>
                                     <div class = "item">
-                                        <img src = "./images/seetreetimg/5mile2.jpg"/>
+                                        <img class = "pic1" src = "./images/seetreetimg/5mile2.jpg"/>
                                     </div>
                                     <div class = "item">
-                                        <img src = "./images/seetreetimg/5mile3.jpg"/>
+                                        <img class = "pic2" src = "./images/seetreetimg/5mile3.jpg"/>
                                     </div>
                                 </div>
                                 <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -1322,26 +1393,43 @@
                             <span>Alohatable</span>
                         </div>
                         <div class = "detail-category">
-                            <span class = "detail-title">업종 : </span><span>커피숍</span>
+                            <span class = "detail-title">업종 : </span><span class = "detail-body">커피숍</span>
                         </div>
                         <div class = "detail-location">
-                            <span class = "detail-title">위치 : </span><span>수원시 팔달구 인계동 1123번지</span>
+                            <span class = "detail-title">위치 : </span><span class = "detail-body">수원시 팔달구 인계동 1123번지</span>
                         </div>
                         <div class = "detail-description">
-                            <span class = "detail-title">소개 : </span><span>안녕하세요 인계동에 위치하고 있는 AlohaTable입니다.</span>
+                            <span class = "detail-title">소개 : </span><span class = "detail-body">안녕하세요 인계동에 위치하고 있는 AlohaTable입니다.</span>
                         </div>
                         <div class = "detail-want-category">
-                            <span class = "detail-title">선호장르 : </span><span>인디밴드</span>
+                            <span class = "detail-title">선호장르 : </span><span class = "detail-body">인디밴드</span>
                         </div>
-                        <div class = "detail-history-count">
-                            <img src = "./images/providerimage/number.png"/>
-                            <span>85</span>
+                        <!--<div class = "detail-history-count">-->
+                            <!--<img src = "./images/seetreetimg/number.png"/>-->
+                            <!--<span>85</span>-->
+                        <!--</div>-->
+                        <!--<div class = "detail-like-count">-->
+                            <!--<img src = "./images/seetreetimg/like.png"/>-->
+                            <!--<span>85</span>-->
+                        <!--</div>-->
+                        <div class = "additional-info map" id = "provider-location-map">
+                            <script type = "text/javascript">
+                                var provider_oTargetPoint = new nhn.api.map.LatLng(37.567541, 126.9773356);
+                                var defaultLevel = 10;
+                                var provider_oMap = new nhn.api.map.Map(document.getElementById('provider-location-map'), {
+                                    point : provider_oTargetPoint,
+                                    zoom : defaultLevel,
+                                    enableWheelZoom : true,
+                                    enableDragPan : true,
+                                    enableDblClickZoom : false,
+                                    mapMode : 0,
+                                    activateTrafficMap : false,
+                                    activateBicycleMap : false,
+                                    minMaxLevel : [ 1, 14 ],
+                                    size : new nhn.api.map.Size(410, 223)
+                                });
+                            </script>
                         </div>
-                        <div class = "detail-like-count">
-                            <img src = "./images/providerimage/like.png"/>
-                            <span>85</span>
-                        </div>
-                        <div class = "additional-info map" id = "provider-location-map"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1350,7 +1438,7 @@
                     </div>
                     <div class = "history-list">
                         <div class = "history-content" data-index = "abc">
-                            <img class = "history-content-image" src = "./images/providerimage/jebi1.jpg"/>
+                            <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
                             <div class = "history-info">
                                 <div class = "history-date">2014/09/12 18:00PM</div>
                                 <div class = "history-place">AlohaTable</div>
@@ -1358,12 +1446,12 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
                         <div class = "history-content" data-index = "abc">
-                            <img class = "history-content-image" src = "./images/providerimage/jebi2.jpg"/>
+                            <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
                             <div class = "history-info">
                                 <div class = "history-date">2014/08/10 20:00PM</div>
                                 <div class = "history-place">AlohaTable</div>
@@ -1371,7 +1459,7 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
@@ -1384,7 +1472,7 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
@@ -1397,7 +1485,7 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
@@ -1410,7 +1498,7 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
@@ -1423,7 +1511,7 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
@@ -1448,13 +1536,13 @@
                                 <!--Wrapper for slides-->
                                 <div class = "carousel-inner">
                                     <div class = "item active">
-                                        <img src = "./images/providerimage/artist4.jpg"/>
+                                        <img  class = "pic0" src = "./images/seetreetimg/5mile2.jpg"/>
                                     </div>
                                     <div class = "item">
-                                        <img src = "./images/providerimage/artist_5.jpg"/>
+                                        <img class = "pic1" src = "./images/seetreetimg/5mile2.jpg"/>
                                     </div>
                                     <div class = "item">
-                                        <img src = "./images/providerimage/artist6.jpg"/>
+                                        <img class = "pic2" src = "./images/seetreetimg/5mile2.jpg"/>
                                     </div>
                                 </div>
                                 <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -1486,11 +1574,11 @@
                             <span class = "detail-title">선호공연장소 : </span><span>라이브카페</span>
                         </div>
                         <div class = "detail-history-count">
-                            <img src = "./images/providerimage/number.png"/>
+                            <img src = "./images/seetreetimg/number.png"/>
                             <span>85</span>
                         </div>
                         <div class = "detail-like-count">
-                            <img src = "./images/providerimage/like.png"/>
+                            <img src = "./images/seetreetimg/like.png"/>
                             <span>85</span>
                         </div>
                         <div class="additional-info youtube">
@@ -1506,7 +1594,7 @@
                     </div>
                     <div class = "history-list">
                         <div class = "history-content" data-index = "abc">
-                            <img class = "history-content-image" src = "./images/providerimage/busking3.jpg"/>
+                            <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
                             <div class = "history-info">
                                 <div class = "history-date">2014/08/21 20:00PM</div>
                                 <div class = "history-place">제비다방</div>
@@ -1514,12 +1602,12 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
                         <div class = "history-content" data-index = "abc">
-                            <img class = "history-content-image" src = "./images/providerimage/livecafe3.jpg"/>
+                            <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
                             <div class = "history-info">
                                 <div class = "history-date">2014/09/06 18:00PM</div>
                                 <div class = "history-place">AlohaTable</div>
@@ -1527,20 +1615,7 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
-                                <span>85</span>
-                            </div>
-                        </div>
-                        <div class = "history-content" data-index = "abc">
-                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
-                            <div class = "history-info">
-                                <div class = "history-date">2014/09/27 19:00PM</div>
-                                <div class = "history-place">ZOO COFFEE</div>
-                                <div class = "history-artist">장기하와 얼굴들</div>
-                                <div class = "history-category">모던락</div>
-                            </div>
-                            <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
@@ -1566,7 +1641,7 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
@@ -1579,7 +1654,20 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/providerimage/like.png"/>
+                                <img src = "./images/seetreetimg/like.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/27 19:00PM</div>
+                                <div class = "history-place">ZOO COFFEE</div>
+                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/seetreetimg/like.png"/>
                                 <span>85</span>
                             </div>
                         </div>
@@ -1594,7 +1682,7 @@
                 <div class="modal-header">
                     <div class = "image-area">
                         <div class = "provider-image-slider">
-                            <img src = "./images/providerimage/busking_default.jpg"/>
+                            <img src = "./images/seetreetimg/5mile2.jpg"/>
                         </div>
                         <div class = "artist-image-slider">
                             <div class = "carousel slide">
@@ -1607,13 +1695,13 @@
                                 <!--Wrapper for slides-->
                                 <div class = "carousel-inner">
                                     <div class = "item active">
-                                        <img src = "./images/providerimage/IU.jpg"/>
+                                        <img src = "./images/seetreetimg/5mile2.jpg"/>
                                     </div>
                                     <div class = "item">
-                                        <img src = "./images/providerimage/alohatable.jpg"/>
+                                        <img src = "./images/seetreetimg/5mile2.jpg"/>
                                     </div>
                                     <div class = "item">
-                                        <img src = "./images/providerimage/thinkcoffee.jpg"/>
+                                        <img src = "./images/seetreetimg/5mile2.jpg"/>
                                     </div>
                                 </div>
                                 <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -1684,18 +1772,50 @@
                     <div class="input-group">
                         <input type="text" class="form-control" id = "location-search-body">
                         <span class="input-group-btn">
+                            <!--<button class = "btn btn-default dropdown-toggle" data-toggle = "dropdown" type = "button" id = "location-search-button">-->
                             <button class = "btn btn-default" type = "button" id = "location-search-button">
                                 <span class = "glyphicon glyphicon-search"></span>
                             </button>
                         </span>
                     </div>
                     <div id = "search-map">
-
+                        <script type = "text/javascript">
+                            var search_oTargetPoint = new nhn.api.map.LatLng(37.567541, 126.9773356);
+                            var defaultLevel = 10;
+                            var search_oMap = new nhn.api.map.Map(document.getElementById('search-map'), {
+                                point : oTargetPoint,
+                                zoom : defaultLevel,
+                                enableWheelZoom : true,
+                                enableDragPan : true,
+                                enableDblClickZoom : false,
+                                mapMode : 0,
+                                activateTrafficMap : false,
+                                activateBicycleMap : false,
+                                minMaxLevel : [ 1, 14 ],
+                                size : new nhn.api.map.Size(568, 460)
+                            });
+                            search_oMap.attach('click', function(oCustomEvent){
+                                search_oMap.clearOverlay();
+                                var oPoint = oCustomEvent.point;
+                                var oTarget = oCustomEvent.target;
+                                var oSize = new nhn.api.map.Size(28, 37);
+                                var oOffset = new nhn.api.map.Size(14, 37);
+                                var oIcon = new nhn.api.map.Icon('http://static.naver.com/maps2/icons/pin_spot2.png', oSize, oOffset);
+                                var oMarker = new nhn.api.map.Marker(oIcon);
+                                oMarker.setPoint(oPoint);
+                                search_oMap.addOverlay(oMarker);
+                                map_Manage.userSelectLocation = oPoint;
+                                map_Manage.providerModifyLocation = oPoint;
+                            });
+                        </script>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="common-button save-button" id="finish-search">
                         OK
+                    </button>
+                    <button type="button" class="common-button save-button" id="provider-finish-search">
+                        위치저장
                     </button>
                 </div>
             </div>

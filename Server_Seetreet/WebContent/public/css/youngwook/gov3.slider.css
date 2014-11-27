@@ -1,0 +1,226 @@
+.listview {
+	position: relative;
+	height: 350px;
+	width:100%;
+}
+
+.list_btn {
+	position: absolute;
+	z-index : 15;
+	width : 30px;
+	height : 100%;	
+	opacity: 0.8;
+	background-image: url("./btn-ok-grey.png");
+	background-repeat: no-repeat;
+	background-position: center;	
+}
+
+.list_btn:hover {
+	opacity: 0.9;
+}
+.list_btn:active {
+	opacity: 1;
+}
+
+.list_btn.prev_btn {	
+	left: 0;
+	top : 0;
+}
+
+.list_btn.next_btn {
+	right: 0;
+	top : 0;
+}
+
+.list_btn .bg_btn {
+	width : 100%;
+	height : 100%;	
+}
+
+.list_btn.prev_btn .bg_btn {
+	background : linear-gradient(to left, rgba(234,238,237,0), rgba(234,238,237,1));	
+}
+
+.list_btn.next_btn .bg_btn {
+	background : linear-gradient(to right, rgba(234,238,237,0), rgba(234,238,237,1));
+}
+
+.listview .viewport {
+	position:relative;
+	float : left;	
+	height : 100%;
+	width : 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	padding : 25px 0;
+	/*perspective: 1000px;*/
+}
+
+.box {
+	position : relative;
+	height : 300px;
+	width :200px;
+	margin-right : 20px;
+	display: inline-block;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position-x: center;
+	border-radius: 5px;
+	zoom : 1;
+	box-shadow: 0px 0px 10px #505050;
+	transition: box-shadow 2s;
+}
+.box:hover {	
+	z-index: 10;
+	box-shadow: none;
+}
+
+.box .image {	
+	height: 200px;	
+}
+
+.box .title {
+	width: 200px;
+	height: 20px;
+	background-color: rgba(255,0,0,1);
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	font-weight: bold;	
+}
+
+.box .option {
+	height: 80px;
+	width: 200px;
+	background-color: blue;
+	background-color: rgba(0,0,0,0.4);
+	border-radius: 0 0 5px 5px;
+}
+
+
+.box .box_hover {	
+	visibility : hidden;
+	position: absolute;
+	top: 0;	
+	width: 0%;
+	height: 0%;
+	border-radius : 5px;
+	background-color: rgba(0,0,0,0.0);
+	background-image: url("./btn-ok-grey.png");
+	background-repeat: no-repeat;
+	background-position: center;	
+	transition: background .5s ease-out , display .5s ease-out;
+}
+
+.box:hover > .box_hover {	
+	visibility : visible;
+	width: 100%;
+	height: 200px;
+	background-color: rgba(0,0,0,0.3);	
+}
+
+.box .box_hover:active {
+	background-image: url("./btn-ok-grey.png");
+}
+
+.box .box_hover h3 {
+	font-size : 10pt;
+	color : #fff;
+	width : 100%;
+	word-break: break-all;
+	white-space: normal;
+}
+
+.box .box_hover h3 strong {
+	font-weight: bold;
+}
+
+.box.artist {
+	/*margin-right: -100px;*/
+	/*transform : rotateY(30deg);
+	transition: transform 0.5s ease-out;*/
+}
+
+.box.artist .option.btn_permit {
+	background-image: url("./btn-ok-grey.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	transition : background .5s ease-out;
+}
+
+.box.artist .option.btn_permit:hover {
+	background-color : rgba(0,0,0,.8);	
+}
+
+
+.box.artist.confirm {
+	/*margin-right :20px;
+	margin-left : 20px;*/
+	/*transform: rotateY(0deg);*/
+	border : 1px solid red;
+	border-radius: 5px;
+}
+
+.box.artist:hover {	
+	/*transform: rotateY(0deg);*/
+}
+
+.p_content_container {
+	position:relative;	
+	height : 350px;
+	transition : height .5s ease-out , background .5s ease-out;
+	border-top: 1px solid #aaa;
+	overflow: hidden;
+}
+
+.p_content_container[data-id='empty'][data-state='init'] {	
+	height : 10px;
+}
+
+.p_content_container:nth-child(2) {
+	border-top: none;
+}
+
+.p_content_container[data-id='empty'] {
+	height : 300px;
+	background-color : rgba(0 ,0,0, 0.4);
+	background-image : url("../../images/seetreetimg/btn-plus-grey.png");
+	background-repeat: no-repeat;
+	background-position: center;	
+	border-radius : 10px;	
+}
+
+.p_content_container[data-id='empty']:hover {	
+	background-color : rgba(0 ,0,0, 0.6);
+	background-image : url("../../images/seetreetimg/btn-plus-yel.png");
+}
+
+
+.p_content_container .identity.box {
+	float : left;
+	margin : 25px 40px 25px 20px;
+}
+
+.p_content_container .listview {
+	float : left;
+	width : -webkit-calc(100% - 265px);
+	min-width: 200px;
+}
+
+.p_content_container .listview h2.p_empty_text {
+	display : none;
+	visibility : hidden;
+	width : 100%;
+	height : 100%;
+	line-height : 200px;
+	color : #303030;
+	font-size : 50pt;
+	text-align: center;
+	transition: display .5 ease-out
+}
+
+.p_content_container .listview.empty h2.p_empty_text {
+	display : block;
+	visibility: visible;
+}
+
