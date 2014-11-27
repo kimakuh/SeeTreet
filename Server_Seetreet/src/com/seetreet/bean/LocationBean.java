@@ -8,16 +8,16 @@ public class LocationBean {
 	
 	public static final String KEY_LATITUDE 	= "l_lat";
 	public static final String KEY_LONGITUDE 	= "l_long";
-	public static final String KEY_NAME			= "l_name";
-	public static final String KEY_DESCRIPT 	= "l_descript";
+	public static final String KEY_NAME			= "name";
+	public static final String KEY_DESCRIPT 	= "description";
 	public static final String KEY_COORDINATE	= "coordinates";
 	
 	/* latitude  : maximum -> 120
 	 * longitude : maximum -> 90
 	 * 
 	 * */
-	public static final int LAT = 0;
-	public static final int LONG = 1;
+	public static final int LAT = 1;
+	public static final int LONG = 0;
 	
 	public LocationBean(String name, String description , double latitude, double longitude) {
 		// TODO Auto-generated constructor stub

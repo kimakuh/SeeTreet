@@ -184,18 +184,23 @@ public class JoinController extends HttpServlet {
 			String storeType	= req.getParameter(ProviderBean.KEY_STORETYPE);
 			String address	 	= req.getParameter(ProviderBean.KEY_ADDRESS);
 
-			
-			String[] imageURLs = new String[images.length()];
-			for(int i = 0 ; i < images.length(); i++) {
-				imageURLs[i] = images.getString(i);
+			String[] encodedImages = new String[images.length()];
+			String[] imageURLs = null;
+			for(int i = 0; i < images.length(); i++) {
+				encodedImages[i] = images.getString(i);
 			}
+			
+			imageURLs = C.writeImageFileFromBase64(token, encodedImages);			
 			
 			String modTime = C.currentDate();
 			
 			
-			double latitude = (double)location.getJSONArray("coordinates").get(0);
-			double longitude = (double)location.getJSONArray("coordinates").get(1);
-			LocationBean loc = new LocationBean("", "", 
+			double latitude = (double)location.getDouble(LocationBean.KEY_LATITUDE);
+			double longitude = (double)location.getDouble(LocationBean.KEY_LONGITUDE);
+			String l_descript = location.has(LocationBean.KEY_DESCRIPT)?"":location.getString(LocationBean.KEY_DESCRIPT);
+			LocationBean loc = new LocationBean(
+										location.getString(LocationBean.KEY_NAME), 
+										l_descript, 
 										latitude, 
 										longitude);
 						

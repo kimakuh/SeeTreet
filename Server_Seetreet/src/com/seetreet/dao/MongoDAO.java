@@ -362,9 +362,9 @@ public class MongoDAO {
 		}				
 		
 		LocationBean loc = bean.getLocation();
-		BasicDBList coords = new BasicDBList();
-		coords.add(loc.getLatitude());
-		coords.add(loc.getLongitude());
+		BasicDBList coords = new BasicDBList();		
+		coords.put(LocationBean.LAT, loc.getLatitude());
+		coords.put(LocationBean.LONG, loc.getLongitude());	
 		
 		BasicDBObject location = new BasicDBObject()
 				  .append(LocationBean.KEY_NAME, loc.getName())
@@ -426,6 +426,7 @@ public class MongoDAO {
 		position.put(LocationBean.LAT, l_lat);
 		position.put(LocationBean.LONG, l_long);		
 		
+		System.out.println(l_lat + " , " + l_long);
 		DBCursor iter = 
 				col.find(new BasicDBObject("provider.location", 
 							new BasicDBObject("$near" , 
@@ -664,8 +665,8 @@ public class MongoDAO {
 	
 	
  
-	public static JSONObject[] searchContentByProvider(String user_id){
-		JSONObject[] res=null;
+	public static JSONArray searchContentByProvider(String user_id , int page , boolean isHistory){
+		JSONArray res=null;
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		DBCollection userCol = db.getCollection(MongoDB.COLLECTION_USER);
@@ -682,15 +683,17 @@ public class MongoDAO {
 				_id = null;
 				
 			DBCursor iter = 
-					col.find(new BasicDBObject("provider._id", new ObjectId(_id)));
-			System.out.println(iter.toString());
-			System.out.println("Iter Count :"+ iter.count());
-			res = new JSONObject[iter.count()];
+					col.find(new BasicDBObject("provider._id", new ObjectId(_id)))
+					   .skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
+						
+			res = new JSONArray();
+			
+			
 			int i = 0;
 			while(iter.hasNext()){
 				DBObject obj = iter.next();
-				System.out.println(obj.toString());
-				res[i++] = new JSONObject(obj.toString());
+				if(isHistory) obj.put(ContentBean.KEY_ARTIST, new BasicDBList());				
+				res.put(new JSONObject(obj.toString()));
 			}
 		}
 		catch(Exception e){

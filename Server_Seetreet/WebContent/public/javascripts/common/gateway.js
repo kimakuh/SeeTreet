@@ -1,7 +1,7 @@
 /**
  * Created by Limjiuk on 2014-10-28.
  */
-var SERVER_ADDRESS = 'http://211.189.127.63:8080/Server_Seetreet';
+var SERVER_ADDRESS = 'http://211.189.127.61:8090/TEST';
 
 // create user account
 var postUserCreate = function(userId, user, callback){

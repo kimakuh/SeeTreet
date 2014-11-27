@@ -4,15 +4,29 @@ Listtab.TAB_ARTIST = 1;
 Listtab.show = function(STATE) {
 	$(".listtab.provider *").remove();
 	$(".listtab.artist *").remove();
+	$("#provider_create_content").remove();
+	$("#artist_apply_content").remove();
 	switch(STATE) {
 	case Listtab.TAB_PROVIDER :
-		print("visible");
+		
+		$("body").append(
+			'<div class="modal fade" id="provider_create_content" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+				'<div class="modal-dialog">' +
+					'<div class="modal-content">' +
+					'</div>' +
+				'</div>' +
+			'</div>'
+		);	
+		
 		var slide = new ProviderView();
 		slide.create($(".listtab.provider"));
+		$(slide.getId).bind("click" , slide.showCreateModal);
 		
 		getProviderContents(function(aa , state , res) {
 			contents = dummy;
 			for(var i in contents) {
+				$(slide.getId).unbind("click");
+				
 				var content = contents[i];
 				slide.setContent(content);
 				for(var j in content.artists) {
@@ -30,6 +44,15 @@ Listtab.show = function(STATE) {
 		},300);
 		break;
 	case Listtab.TAB_ARTIST:
+		$("body").append(
+				'<div class="modal fade" id="artist_apply_content" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+					'<div class="modal-dialog">' +
+						'<div class="modal-content">' +
+						'</div>' +
+					'</div>' +
+				'</div>'
+			);
+		
 		break;
 	}
 };
@@ -78,6 +101,10 @@ var ProviderView = function() {
 		}, 
 		getId : function() {
 			return id; 
+		},
+		showCreateModal : function() {
+			print(">>> " + id);
+			$("#provider_create_content .modal-content").load("./views/modal/modal_create_content.html");
 		}
 	};
 };
@@ -155,8 +182,8 @@ var HSlider = function() {
 			target.append(
 				'<div class="listview empty" data-id="'+id+'">'+
 					'<h2 class="p_empty_text">지원자가 없다.</h2>'+
-					'<div class="prev_btn list_btn"><div class="bg_btn"></div></div>'+
-					'<div class="next_btn list_btn"><div class="bg_btn"></div></div>'+
+					'<div class="prev_btn list_btn"></div>'+
+					'<div class="next_btn list_btn"></div>'+
 					'<div class="viewport"></div>'+
 				'</div>'
 			);
