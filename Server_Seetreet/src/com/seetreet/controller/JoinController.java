@@ -192,9 +192,12 @@ public class JoinController extends HttpServlet {
 			
 			String modTime = C.currentDate();
 			
+			
+			double latitude = (double)location.getJSONArray("coordinates").get(0);
+			double longitude = (double)location.getJSONArray("coordinates").get(1);
 			LocationBean loc = new LocationBean("", "", 
-										location.getDouble(LocationBean.KEY_LATITUDE), 
-										location.getDouble(LocationBean.KEY_LONGITUDE));
+										latitude, 
+										longitude);
 						
 			GenreBean[] genres = new GenreBean[genre.length()];
 			for(int i = 0 ; i < genre.length(); i++) {
@@ -203,7 +206,7 @@ public class JoinController extends HttpServlet {
 			}
 			
 			ProviderBean bean 
-			= new ProviderBean("private", 
+			= new ProviderBean("SEETREET", 
 								imageURLs, 
 								loc, 
 								genres,

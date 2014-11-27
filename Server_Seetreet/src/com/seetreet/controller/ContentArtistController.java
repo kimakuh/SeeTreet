@@ -92,8 +92,8 @@ public class ContentArtistController extends HttpServlet {
 	private JSONArray searchContentByArtist(HttpServletRequest req, HttpServletResponse res) {
 		JSONArray arr = new JSONArray();
 		try {
-			int l_long 	= Integer.parseInt(req.getParameter(LocationBean.KEY_LONGITUDE));
-			int l_lat 	= Integer.parseInt(req.getParameter(LocationBean.KEY_LATITUDE));
+			double l_long 	= Double.parseDouble(req.getParameter(LocationBean.KEY_LONGITUDE));
+			double l_lat 	= Double.parseDouble(req.getParameter(LocationBean.KEY_LATITUDE));
 			int page 	= Integer.parseInt(req.getParameter("page"));
 			ContentProviderBean[] beans = MongoDAO.searchContentByLocationFromArtist(
 					l_lat, 
