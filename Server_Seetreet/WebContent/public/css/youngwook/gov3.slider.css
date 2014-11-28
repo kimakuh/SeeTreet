@@ -70,21 +70,28 @@
 }
 
 .box .title {
+	padding : 0 20px;
 	width: 200px;
-	height: 20px;
-	background-color: rgba(255,0,0,1);
+	height: 30px;
+	background-color: rgba(254,98,70 ,1.0);
 	text-overflow: ellipsis;
+	color : #fff;
 	overflow: hidden;
 	white-space: nowrap;
 	font-weight: bold;	
+	font-size: 20px;
 }
 
 .box .option {
-	height: 80px;
+	height: 70px;
 	width: 200px;
 	background-color: blue;
 	background-color: rgba(0,0,0,0.4);
 	border-radius: 0 0 5px 5px;
+	color : #ccc;
+	font-weight: lighter;
+	padding : 0 20px;
+	font-size : 15px;
 }
 
 

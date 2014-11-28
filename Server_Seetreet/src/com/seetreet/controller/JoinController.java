@@ -129,20 +129,26 @@ public class JoinController extends HttpServlet {
 			String name 		= req.getParameter(ArtistBean.KEY_NAME);
 			JSONArray locations = new JSONArray(req.getParameter(ArtistBean.KEY_LOCATIONS));			
 			
+			String[] encodedImages = new String[images.length()];			
+			String[] imageURLs = null;
+			for(int i = 0; i < images.length(); i++) {
+				encodedImages[i] = images.getString(i);
+			}			
 			
-			String[] imageURLs = new String[images.length()];
-			for(int i = 0 ; i < images.length(); i++) {
-				imageURLs[i] = images.getString(i);
-			}
-			
+			imageURLs = C.writeImageFileFromBase64(token, encodedImages);		
+						
 			String modTime = C.currentDate();
 			
 			LocationBean[] locs = new LocationBean[locations.length()];
+						
 			for(int i = 0 ; i < locations.length(); i++) {
 				JSONObject location = locations.getJSONObject(i);
-				locs[i] = new LocationBean("", "", 
-											location.getDouble(LocationBean.KEY_LATITUDE), 
-											location.getDouble(LocationBean.KEY_LONGITUDE));				
+				String l_descript = location.has(LocationBean.KEY_DESCRIPT)?"":location.getString(LocationBean.KEY_DESCRIPT);
+				locs[i] = new LocationBean(
+						location.getString(LocationBean.KEY_NAME),
+						l_descript, 
+						location.getDouble(LocationBean.KEY_LATITUDE), 
+						location.getDouble(LocationBean.KEY_LONGITUDE));				
 			}
 			
 			GenreBean[] genres = new GenreBean[genre.length()];

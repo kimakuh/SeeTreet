@@ -454,7 +454,7 @@ public class MongoDAO {
 		return result;
 	}
 	
-	public static ReplyBean[] getReplyByContentId(String contentId, int page) {
+	public static JSONArray getReplyByContentId(String contentId, int page) {
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_REPLY);
 		
@@ -462,37 +462,42 @@ public class MongoDAO {
 									.append(ReplyBean.KEY_CONTENTID, contentId))
 							.skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
 		
-		ReplyBean[] res = new ReplyBean[iter.size()];
-		int i = 0;
+		JSONArray res = new JSONArray();
+		
 		while(iter.hasNext()) {
 			DBObject obj = iter.next();
-			res[i++] = new ReplyBean(
-					obj.get(ReplyBean.KEY_ID).toString(),
-					obj.get(ReplyBean.KEY_CONTENTID).toString(),
-					obj.get(ReplyBean.KEY_REPLYTEXT).toString(),
-					obj.get(ReplyBean.KEY_REPLYIMAGE).toString());		
+			String sObj = C.convertObjectId(obj.toString());
+			
+			try {
+				res.put(new JSONObject(sObj));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return res;
 	}
 	
-	public static JSONObject enrollReply(ReplyBean bean) {
+	public static JSONObject enrollReply(JSONObject bean) throws Exception{
 		DB db = MongoDB.getDB();
 		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		DBCollection contentRe = db.getCollection(MongoDB.COLLECTION_REPLY);
 		
 		BasicDBObject rep = new BasicDBObject();
-		rep.append(ReplyBean.KEY_CONTENTID, bean.getContentId())
-		   .append(ReplyBean.KEY_REPLYIMAGE, bean.getReplyimage())
-		   .append(ReplyBean.KEY_REPLYTEXT, bean.getReplytext())
-		   .append(ReplyBean.KEY_USEREMAIL, bean.getUserEmail());
+		
+		rep.append(ReplyBean.KEY_CONTENTID, bean.getString(ReplyBean.KEY_CONTENTID))
+		   .append(ReplyBean.KEY_REPLYIMAGE, bean.getString(ReplyBean.KEY_REPLYIMAGE))
+		   .append(ReplyBean.KEY_REPLYTEXT, bean.getString(ReplyBean.KEY_REPLYTEXT))
+		   .append(ReplyBean.KEY_USEREMAIL, bean.getString(ReplyBean.KEY_USEREMAIL))
+		   .append(ReplyBean.KEY_MODTIME, bean.getString(ReplyBean.KEY_MODTIME));
 		
 		contentRe.insert(rep);
 		
 //		rep.append(ReplyBean.KEY_ID, rep.get(ReplyBean.KEY_ID).toString());
 		
 		BasicDBObject findQuery = new BasicDBObject()
-									  .append(ContentBean.KEY_ID, new ObjectId(bean.getContentId()));
+									  .append(ContentBean.KEY_ID, new ObjectId(bean.getString(ReplyBean.KEY_CONTENTID)));
 		BasicDBObject updateQuery 
 		= new BasicDBObject()
 			  .append("$push", new BasicDBObject()
@@ -651,7 +656,8 @@ public class MongoDAO {
 		col.insert(content);
 		JSONObject json = new JSONObject();		
 		try {
-			json.put(ContentProviderBean.KEY_TITLE , content.get(ContentProviderBean.KEY_TITLE))
+			json.put(ContentProviderBean.KEY_ID , content.get(ContentProviderBean.KEY_ID))
+				.put(ContentProviderBean.KEY_TITLE , content.get(ContentProviderBean.KEY_TITLE))
 				.put(ContentProviderBean.KEY_STARTTIME , content.get(ContentProviderBean.KEY_STARTTIME))
 				.put(ContentProviderBean.KEY_ENDTIME , content.get(ContentProviderBean.KEY_ENDTIME))
 				.put(ContentProviderBean.KEY_PROVIDER , content.get(ContentProviderBean.KEY_PROVIDER))
@@ -692,8 +698,9 @@ public class MongoDAO {
 			int i = 0;
 			while(iter.hasNext()){
 				DBObject obj = iter.next();
-				if(isHistory) obj.put(ContentBean.KEY_ARTIST, new BasicDBList());				
-				res.put(new JSONObject(obj.toString()));
+				if(isHistory) obj.put(ContentBean.KEY_ARTIST, new BasicDBList());
+				String str_obj = C.convertObjectId(obj.toString());
+				res.put(new JSONObject(str_obj));
 			}
 		}
 		catch(Exception e){

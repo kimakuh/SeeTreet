@@ -20,7 +20,7 @@ public class ArtistBean implements BeanJson{
 	
 	public static final String KEY_NAME = "name";
 	public static final String KEY_IMAGES = "artistImages";
-	public static final String KEY_VIDEO  = "artistUrl";
+	public static final String KEY_VIDEO  = "videoUrl";
 	public static final String KEY_DESCRIPT = "description";
 	public static final String KEY_GENRE = "artistGenre";
 	public static final String KEY_LOCATIONS = "favoriteLocation";

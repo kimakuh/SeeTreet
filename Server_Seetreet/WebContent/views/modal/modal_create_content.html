@@ -1,12 +1,124 @@
+<meta charset="UTF8">
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal">
 		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 	</button>
-	<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+	<h4 class="modal-title">공연장을 대여하여 줍시다.</h4>
 </div>
-<div class="modal-body">...</div>
+<div class="modal-body">
+	<div class="input-group input-group-lg">
+		<span class="input-group-addon">공연명 : </span> 
+		<input type="text" class="form-control content_title" placeholder="공연명을 입력해주세요." />
+	</div>
+	<div class="col-md-12">대여 가능 시작 시간 :</div>
+	<div class="col-md-12">
+		<div class="row">
+			<div>
+				<div class="form-group">
+					<div class='input-group input-group-lg date' id='startdatepicker'>
+						<input type='text' class="form-control" data-date-format="YYYY/MM/DD hh:mm"/> 
+						<span class="input-group-addon"> 
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$(function() {
+					$('#startdatepicker').datetimepicker({
+						language : 'ru'
+					});
+				});
+			</script>
+		</div>
+	</div>
+	<div class="col-md-12">대여 가능 끝 시간 :</div>
+	<div class="col-md-12">
+		<div class="row">
+			<div>
+				<div class="form-group">
+					<div class='input-group input-group-lg date' id='enddatepicker'>
+						<input type='text' class="form-control" data-date-format="YYYY/MM/DD hh:mm"/> 
+						<span class="input-group-addon"> 
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$(function() {
+					$('#enddatepicker').datetimepicker({
+						language : 'ru'
+					});
+				});
+			</script>
+		</div>
+	</div>
+	<div class="alert_modal col-md-12" data-state="hide">
+		입력란을 확인 해주식 바랍니다.
+	</div>
+</div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-primary">Save changes</button>
+	<button type="button" class="btn btn-primary create_ok">OK</button>
 </div>
-</div>
+
+<style>
+	div.alert_modal {
+		color : #ff0000;		
+	}
+	div.alert_modal[data-state="hide"] {
+		display : none;		
+	}
+	
+	div.alert_modal[data-state="show"] {
+		display : block;
+	}
+	
+	#provider_create_content div.modal-content {
+		transition : height .5s ease-out;
+	}
+</style>
+
+<script>
+	$(".create_ok").click(function() {
+		var title = $("input.content_title").val();
+		var stime = $("#startdatepicker input").val().replace("/[:\/\s]/g","");
+		var etime = $("#enddatepicker input").val().replace("/[:\/\s]/g","");
+		
+		if(title && stime && etime) {
+			getUser(function(user , state) {
+				if(state == "success") {					
+					var address = user.data.user_provider.location;
+					postNewProviderContents(title, address, stime, etime,enrollContent);
+				}else {
+					alertFunction();		
+				}				
+			});	
+		} else {
+			alertFunction();
+		}		
+	});
+	
+	var alertFunction = function() {
+		$(".alert_modal").attr("data-state", "show");			
+		setTimeout(function() {
+			$(".alert_modal").attr("data-state" , "hide");	
+		}, 2000);
+	}
+	
+	var enrollContent = function(res , state) {
+		if(state = "success") {
+			var content = res.data;	
+			print(content);
+			$(slide.getId()).unbind("click");
+			slide.setContent(content);
+			slide = new ProviderView();
+			slide.create($(".listtab.provider"));
+			$(slide.getId()).bind("click" , slide.showCreateModal);
+		}else {
+			
+		}
+		$("#provider_create_content").modal("hide");		
+	};
+</script>

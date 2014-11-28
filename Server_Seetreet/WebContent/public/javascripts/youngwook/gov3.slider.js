@@ -1,3 +1,4 @@
+var slide = null;
 var Listtab = {};
 Listtab.TAB_PROVIDER = 0;
 Listtab.TAB_ARTIST = 1;
@@ -18,14 +19,16 @@ Listtab.show = function(STATE) {
 			'</div>'
 		);	
 		
-		var slide = new ProviderView();
-		slide.create($(".listtab.provider"));
-		$(slide.getId).bind("click" , slide.showCreateModal);
+		slide = new ProviderView();
+		slide.create($(".listtab.provider"), function() {
+			$(slide.getId()).bind("click" , slide.showCreateModal);
+		});		
 		
-		getProviderContents(function(aa , state , res) {
-			contents = dummy;
+		
+		getProviderContents( 1 , function(data , state , res) {			
+			contents = data.data;
 			for(var i in contents) {
-				$(slide.getId).unbind("click");
+				$(slide.getId()).unbind("click");
 				
 				var content = contents[i];
 				slide.setContent(content);
@@ -36,12 +39,10 @@ Listtab.show = function(STATE) {
 				}
 				slide = new ProviderView();
 				slide.create($(".listtab.provider"));
+				$(slide.getId()).bind("click" , slide.showCreateModal);
 			}				
 		});
-		
-		setTimeout(function() {
-			$(".p_content_container").removeAttr("data-state");
-		},300);
+				
 		break;
 	case Listtab.TAB_ARTIST:
 		$("body").append(
@@ -65,13 +66,18 @@ var ProviderView = function() {
 	var id = ".p_content_container[data-id='empty']";
 	var contentId = "";
 	return {
-		create : function(target) {
+		create : function(target , callback) {
 			var str = '<div class="p_content_container" data-id="empty" data-state="init">'+													
 					  '</div>';		
 			target.prepend(str);		
 			
 			hlist = new HSlider();
 			isInit = true;
+			
+			setTimeout(function() {
+				$(".p_content_container").removeAttr("data-state");
+				if(callback != undefined)callback();
+			},300);
 		},
 		addArtist : function(artist , isConfirmed) {
 			if(isInit == false) {
@@ -85,26 +91,36 @@ var ProviderView = function() {
 				print("not inited");
 				return;
 			}
-			contentId = content._id;
-			
+			contentId = content._id;			
 			$(id).attr("data-id", contentId);
-			id = ".p_content_container[data-id='"+contentId+"']";
-							
+			id = ".p_content_container[data-id='"+contentId+"']";					
 			$(id).append(BoxFactory.create(BoxFactory.KEY_CREATE_CONTENT , {
 				title : content.contentTitle,
-				desc : content.description,
+				desc : content.contentStartTime + " ~ " + content.contentEndTime,
 				id : contentId,
 				isConfirmed : null
 			}));
+			
+			print(content.provider.providerImage[0]);
+			$(id+ " .identity.box").css({"background-image" : 'url(http://'+content.provider.providerImage[0]+')'});
 			
 			if(hlist.isInited() == false) hlist.create($(id) , contentId , true);
 		}, 
 		getId : function() {
 			return id; 
 		},
-		showCreateModal : function() {
-			print(">>> " + id);
-			$("#provider_create_content .modal-content").load("./views/modal/modal_create_content.html");
+		showCreateModal : function() {			
+			$("#provider_create_content .modal-content").load("./views/modal/modal_create_content.html", function() {				
+				$("#provider_create_content").modal({
+					backdrop : true,
+					keyboard : true,
+					show	 : true
+				})
+				$("#provider_create_content").off("hidden.bs.modal");
+				$("#provider_create_content").on("hidden.bs.modal" , function() {
+					$("#provider_create_content .modal-content *").remove();
+				});
+			});
 		}
 	};
 };
@@ -124,8 +140,9 @@ BoxFactory.create = function(key , info) {
 		
 	switch(key) {
 	case BoxFactory.KEY_CREATE_CONTENT :
+		var image = info.image;
 		box_str += '<div class="identity box" data-id="'+id+'">'+
-						'<div class="image"></div>'+
+						'<div class="image" ></div>'+
 						'<div class="title">'+title+'</div>'+
 						'<div class="option descript">'+desc+'</div>'+
 						'<div class="box_hover"></div>'+

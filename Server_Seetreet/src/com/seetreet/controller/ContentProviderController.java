@@ -59,9 +59,7 @@ public class ContentProviderController extends HttpServlet {
 		
 		System.out.println("> SERVLET : " + PREFIX);
 		try{
-			if(cmd.contains(ENROLL)) {
-				System.out.println(">> enroll");
-			}else if(cmd.contains(SEARCH)) {
+			if(cmd.contains(SEARCH)) {
 				System.out.println(">> search Get");
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, searchContentByProvider(req, res)));
 			}else if(cmd.contains(HISTORY)) {
