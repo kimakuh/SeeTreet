@@ -37,6 +37,7 @@ public class ContentProviderController extends HttpServlet {
     public final String SEARCH = "/user/content/provider/search/";
     public final String UPDATE = "/user/content/provider/update/";
     public final String DELETE = "/user/content/provider/delete/";
+    public final String HISTORY = "/user/content/provider/history/";
 
     
     /**
@@ -58,11 +59,12 @@ public class ContentProviderController extends HttpServlet {
 		
 		System.out.println("> SERVLET : " + PREFIX);
 		try{
-			if(cmd.contains(ENROLL)) {
-				System.out.println(">> enroll");
-			}else if(cmd.contains(SEARCH)) {
+			if(cmd.contains(SEARCH)) {
 				System.out.println(">> search Get");
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, searchContentByProvider(req, res)));
+			}else if(cmd.contains(HISTORY)) {
+				System.out.println(">> HISTORY Get");
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, searchHistoryByProvider(req, res)));
 			}
 		}
 		catch(Exception e){
@@ -116,15 +118,11 @@ public class ContentProviderController extends HttpServlet {
 	}
 	
 	private JSONArray searchContentByProvider(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		String providerId = (String)req.getHeader(UserBean.KEY_TOKEN);
-		JSONObject[] beans = MongoDAO.searchContentByProvider(providerId);
-		JSONArray arr= new JSONArray();
-		try{
-			for(JSONObject bean : beans){
-				if(bean != null){
-					arr.put(bean);	
-				}
-			}
+		String providerId 	= (String)req.getHeader(UserBean.KEY_TOKEN);
+		int page  = Integer.parseInt(req.getParameter("page"));
+		JSONArray arr = null;
+		try {
+			 arr = MongoDAO.searchContentByProvider(providerId , page , true);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -136,5 +134,16 @@ public class ContentProviderController extends HttpServlet {
 		return MongoDAO.deleteContentByProvider(contentId);
 	}	
 	
+	private JSONArray searchHistoryByProvider(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		String providerId 	= (String)req.getHeader(UserBean.KEY_TOKEN);
+		int page  = Integer.parseInt(req.getParameter("page"));
+		JSONArray arr = null;
+		try {
+			 arr = MongoDAO.searchContentByProvider(providerId , page , false);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return arr;
+	}
 
 }

@@ -8,8 +8,8 @@ public class LocationBean {
 	
 	public static final String KEY_LATITUDE 	= "l_lat";
 	public static final String KEY_LONGITUDE 	= "l_long";
-	public static final String KEY_NAME			= "l_name";
-	public static final String KEY_DESCRIPT 	= "l_descript";
+	public static final String KEY_NAME			= "name";
+	public static final String KEY_DESCRIPT 	= "description";
 	public static final String KEY_COORDINATE	= "coordinates";
 	
 	/* latitude  : maximum -> 120

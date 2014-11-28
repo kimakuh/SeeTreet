@@ -13,6 +13,7 @@ public class ReplyBean implements BeanJson {
 	private String userEmail;
 	
 	public static final String KEY_ID = "_id";
+	public static final String KEY_MODTIME = "modTime";
 	public static final String KEY_CONTENTID = "contentId";
 	public static final String KEY_REPLYTEXT = "replytext";
 	public static final String KEY_REPLYIMAGE = "replyimage";

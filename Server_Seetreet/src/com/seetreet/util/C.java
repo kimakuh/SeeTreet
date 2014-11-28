@@ -1,10 +1,15 @@
 package com.seetreet.util;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.codec.binary.Base64;
 
 public class C {
 	public static final String DBIP = "211.189.127.155";
@@ -85,7 +90,30 @@ public class C {
 	 * */
 	public static final String REX_ID = "\\{\\s\"\\$oid\"\\s:\\s\"+([a-zA-Z0-9]+)\"}";
 	
-	public static final String convertObjectId(String dbobject) {
+	public static String convertObjectId(String dbobject) {
 		return dbobject.replaceAll(REX_ID, "$1");
+	}
+	
+	public static final String FILEPATH = "C:\\Users\\Youngwook\\Documents\\workspaceEE\\TEST\\WebContent\\public\\images\\upload\\";
+	public static final String URL = "211.189.127.61:8090/TEST/images/upload/";
+	//http://211.189.127.61:8090/TEST/images/seetreetimg/btn-person-grey.png
+	public static String[] writeImageFileFromBase64(String userId , String... encodedStrings) {		
+		String[] strs = new String[encodedStrings.length];
+		FileOutputStream fos = null;
+		int i = 0 ;
+		for(String image : encodedStrings) {
+			try {
+				String fileName = userId + "_" + i + ".png";
+				fos = new FileOutputStream(new File(FILEPATH + fileName));
+				strs[i++] = URL+fileName;
+				fos.write(Base64.decodeBase64(image));
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			} finally {			
+				if(fos != null) try {fos.close();}catch(Exception e) {e.printStackTrace();};
+			}
+		}		
+		return strs;
 	}
 }

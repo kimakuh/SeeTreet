@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 import com.seetreet.bean.ReplyBean;
 import com.seetreet.bean.UserBean;
 import com.seetreet.dao.MongoDAO;
+import com.seetreet.util.C;
 import com.seetreet.util.ResBodyFactory;
 
 /**
@@ -102,26 +103,38 @@ public class ReplyController extends HttpServlet {
 	
 	private JSONArray searchReply(HttpServletRequest req, HttpServletResponse res) {
 		JSONArray arr = new JSONArray();
-		try{
-			String contentId = (String)req.getParameter(ReplyBean.KEY_CONTENTID);
-			int    page  = Integer.parseInt((String)req.getParameter("page"));
-			ReplyBean[] list = MongoDAO.getReplyByContentId(contentId, page);			
-								
-			for(ReplyBean bean : list) {
-				arr.put(bean.getJson());
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}		
-		return arr;
+		String contentId = (String)req.getParameter(ReplyBean.KEY_CONTENTID);
+		int    page  = Integer.parseInt((String)req.getParameter("page"));
+		return MongoDAO.getReplyByContentId(contentId, page);
+		
 	}
 	
-	private JSONObject enrollReply(HttpServletRequest req, HttpServletResponse res) {			
+	private JSONObject enrollReply(HttpServletRequest req, HttpServletResponse res) throws Exception {			
 		String contentId = req.getParameter(ReplyBean.KEY_CONTENTID);
 		String replytext = req.getParameter(ReplyBean.KEY_REPLYTEXT);
 		String replyimage= req.getParameter(ReplyBean.KEY_REPLYIMAGE);	
 		
-		ReplyBean reply = new ReplyBean((String)req.getAttribute(UserBean.KEY_EMAIL) , contentId, replytext, replyimage);
+		String modtime = C.currentDate();
+		String token = req.getHeader(UserBean.KEY_TOKEN);
+		
+		String hash = modtime+token;		
+		String[] replyimages= C.writeImageFileFromBase64(hash.hashCode()+"", replyimage);
+		
+//		ReplyBean reply = new ReplyBean((String)req.getAttribute(UserBean.KEY_EMAIL) , contentId, replytext, replyimage);
+		JSONObject reply = null;
+		try {
+			reply = new JSONObject()
+				  .append(ReplyBean.KEY_USEREMAIL , (String)(req.getAttribute(UserBean.KEY_EMAIL)))
+				  .append(ReplyBean.KEY_CONTENTID , contentId)
+				  .append(ReplyBean.KEY_REPLYTEXT , replytext)
+				  .append(ReplyBean.KEY_REPLYIMAGE , replyimages[0])
+				  .append(ReplyBean.KEY_MODTIME, modtime);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+		
+		
 		return MongoDAO.enrollReply(reply);					
 	}
 	

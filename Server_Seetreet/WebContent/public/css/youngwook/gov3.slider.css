@@ -6,13 +6,14 @@
 
 .list_btn {
 	position: absolute;
+	margin : 20px 0px;
 	z-index : 15;
 	width : 30px;
-	height : 100%;	
-	opacity: 0.8;
-	background-image: url("./btn-ok-grey.png");
+	height : -webkit-calc(100% - 40px);	
+	opacity: 0.8;	
 	background-repeat: no-repeat;
 	background-position: center;	
+	background-color : #fff;
 }
 
 .list_btn:hover {
@@ -22,27 +23,16 @@
 	opacity: 1;
 }
 
-.list_btn.prev_btn {	
+.list_btn.prev_btn {
+	background-image: url("../../images/seetreetimg/arrow_left_sel.png");
 	left: 0;
 	top : 0;
 }
 
 .list_btn.next_btn {
+	background-image: url("../../images/seetreetimg/arrow_right_sel.png");
 	right: 0;
 	top : 0;
-}
-
-.list_btn .bg_btn {
-	width : 100%;
-	height : 100%;	
-}
-
-.list_btn.prev_btn .bg_btn {
-	background : linear-gradient(to left, rgba(234,238,237,0), rgba(234,238,237,1));	
-}
-
-.list_btn.next_btn .bg_btn {
-	background : linear-gradient(to right, rgba(234,238,237,0), rgba(234,238,237,1));
 }
 
 .listview .viewport {
@@ -80,21 +70,28 @@
 }
 
 .box .title {
+	padding : 0 20px;
 	width: 200px;
-	height: 20px;
-	background-color: rgba(255,0,0,1);
+	height: 30px;
+	background-color: rgba(254,98,70 ,1.0);
 	text-overflow: ellipsis;
+	color : #fff;
 	overflow: hidden;
 	white-space: nowrap;
 	font-weight: bold;	
+	font-size: 20px;
 }
 
 .box .option {
-	height: 80px;
+	height: 70px;
 	width: 200px;
 	background-color: blue;
 	background-color: rgba(0,0,0,0.4);
 	border-radius: 0 0 5px 5px;
+	color : #ccc;
+	font-weight: lighter;
+	padding : 0 20px;
+	font-size : 15px;
 }
 
 
@@ -106,7 +103,7 @@
 	height: 0%;
 	border-radius : 5px;
 	background-color: rgba(0,0,0,0.0);
-	background-image: url("./btn-ok-grey.png");
+	background-image: url("../../images/seetreetimg/btn-person-grey.png");
 	background-repeat: no-repeat;
 	background-position: center;	
 	transition: background .5s ease-out , display .5s ease-out;
@@ -120,7 +117,9 @@
 }
 
 .box .box_hover:active {
-	background-image: url("./btn-ok-grey.png");
+	background-image:  url("../../images/seetreetimg/btn-person-yel.png");
+	background-color: rgba(0,0,0,0.5);	
+	transition : none;
 }
 
 .box .box_hover h3 {
@@ -142,14 +141,21 @@
 }
 
 .box.artist .option.btn_permit {
-	background-image: url("./btn-ok-grey.png");
+	background-image: url("../../images/seetreetimg/btn-ok-grey.png");
 	background-repeat: no-repeat;
 	background-position: center;
 	transition : background .5s ease-out;
 }
 
 .box.artist .option.btn_permit:hover {
+	background-image: url("../../images/seetreetimg/btn-ok-yel.png");
 	background-color : rgba(0,0,0,.8);	
+}
+
+.box.artist .option.btn_permit:active {
+	transition : none;
+	background-image: url("../../images/seetreetimg/btn-ok-red.png");	
+	background-color : rgba(0,0,0,.9);	
 }
 
 
@@ -159,6 +165,18 @@
 	/*transform: rotateY(0deg);*/
 	border : 1px solid red;
 	border-radius: 5px;
+}
+
+.box.artist.confirm .option.btn_permit{
+	background-image = url("../../images/seetreetimg/btn-no-grey.png");	
+}
+
+.box.artist.confirm .option.btn_permit:hover{
+	background-image = url("../../images/seetreetimg/btn-no-yel.png");	
+}
+
+.box.artist.confirm .option.btn_permit:active{
+	background-image = url("../../images/seetreetimg/btn-no-red.png");	
 }
 
 .box.artist:hover {	
@@ -183,6 +201,7 @@
 
 .p_content_container[data-id='empty'] {
 	height : 300px;
+	margin-left : 20px;
 	background-color : rgba(0 ,0,0, 0.4);
 	background-image : url("../../images/seetreetimg/btn-plus-grey.png");
 	background-repeat: no-repeat;
@@ -193,6 +212,12 @@
 .p_content_container[data-id='empty']:hover {	
 	background-color : rgba(0 ,0,0, 0.6);
 	background-image : url("../../images/seetreetimg/btn-plus-yel.png");
+}
+
+.p_content_container[data-id='empty']:active {	
+	background-color : rgba(0 ,0,0, 0.8);
+	background-image : url("../../images/seetreetimg/btn-plus-red.png");
+	transition : none;
 }
 
 

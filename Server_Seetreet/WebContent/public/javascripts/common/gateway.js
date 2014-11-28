@@ -1,7 +1,7 @@
 /**
  * Created by Limjiuk on 2014-10-28.
  */
-var SERVER_ADDRESS = 'http://211.189.127.63:8080/Server_Seetreet';
+var SERVER_ADDRESS = 'http://211.189.127.61:8090/TEST';
 
 // create user account
 var postUserCreate = function(userId, user, callback){
@@ -254,16 +254,37 @@ var getcoord2locatestr = function(lat, long, callback){
 };
 
 //제공자 등록 콘텐츠 정보 보기
-var getProviderContents = function(callback) {
+var getProviderContents = function(page, callback) {
    var token = getCookie(COOKIE_USER_TOKEN);
    var userId = getCookie(COOKIE_USER_ID);
    var url = '/user/content/provider/search/' + userId;
    var method = 'GET';
-    var headers = token;
-    var body = "";
+    var headers = {
+        "_id" : token
+    };
+    var body = {
+    	"page" : page
+    };
    httpRequest(url, method, headers, body, callback);
 };
 
+//제공자 등록 콘텐츠 정보 보기
+var postNewProviderContents = function(title , address , stime , etime , callback) {
+   var token = getCookie(COOKIE_USER_TOKEN);
+   var userId = getCookie(COOKIE_USER_ID);
+   var url = '/user/content/provider/enroll/' + userId;
+   var method = 'POST';
+    var headers = {
+        "_id" : token
+    };;
+    var body = {
+    	contentTitle : title ,
+    	contentAddress : address,
+    	contentStartTime : stime,
+    	contentEndTime : etime
+    };
+   httpRequest(url, method, headers, body, callback);
+};
 
 
 
