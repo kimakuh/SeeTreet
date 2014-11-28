@@ -8,7 +8,6 @@ var CONST_SUBCATEGORY   = ["세부장르를 선택하세요", "인디공연",  "
 var CONST_STORETYPE     = ["업종을 선택하세요", "커피전문점", "호프", "음식점", "라이브카페"];
 
 var maincategory2Index = function(value){
-    console.log(value);
     var returnIndex = 0;
     for(var i in CONST_MAINCATEGORY){
         if(value == CONST_MAINCATEGORY[i]){
@@ -18,7 +17,6 @@ var maincategory2Index = function(value){
     return returnIndex;
 };
 var subcategory2Index = function(value){
-    console.log(value);
     var returnIndex;
     for(var i in CONST_SUBCATEGORY){
         if(value == CONST_SUBCATEGORY[i]){
@@ -28,7 +26,6 @@ var subcategory2Index = function(value){
     return returnIndex;
 };
 var storeType2Index = function(value){
-    console.log(value);
     var returnIndex;
     for(var i in CONST_STORETYPE){
         if(value == CONST_STORETYPE[i]){

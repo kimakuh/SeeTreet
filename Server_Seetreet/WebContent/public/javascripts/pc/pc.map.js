@@ -8,6 +8,7 @@ map_Manage.selectLocation = new nhn.api.map.LatLng(63.1212, 122.1212);
 map_Manage.userSelectLocation = new nhn.api.map.LatLng(63.1212, 122.1212);
 map_Manage.providerSelectLocation = new nhn.api.map.LatLng(63.1212, 122.1212);
 map_Manage.providerModifyLocation = new nhn.api.map.LatLng(63.1212, 122.1212);
+map_Manage.artistSelectLocation = new nhn.api.map.LatLng(63.1212, 122.1212);
 
 map_Manage.set_map = function(mapinfo){
     var targetMap = mapinfo.target;
@@ -41,7 +42,6 @@ map_Manage.set_map = function(mapinfo){
 map_Manage.searchlocation = function(locatestr, callback){
     getlocatestr2coord(locatestr, function(data, status, res){
         if(status == 'success'){
-            console.log('success???');
             map_Manage.selectLocation = new nhn.api.map.LatLng(data.data[0].lat, data.data[0].lng);
             map_Manage.userSelectLocation = new nhn.api.map.LatLng(data.data[0].lat, data.data[0].lng);
             callback();

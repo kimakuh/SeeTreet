@@ -425,7 +425,7 @@ public class MongoDAO {
 		BasicDBList position = new BasicDBList();
 		position.put(LocationBean.LAT, l_lat);
 		position.put(LocationBean.LONG, l_long);		
-		
+		System.out.println(position.toString());
 		DBCursor iter = 
 				col.find(new BasicDBObject("provider.location", 
 							new BasicDBObject("$near" , 

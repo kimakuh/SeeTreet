@@ -62,8 +62,11 @@ $(document).ready(function(){
             var target_dataindex = $(e.currentTarget).attr('data-index');
             var contentinfo = box_Factory.content.get_a_content(target_dataindex);
 //        var contentinfo = box_Factory.content.contentArray[target_dataindex];
-
-            modal_Factory.contentModal.loadModal(contentinfo);
+            modal_Factory.contentModal.loadModal(contentinfo, function(){
+                modal_Factory.checkLike(target_dataindex, function(){
+                   modal_Factory.getReply(target_dataindex);
+                });
+            });
     });
     $('.content-append-area').find('img').click(function(){
         contentshow(latitude, longitude);
@@ -72,16 +75,20 @@ $(document).ready(function(){
         var targetId = $(e.currentTarget).attr('identification-value');
         modal_Factory.providerModal.getProviderInfo(targetId);
     });
-    $('#content-popup').find('.artist-info-area').click(function(){
-        $('#content-popup').modal('hide');
-        $('#artist-popup').modal('show');
+    $('#content-popup').find('.artist-info-area').click(function(e){
+        var targetId = $(e.currentTarget).attr('identification-value');
+        modal_Factory.artistModal.getArtistInfo(targetId, function(){
+            modal_Factory.artistModal.loadModal();
+        });
     });
+
     $('#search-location').click(function(){
         map_Manage.search_popup_map.clearMap();
         $('#finish-search').show();
         $('#provider-finish-search').hide();
         $('#location-search-popup').modal('show');
     });
+
     $('#location-search-body').keydown(function(e){
         var code = e.keyCode || e.which;
         if(code == 13){
@@ -91,10 +98,32 @@ $(document).ready(function(){
             });
         }
     });
-
     $('#finish-search').click(function(){
         map_Manage.refreshContent(map_Manage.userSelectLocation.getLat(), map_Manage.userSelectLocation.getLng());
         $('#location-search-popup').modal('hide');
+    });
+    $('#upload-comment-image').click(function(e){
+        $('#imageFileInput').attr('name', $(e.currentTarget).attr('id'));
+        document.getElementById('imageFileInput').click();
+    });
+    $('#comment-submit').click(function(e){
+        var contentId = $(e.currentTarget).attr('content-index');
+        modal_Factory.reply.submitReply(contentId);
+    });
+    // postlikeContent
+    $('#content-popup').find('.content-detail-area').find('.content-detail-likecount').click(function(e){
+        var contentId = $(e.currentTarget).attr('data-index');
+        var likeflag;
+        // 좋아요를 누른 상태
+        if($(e.currentTarget).find('.likeActivate').css('display') == 'inline'){
+            likeflag = false;
+            modal_Factory.submitLike(contentId, likeflag);
+        }
+        // 좋아요를 아직 누리지 않은 상태
+        else{
+            likeflag = true;
+            modal_Factory.submitLike(contentId, likeflag);
+        }
     });
 });
 

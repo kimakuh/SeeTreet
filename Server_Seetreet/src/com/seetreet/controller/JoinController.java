@@ -193,8 +193,8 @@ public class JoinController extends HttpServlet {
 			String modTime = C.currentDate();
 			
 			
-			double latitude = (double)location.getJSONArray("coordinates").get(0);
-			double longitude = (double)location.getJSONArray("coordinates").get(1);
+			double latitude = location.getDouble("l_lat");
+			double longitude = location.getDouble("l_long");
 			LocationBean loc = new LocationBean("", "", 
 										latitude, 
 										longitude);

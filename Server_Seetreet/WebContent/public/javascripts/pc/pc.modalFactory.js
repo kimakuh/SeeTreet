@@ -5,7 +5,8 @@
 var modal_Factory = {};
 
 modal_Factory.contentModal = {};
-modal_Factory.contentModal.loadModal = function(contentinfo){
+modal_Factory.contentModal.loadModal = function(contentinfo, callback){
+    modal_Factory.reply.clearReplyList();
     var content_type = '';
     if(contentinfo["contentType"] == 'PUBLIC'){
         content_type = 'public';
@@ -76,15 +77,16 @@ modal_Factory.contentModal.loadModal = function(contentinfo){
     else{
         artistId = "seetreet";
     }
+    var likecount = contentinfo.likecount;
+    var contentId = contentinfo._id;
 
-    $('#content-popup').modal('show');
     // 이미지 채우기
     var img_target_provider = $('#content-popup').find('.provider-image-slider');
     modal_Factory.addImageslider(provider_img_array, img_target_provider);
     var img_target_artist = $('#content-popup').find('.artist-image-slider');
     modal_Factory.addImageslider(artist_img_array, img_target_artist);
     // 내용 채우기
-    $('#content-popup').find('.write-comment-area').find('.comment-id').text(getCookie(COOKIE_USER_NAME));
+    $('#content-popup').find('.write-comment-area').find('.comment-id').text(getCookie(COOKIE_USER_ID));
     $('#content-popup').find('.content-detail-area').find('.content-detail-title').find('.detail-body').text(content_name);
     $('#content-popup').find('.content-detail-area').find('.content-detail-artisttitle').find('.detail-body').text(artist_name);
     $('#content-popup').find('.content-detail-area').find('.content-detail-showtime').find('.detail-body').text(content_time);
@@ -92,16 +94,123 @@ modal_Factory.contentModal.loadModal = function(contentinfo){
     $('#content-popup').find('.content-detail-area').find('.content-detail-address').find('.detail-body').text(providerAddress);
     $('#content-popup').find('.content-detail-area').find('.content-detail-artistdescription').find('.description').text(artist_description);
     $('#content-popup').find('.content-detail-area').find('.content-detail-providerdescription').find('.description').text(provider_description);
+    $('#content-popup').find('.content-detail-area').find('.content-detail-likecount').find('.likecount').text(likecount);
+    $('#content-popup').find('.content-detail-area').find('.content-detail-likecount').attr('data-index', contentId);
+    $('#content-popup').find('#comment-submit').attr('content-index', contentId);
+
     $('#content-popup').find('.additional-info-area').find('.provider-info-area').find('img').attr('src', provider_img_array[0]);
     $('#content-popup').find('.additional-info-area').find('.provider-info-area').find('span').text(storeTitle);
+    $('#content-popup').find('.additional-info-area').find('.provider-info-area').find('span').text(storeTitle);
     $('#content-popup').find('.additional-info-area').find('.provider-info-area').attr('identification-value', providerId);
-
     $('#content-popup').find('.additional-info-area').find('.artist-info-area').find('img').attr('src', artist_img_array[0]);
     $('#content-popup').find('.additional-info-area').find('.artist-info-area').find('span').text(artist_name);
     $('#content-popup').find('.additional-info-area').find('.artist-info-area').attr('identification-value', artistId);
-    map_Manage.set_map(mapinfo);
 
+
+
+    map_Manage.set_map(mapinfo);
     modal_Factory.hideAndshowinfo(content_type);
+    callback();
+};
+
+
+
+modal_Factory.checkLike = function(contentId, callback){
+    getChecklikefromMe(contentId, function(data, status, res){
+        if(status == 'success'){
+            // like처리
+            if(data.data == false){
+                // 비활성좋아요아이콘
+                $('#content-popup').find('.content-detail-likecount').find('.likeActivate').hide();
+                $('#content-popup').find('.content-detail-likecount').find('.likeDeActivate').show();
+            }
+            else{
+                // 활성좋아요아이콘
+                $('#content-popup').find('.content-detail-likecount').find('.likeActivate').show();
+                $('#content-popup').find('.content-detail-likecount').find('.likeDeActivate').hide();
+            }
+            callback();
+        }
+    });
+};
+modal_Factory.submitLike = function(contentId, likeflag){
+    postlikeContent(contentId, likeflag, function(data, status, res){
+        if(status == 'success'){
+            // 좋아요를 비활성화
+            if(data.data == true){
+                if(likeflag == false){
+                    $('#content-popup').find('.content-detail-area').find('.content-detail-likecount[data-index = "' + contentId + '"]').find('.likeActivate').hide();
+                    $('#content-popup').find('.content-detail-area').find('.content-detail-likecount[data-index = "' + contentId + '"]').find('.likeDeActivate').show();
+                    var current_likecount = $('#content-popup').find('.content-detail-area').find('.content-detail-likecount[data-index = "' + contentId + '"]').find('.likecount').text();
+                    current_likecount--;
+                    $('#content-popup').find('.content-detail-area').find('.content-detail-likecount[data-index = "' + contentId + '"]').find('.likecount').text(current_likecount);
+                }
+                else{
+                    $('#content-popup').find('.content-detail-area').find('.content-detail-likecount[data-index = "' + contentId + '"]').find('.likeActivate').show();
+                    $('#content-popup').find('.content-detail-area').find('.content-detail-likecount[data-index = "' + contentId + '"]').find('.likeDeActivate').hide();
+                    var current_likecount = $('#content-popup').find('.content-detail-area').find('.content-detail-likecount[data-index = "' + contentId + '"]').find('.likecount').text();
+                    current_likecount++;
+                    $('#content-popup').find('.content-detail-area').find('.content-detail-likecount[data-index = "' + contentId + '"]').find('.likecount').text(current_likecount);
+                }
+            }
+        }
+    });
+};
+
+modal_Factory.reply = {};
+modal_Factory.reply.current_replypage = 1;
+modal_Factory.getReply = function(contentId){
+    $('#content-popup').modal('show');
+    getcontentReply(contentId, modal_Factory.reply.current_replypage, function(data, status, res){
+        if(status == 'success'){
+            if(data.state == true){
+                var replyArray = data.data;
+                for(var i in replyArray){
+                    modal_Factory.reply.prependReplyData(replyArray[i]);
+                }
+                modal_Factory.reply.current_replypage++;
+            }
+        }
+    });
+};
+// 댓글 이미지 등록 때 담아 놓을 변수
+modal_Factory.replyImage = '';
+
+
+modal_Factory.reply.replyImage ='';
+modal_Factory.reply.submitReply = function(contentId){
+    var replytext = $('#content-comment').val();
+//    var replyImage = modal_Factory.reply.replyImage;
+    // http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg
+    var replyImage = 'http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg';
+    postwriteReply(contentId, replytext, replyImage, function(data, status, res){
+        if(status == 'success'){
+            modal_Factory.reply.clearReply();
+            modal_Factory.reply.prependReplyData(data.data);
+            // Prepend Reply 함수 호출
+        }
+    });
+};
+modal_Factory.reply.clearReply = function(){
+    // 사진 청소
+    $('#upload-comment-image').attr('src', './images/seetreetimg/default_image.jpg');
+    // replyImage 변수 청소
+    modal_Factory.reply.replyImage ='';
+    // replytext청소
+    $('#content-comment').val('');
+};
+modal_Factory.reply.clearReplyList = function(){
+    $('#content-popup').find('.content-comment-area *').remove();
+    modal_Factory.reply.current_replypage = 1;
+};
+modal_Factory.reply.prependReplyData = function(replydata){
+    $('#content-popup').find('.content-comment-area').prepend(
+        '<div class = "comment-object" comment-id = "' + replydata.contentId + '">'
+            + '<img  class = "user-upload-image" src = ' + replydata.replyimage + '>'
+            + '<div class = "comment-user-name">' + replydata.userEmail + '</div>'
+            + '<div class = "comment-upload-time">2014/09/07 17:53:00</div>'
+            + '<div class = "comment-user-content">' + replydata.replytext +'</div>'
+    );
 };
 
 modal_Factory.hideAndshowinfo = function(contentType){
@@ -119,6 +228,8 @@ modal_Factory.hideAndshowinfo = function(contentType){
     }
 };
 
+
+
 modal_Factory.providerModal ={};
 modal_Factory.providerModal.getProviderInfo = function(providerId){
     $('#content-popup').modal('hide');
@@ -134,16 +245,6 @@ modal_Factory.providerModal.getProviderInfo = function(providerId){
     });
 };
 modal_Factory.providerModal.loadModal = function(providerInfo){
-//    var providerInfo = {
-//        providerImage : ["./images/seetreetimg/5mile1.jpg", "./images/seetreetimg/5mile2.jpg", "./images/seetreetimg/5mile3.jpg"],
-//        contentType : "SEETREET",
-//        favoriteGenre : {category : "음악", detailGenre : "인디밴드"},
-//        location : {"coordinates" : [127.00947, 37.2754700000006]},
-//        StoreTitle : "ZooCoffee",
-//        StoreAddress : "수원시 팔달구 인계동",
-//        StoreType : "커피전문점",
-//        description : "안녕하세요 주커피입니다."
-//    };
     // provider Image Array
     var providerImageSlider = $('#provider-popup').find('.provider-image-slider');
     modal_Factory.addImageslider(providerInfo.providerImage, providerImageSlider);
@@ -177,6 +278,49 @@ modal_Factory.providerModal.loadModal = function(providerInfo){
 modal_Factory.providerModal.loadHistory = function(){
 
 };
+
+
+modal_Factory.artistModal = {};
+modal_Factory.artistModal.artistInfo = {};
+modal_Factory.artistModal.getArtistInfo = function(artistId, callback){
+    // 5475b49be7760be08ac72c00
+    getArtist(artistId, function(data, status, res){
+        if(status == 'success'){
+            modal_Factory.artistModal.artistInfo = data.data;
+            callback();
+        }
+        else{
+            alert('실패');
+        }
+    });
+};
+
+modal_Factory.artistModal.loadModal = function(){
+    var artistInfo = modal_Factory.artistModal.artistInfo;
+    // 사진
+    var artistImages = artistInfo.artistImages;
+    var targetSlider = $('#artist-popup').find('.artist-image-slider');
+    modal_Factory.addImageslider(artistImages, targetSlider);
+    // 이름
+    var artist_name = artistInfo.name;
+    $('#artist-popup').find('.artist-detail-title').find('span').text(artist_name);
+    // 장르
+    var artist_genre = artistInfo.artistGenre[0].category;
+    var artist_detailgenre = artistInfo.artistGenre[0].detailGenre;
+    var show_genre = artist_genre + ' / ' + artist_detailgenre;
+    $('#artist-popup').find('.detail-category').find('.detail-body').text(show_genre);
+    // 선호지역
+//    var favorite_location = artistInfo.favoriteLocation[0].l_name;
+    var favorite_location = "서울시 마포구 서교동";
+    $('#artist-popup').find('.detail-location').find('.detail-body').text(favorite_location);
+    // 소개
+    var artist_description = artistInfo.description;
+    $('#artist-popup').find('.detail-description').find('.detail-body').text(artist_description);
+    $('#content-popup').modal('hide');
+    $('#artist-popup').modal('show');
+};
+
+
 
 var teststring = '2014년 3월부터 매월 셋째 주 목요일마다&lt; 성남아트센터 &lt;마티네 콘서트&gt;가 진행된다. 보&lt;다 다양한 주제를 통해 폭넓은 클래식 레퍼토리를다루고자 한다. 최수열 지취자가 이끄는 여러 단체의 유려한 연주와 4년 연속 &lt;마티네콘서트&gt;의진행' +
     '을 맡은 팝페라 가수 카이의 따뜻한 해설로 클래식에 대한 궁금증을 ' +

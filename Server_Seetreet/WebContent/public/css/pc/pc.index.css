@@ -419,21 +419,40 @@ textarea{
 .start-area .start-input-first{
     margin-top : 160px;
 }
+.start-area .start-input-first input{
+    margin : auto;
+    width : 500px;
+}
 
 .start-area .start-input-second{
     margin-top : 250px;
+}
+.start-area .start-input-second select{
+    width : 260px;
+    margin : auto;
+    margin-top : 10px;
+    margin-bottom : 10px;
 }
 .start-area .start-input-third{
     margin-top : 100px;
 }
 .start-area .start-input-third .input-group{
-
+    width : 605px;
+    margin : auto;
+    /*margin-left : 45px;*/
 }
 .start-area .start-input-fourth{
     margin-top : 250px;
 }
 .start-area .start-input-fourth .form-horizontal{
     margin-top : 20px;
+}
+
+.main-artist .start-area .start-input-fourth input,
+.main-artist .start-area .start-input-fourth textarea{
+    width : 400px;
+    margin : auto;
+    margin-bottom : 20px;
 }
 
 .tabinfo .modifytab{
@@ -721,13 +740,14 @@ textarea{
 }
 #content-popup .modal-body .content-detail-area .content-detail-commentcount{
     position : absolute;
-    right : -70px;
+    right : -75px;
     bottom : 20px;
 }
 #content-popup .modal-body .content-detail-area .content-detail-likecount{
     position : absolute;
-    right : -140px;
+    right : -160px;
     bottom : 20px;
+    cursor : pointer;
 }
 #content-popup .modal-body .content-detail-area .content-detail-title{
     margin-bottom : 5px;
@@ -772,7 +792,7 @@ textarea{
     clear : both;
 }
 #content-popup .modal-body .content-detail-area .content-detail-providerdescription .description{
-    width : 680px;
+    width : 650px;
 }
 #content-popup .modal-footer .write-comment-area{
     display : inline-block;
@@ -782,13 +802,20 @@ textarea{
 #content-popup .modal-footer .write-comment-area .comment-title{
     margin : 10px;
 }
+#content-popup .modal-footer .write-comment-area .comment-image{
+    width : 190px;
+    height : 135px;
+    cursor : pointer;
+}
 #content-popup .modal-footer .write-comment-area textarea{
-    margin : 10px;
-    width : 622px;
+    margin : 5px;
+    width : 445px;
     resize : none;
 }
-#content-popup .modal-footer .write-comment-area button{
-    margin-left : 534px;
+#content-popup .modal-footer .write-comment-area #comment-submit{
+    float : right;
+    margin-right : 10px;
+    cursor : pointer;
 }
 #content-popup .modal-footer .content-comment-area .comment-title{
     font-size : 20px;
@@ -810,7 +837,7 @@ textarea{
 #content-popup .modal-footer .content-comment-area .comment-object .comment-upload-time{
     position : absolute;
     top : 0px;
-    left : 250px;
+    right : 0px;
     font-size : 15px;
 }
 #content-popup .modal-footer .content-comment-area .comment-object .comment-user-content{
@@ -867,8 +894,11 @@ textarea{
 
 /*여기부터는 provider , artist 에 대한 공통 부분 css 입니다.*/
 .modal-body .detail-area{
-    position : relative;
+    /*position : relative;*/
     height : 209px;
+    width : 555px;
+    display : table;
+
 }
 .modal-body .detail-area div{
     /*font-size : 20px;*/
@@ -888,8 +918,8 @@ textarea{
 }
 .modal-body .detail-area .additional-info{
     position : absolute;
-    top : -15px;
-    right : -15px;
+    top : 0px;
+    right : 0px;
     width : 410px;
     height : 223px;
 }
@@ -942,7 +972,9 @@ textarea{
 }
 #provider-popup .modal-body{
     position : relative;
+    width : 998px;
     height : 223px;
+    display : table;
 }
 #provider-popup .modal-body .detail-area .detail-title{
     margin-left : 20px;
@@ -959,6 +991,15 @@ textarea{
 }
 #provider-popup .modal-body .detail-area .detail-description{
     margin-left : 36px;
+}
+#provider-popup .modal-body .detail-area .detail-description .detail-title{
+    display : inline-block;
+    float : left;
+}
+#provider-popup .modal-body .detail-area .detail-description .detail-body{
+    display : inline-block;
+    width : 455px;
+    margin-left : 4px;
 }
 #provider-popup .modal-body .detail-area .detail-want-category{
     margin-left : 12px;

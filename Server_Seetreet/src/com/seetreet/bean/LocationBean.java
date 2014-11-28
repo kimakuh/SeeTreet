@@ -16,8 +16,8 @@ public class LocationBean {
 	 * longitude : maximum -> 90
 	 * 
 	 * */
-	public static final int LAT = 0;
-	public static final int LONG = 1;
+	public static final int LAT = 1;
+	public static final int LONG = 0;
 	
 	public LocationBean(String name, String description , double latitude, double longitude) {
 		// TODO Auto-generated constructor stub

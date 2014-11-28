@@ -1272,12 +1272,13 @@
                         </div>
                     </div>
                         <div class = "content-detail-commentcount">
-                            <img src = "./images/seetreetimg/comment_icon.png"/>
-                            <span>100</span>
+                            <img src = "./images/seetreetimg/btn-reply-white.png"/>
+                            <span class = "likeCount">100</span>
                         </div>
-                        <div class = "content-detail-likecount">
-                            <img src = "./images/seetreetimg/like.png"/>
-                            <span>85</span>
+                        <div class = "content-detail-likecount" data-index = "111111">
+                            <img style = "display : none;" class = "likeActivate" src = "./images/seetreetimg/btn-heart-grey-red.png"/>
+                            <img class = "likeDeActivate" src = "./images/seetreetimg/btn-heart-grey-white.png"/>
+                            <span class = "likecount">85</span>
                         </div>
                     </div>
                 </div>
@@ -1285,20 +1286,25 @@
                     <div class = "write-comment-area">
                         <span class = "comment-title  topofcomment">댓글작성</span>
                         <span class = "comment-id">seetreetEditor</span>
-                        <textarea class = "form-control" id = "content-comment" rows = "4" placeholder="댓글을 작성해주세요!"></textarea>
-                        <button type = "button" class = "btn btn-primary">댓글등록</button>
+                        <table>
+                            <td>
+                                <img id = "upload-comment-image" class = "comment-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            </td>
+                            <td>
+                                <textarea class = "form-control" id = "content-comment" rows = "6" placeholder="댓글을 작성해주세요!"></textarea>
+                            </td>
+                        </table>
+                        <img content-index = "111" id = "comment-submit" src = "./images/seetreetimg/btn-ok-grey.png"/>
                     </div>
+                    <div class = "comment-title">댓글</div>
                     <div class = "content-comment-area">
-                        <div class = "comment-title">댓글</div>
-                        <div class = "comment-object">
+                        <div class = "comment-object" comment-id = "1">
                             <img  class = "user-upload-image" src = "./images/seetreetimg/5mile2.jpg">
                             <div class = "comment-user-name">임지욱</div>
                             <div class = "comment-upload-time">2014/09/07 17:53:00</div>
-                            <div class = "comment-user-content">
-                                공연 너무 기대되네요!
-                            </div>
+                            <div class = "comment-user-content">공연 너무 기대되네요!</div>
                         </div>
-                        <div class = "comment-object">
+                        <div class = "comment-object" comment-id = "1">
                             <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
                             <div class = "comment-user-name">임지욱</div>
                             <div class = "comment-upload-time">2014/09/07 17:53:00</div>
@@ -1306,7 +1312,55 @@
                                 공백포함250자, 공백제외 156자
                             </div>
                         </div>
-                        <div class = "comment-object">
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
                             <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
                             <div class = "comment-user-name">임지욱</div>
                             <div class = "comment-upload-time">2014/09/07 17:53:00</div>
