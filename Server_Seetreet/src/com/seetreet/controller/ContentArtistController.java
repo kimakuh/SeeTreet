@@ -27,10 +27,12 @@ import com.seetreet.util.ResBodyFactory;
 public class ContentArtistController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	private static final String PREFIX_REC = "/user/content/artist/rec/";
-	private static final String PREFIX_SEARCH = "/user/content/artist/search/";
-	private static final String PREFIX_APPLY = "/user/content/artist/apply/";
-	private static final String PREFIX_DELETE = "/user/content/artist/delete/";
+	private static final String PREFIX_REC 			= "/user/content/artist/rec/";
+	private static final String PREFIX_SEARCH 		= "/user/content/artist/search/";
+	private static final String PREFIX_APPLY 		= "/user/content/artist/apply/";
+	private static final String PREFIX_DELETE 		= "/user/content/artist/delete/";
+	private static final String PREFIX_APPLICATION 	= "/user/content/artist/applications/";
+	private static final String PREFIX_CONFIRM 		= "/user/content/artist/confirm/";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -55,6 +57,8 @@ public class ContentArtistController extends HttpServlet {
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, searchContentByArtist(req, res)));
 			}else if(cmd.contains(PREFIX_REC)) {
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, recContentByArtist(req, res)));
+			}else if(cmd.contains(PREFIX_APPLICATION)) {
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, searchApplicationsByArtist(req, res)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -90,19 +94,16 @@ public class ContentArtistController extends HttpServlet {
 
 	
 	private JSONArray searchContentByArtist(HttpServletRequest req, HttpServletResponse res) {
-		JSONArray arr = new JSONArray();
+		JSONArray arr = null;
 		try {
 			double l_long 	= Double.parseDouble(req.getParameter(LocationBean.KEY_LONGITUDE));
 			double l_lat 	= Double.parseDouble(req.getParameter(LocationBean.KEY_LATITUDE));
 			int page 	= Integer.parseInt(req.getParameter("page"));
-			ContentProviderBean[] beans = MongoDAO.searchContentByLocationFromArtist(
+			arr = MongoDAO.searchContentByLocationFromArtist(
 					l_lat, 
 					l_long, 
 					page);
 			
-			for (ContentProviderBean bean : beans) {				
-				arr.put(bean.getJson());
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -112,7 +113,7 @@ public class ContentArtistController extends HttpServlet {
 	
 	
 	private JSONArray recContentByArtist(HttpServletRequest req, HttpServletResponse res) {
-		JSONArray arr = new JSONArray();
+		JSONArray arr = null;
 		try {
 			JSONObject artist = MongoDAO.getArtist(
 					(String) req.getAttribute(UserBean.KEY_EMAIL),
@@ -129,16 +130,11 @@ public class ContentArtistController extends HttpServlet {
 			
 			JSONArray coord =location.getJSONArray(LocationBean.KEY_COORDINATE);
 			
-			ContentProviderBean[] beans = MongoDAO.searchContentByLocationFromArtist(
+			arr = MongoDAO.searchContentByLocationFromArtist(
 					coord.getDouble(LocationBean.LAT), 
 					coord.getDouble(LocationBean.LONG), 
-					page);
+					page);			
 			
-			if(beans.length == 0 ) return null;
-			
-			for (ContentProviderBean bean : beans) {				
-				arr.put(bean.getJson());
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -172,6 +168,19 @@ public class ContentArtistController extends HttpServlet {
 			e.printStackTrace();
 		}		
 		return false;
+	}
+	
+	private JSONArray searchApplicationsByArtist(HttpServletRequest req, HttpServletResponse res) {
+		JSONArray arr = null;
+		String artistId = req.getParameter(ArtistBean.KEY_ID);
+		int page = Integer.parseInt(req.getParameter("page"));
+		try {
+			arr = MongoDAO.searchApplicationsByArtist(artistId, page);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return arr;
 	}
 	
 }

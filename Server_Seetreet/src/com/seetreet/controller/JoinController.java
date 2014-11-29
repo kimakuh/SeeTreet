@@ -139,6 +139,7 @@ public class JoinController extends HttpServlet {
 						
 			String modTime = C.currentDate();
 			
+			System.out.println(locations.toString());
 			LocationBean[] locs = new LocationBean[locations.length()];
 						
 			for(int i = 0 ; i < locations.length(); i++) {
@@ -178,13 +179,11 @@ public class JoinController extends HttpServlet {
 	
 	private boolean joinProvider(HttpServletRequest req, HttpServletResponse res , String e) {
 		try {
-			System.out.println(req.toString());
 			String email = e;
 			String token 		= req.getHeader(UserBean.KEY_TOKEN);
 			JSONArray images 	= new JSONArray(req.getParameter(ProviderBean.KEY_IMAGES));
 			JSONArray genre		= new JSONArray(req.getParameter(ProviderBean.KEY_GENRE));
-			String descript 	= req.getParameter(ProviderBean.KEY_DESCRIPT);
-			System.out.println("REQUEST LOCATION : "+req.getParameter(ProviderBean.KEY_LOCATION));
+			String descript 	= req.getParameter(ProviderBean.KEY_DESCRIPT);			
 			JSONObject location = new JSONObject(req.getParameter(ProviderBean.KEY_LOCATION));			
 			String storeTitle	= req.getParameter(ProviderBean.KEY_STORETITLE);
 			String storeType	= req.getParameter(ProviderBean.KEY_STORETYPE);

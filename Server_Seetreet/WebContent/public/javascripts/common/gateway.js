@@ -1,7 +1,7 @@
 /**
  * Created by Limjiuk on 2014-10-28.
  */
-var SERVER_ADDRESS = 'http://211.189.127.63:8080/Server_Seetreet';
+var SERVER_ADDRESS = 'http://211.189.127.61:8090/TEST';
 
 // create user account
 var postUserCreate = function(userId, user, callback){
@@ -269,34 +269,65 @@ var getProviderContents = function(page, callback) {
 };
 
 //제공자 등록 콘텐츠 정보 보기
-var postNewProviderContents = function(title , address , stime , etime , callback) {
-   var token = getCookie(COOKIE_USER_TOKEN);
-   var userId = getCookie(COOKIE_USER_ID);
-   var url = '/user/content/provider/enroll/' + userId;
-   var method = 'POST';
-    var headers = {
-        "_id" : token
-    };;
-    var body = {
-    	contentTitle : title ,
-    	contentAddress : address,
-    	contentStartTime : stime,
-    	contentEndTime : etime
-    };
-   httpRequest(url, method, headers, body, callback);
+var postNewProviderContents = function(title, address, stime, etime, callback) {
+	var token = getCookie(COOKIE_USER_TOKEN);
+	var userId = getCookie(COOKIE_USER_ID);
+	var url = '/user/content/provider/enroll/' + userId;
+	var method = 'POST';
+	var headers = {
+		"_id" : token
+	};
+	var body = {
+		contentTitle : title,
+		contentAddress : address,
+		contentStartTime : stime,
+		contentEndTime : etime
+	};
+	httpRequest(url, method, headers, body, callback);
 };
+
+// 아티스트가 지원했던 콘텐츠 정보를 가져옵니다.
+var getArtistApplications = function(artistId , page , callback) {
+	var token = getCookie(COOKIE_USER_TOKEN);
+	var userId = getCookie(COOKIE_USER_ID);
+	var url = '/user/content/artist/applications/' + userId;
+	var method = 'GET';
+	var headers = {
+		"_id" : token
+	};
+	var body = {
+		"_id" : artistId,
+		"page" : page
+	};
+	httpRequest(url, method, headers, body, callback);
+}
+
+//아티스트의 선호 위치를 기반으로 콘텐츠 정보를 가져옵니다.
+var getArtistRecommends = function(page , callback) {
+	var token = getCookie(COOKIE_USER_TOKEN);
+	var userId = getCookie(COOKIE_USER_ID);
+	var url = '/user/content/artist/rec/' + userId;
+	var method = 'GET';
+	var headers = {
+		"_id" : token
+	};
+	var body = {
+		"page" : page	
+	};
+	httpRequest(url, method, headers, body, callback);
+}
 
 
 
 // httpRequest
 var httpRequest = function ( url, method, headers, body , callback  ){
     var fullUrl =  SERVER_ADDRESS + url;
-    console.log('=======request start!==========');
-    console.log('method=' + method );
-    console.log('url='+ fullUrl );
-    console.log('header=' + JSON.stringify(headers) );
-    console.log('body=' + JSON.stringify(body));
-    console.log('========request end!=========');
+//    console.log('=======request start!==========');
+//    console.log('method=' + method );
+//    console.log('url='+ fullUrl );
+//    console.log('header=' + JSON.stringify(headers) );
+//    console.log('body=' + JSON.stringify(body));
+//    console.log('========request end!=========');
     $.ajax({
         crossDomain : true,
         dataType : "json",
@@ -309,13 +340,13 @@ var httpRequest = function ( url, method, headers, body , callback  ){
         success: function(data, state, res){
             if ( data == null )
                 data = '';
-            console.log( '[[[[[[[[SUCCESS!!]]]]]]]   url: ' + url + ',   state:' + state + ',   data : ' + JSON.stringify( data ) );
+//            console.log( '[[[[[[[[SUCCESS!!]]]]]]]   url: ' + url + ',   state:' + state + ',   data : ' + JSON.stringify( data ) );
             callback ( data, state, res );
         },
         error: function(data, state){
             if ( data == null )
                 data = '';
-            console.log( '[[[[[[[[[ERROR!!]]]]]]]]]   url: ' + url + ', s  tate:' + state + ',   data : ' + JSON.stringify( data ) );
+//            console.log( '[[[[[[[[[ERROR!!]]]]]]]]]   url: ' + url + ', s  tate:' + state + ',   data : ' + JSON.stringify( data ) );
             callback( data, state , null );
         }
     });

@@ -307,8 +307,8 @@ public class MongoDAO {
 		BasicDBList locations = new BasicDBList();
 		for(LocationBean loc : bean.getFavoriteLocation()) {
 			BasicDBList coords = new BasicDBList();
-			coords.add(loc.getLatitude());
-			coords.add(loc.getLongitude());
+			coords.put(LocationBean.LONG , loc.getLongitude());
+			coords.put(LocationBean.LAT , loc.getLatitude());			
 			
 			locations.add(new BasicDBObject()
 							  .append(LocationBean.KEY_NAME, loc.getName())
@@ -568,8 +568,9 @@ public class MongoDAO {
 		return new JSONObject(artist.toString());
 	}
 	
-	public static ContentProviderBean[] searchContentByLocationFromArtist(double l_lat,	double l_long, int page) {
-		ContentProviderBean[] res = null;
+	public static JSONArray searchContentByLocationFromArtist(double l_lat,	double l_long, int page) {
+//		ContentProviderBean[] res = null;
+		JSONArray res = new JSONArray();
 
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
@@ -586,63 +587,21 @@ public class MongoDAO {
 												new BasicDBObject("type", "Point")
 													.append("coordinates", position))))
 							.append(ContentBean.KEY_FINISHIED, false)
-							.append(ContentBean.KEY_C_ARTIST, 
-									new BasicDBObject("$eq" , "")))
+							.append(ContentBean.KEY_C_ARTIST, ""))
 						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
 
-		res = new ContentProviderBean[iter.size()];
-		System.out.println(iter.count());
-		if(iter.size() <= 0 ) {
-			return null;
-		}
-		
-		List<DBObject> list = iter.toArray();
-		
-		for(int i = 0 ; i < list.size(); i++) {
-			DBObject obj = list.get(i);
-			System.out.println(obj.toString());
-			DBObject dbProvider = (DBObject) obj.get(ContentBean.KEY_PROVIDER);
-			BasicDBList dbArtists = (BasicDBList) obj
-					.get(ContentBean.KEY_ARTIST);
-			DBObject dbLocation = (DBObject) dbProvider
-					.get(ProviderBean.KEY_LOCATION);			
-			
-			for (int n = 0; n < dbArtists.size(); n++) {
-				String temp = ((DBObject) dbArtists.get(n)).get("_id").toString();			
+		try {
+			while(iter.hasNext()) {
+				DBObject item = iter.next();
+				item.put(ContentBean.KEY_ARTIST	, new BasicDBList());
+				String sItem = C.convertObjectId(item.toString());
+				res.put(new JSONObject(sItem));
 			}
-			BasicDBList pos = (BasicDBList) dbLocation
-					.get(LocationBean.KEY_COORDINATE);
-			LocationBean location = new LocationBean(
-					(String) dbLocation.get(LocationBean.KEY_NAME),
-					(String) dbLocation.get(LocationBean.KEY_DESCRIPT),
-					(double) pos.get(0), (double) pos.get(1));
-			GenreBean[] genre = { new GenreBean("",
-					(String) dbProvider.get(ProviderBean.KEY_GENRE)) };
-
-			BasicDBList images = (BasicDBList) dbProvider
-					.get(ProviderBean.KEY_IMAGES);
-			
-			
-			String[] t = {};
-			ProviderBean provider = new ProviderBean(
-					(String) dbProvider.get(ProviderBean.KEY_TYPE),
-					images.toArray(t), location, genre,
-					(String) dbProvider.get(ProviderBean.KEY_STORETITLE),
-					(String) dbProvider.get(ProviderBean.KEY_STORETYPE),
-					(String) dbProvider.get(ProviderBean.KEY_DESCRIPT), 
-					(String) dbProvider.get(ProviderBean.KEY_ADDRESS), 
-					(String)dbProvider.get(ProviderBean.KEY_MODTIME)
-					);			
-			
-			res[i] = new ContentProviderBean(
-					obj.get(ContentBean.KEY_ID).toString(),
-					(String) obj.get(ContentBean.KEY_TITLE), 
-					new GenreBean("", (String) obj.get(ContentBean.KEY_GENRE)), 
-					(String) obj.get(ContentBean.KEY_TYPE), 
-					(String) obj.get(ContentBean.KEY_STARTTIME), 
-					(String) obj.get(ContentBean.KEY_ENDTIME), 
-					provider);		
-		}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}			
+		
 		return res;
 	}
 
@@ -832,4 +791,34 @@ public class MongoDAO {
 		
 		return true;
 	}	
+	
+	public static JSONArray searchApplicationsByArtist(String artistId , int page) {
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		
+		DBCursor iter = col.find(new BasicDBObject()
+								.append(ContentBean.KEY_TYPE, "SEETREET")
+								.append(ContentBean.KEY_ARTIST , new BasicDBObject()
+												 .append("$elemMatch", new BasicDBObject()
+												 					   .append(ContentBean.KEY_ID, new ObjectId(artistId))
+												 		)
+										)
+								).skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
+		
+		JSONArray res = new JSONArray();
+		try {
+			while(iter.hasNext()) {
+				DBObject obj = iter.next();			
+				obj.put(ContentBean.KEY_ARTIST, new BasicDBList());
+				String sObj = C.convertObjectId(obj.toString());
+				
+				res.put(new JSONObject(sObj));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
 }

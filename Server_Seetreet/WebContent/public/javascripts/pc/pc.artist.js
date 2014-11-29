@@ -114,7 +114,7 @@ manage_artistinfo.join.imageArr = new Array();
 manage_artistinfo.join.format = {
     name : "",
     artistImages : "", // 이미지 어레이
-    videourl : "",
+    videoUrl : "",
     artistGenre : "",
     description : "",
     favoriteLocation : ""
@@ -166,7 +166,7 @@ manage_artistinfo.join.loadjoinartist = function(buttonId){
         $('.main-artist').find('.start-area').find('.start-input-fourth *').show();
     }
     else if(nth == 4){
-        manage_artistinfo.join.format.videourl = $('#artist-youtube-url').val();
+        manage_artistinfo.join.format.videoUrl = $('#artist-youtube-url').val();
         manage_artistinfo.join.format.description = $('#artist-description').val();
         postArtistCreate(manage_artistinfo.join.format , function(data, status, res){
             if(status == 'success'){
