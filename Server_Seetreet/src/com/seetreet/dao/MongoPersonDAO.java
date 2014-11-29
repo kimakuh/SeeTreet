@@ -73,6 +73,7 @@ public class MongoPersonDAO {
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_ARTIST);
 	
 		DBObject artist = col.findOne(new BasicDBObject().append(ArtistBean.KEY_ID, new ObjectId(artistId)));
+		System.out.println(artist.toString());
 		JSONObject result = null;
 		
 		if(artist == null) return result;

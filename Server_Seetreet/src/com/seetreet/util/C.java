@@ -94,18 +94,25 @@ public class C {
 		return dbobject.replaceAll(REX_ID, "$1");
 	}
 	
-	public static final String FILEPATH = "C:\\Users\\Limjiuk\\git\\SeeTreet\\Server_Seetreet\\WebContent\\public\\images\\upload\\";
-	public static final String URL = "211.189.127.63:8080/Server_Seetreet/images/upload/";
+	public static final String FILEPATH = "C:\\Users\\Youngwook\\Documents\\workspaceEE\\TEST\\WebContent\\public\\images\\upload\\";
+	public static final String URL = "./public/images/upload/";
 	//http://211.189.127.61:8090/TEST/images/seetreetimg/btn-person-grey.png
-	public static String[] writeImageFileFromBase64(String userId , String... encodedStrings) {		
+	public static final String ADDPATH_ARTIST = "a\\";
+	public static final String ADDPATH_PROVIDER = "p\\";
+	public static final String ADDPATH_REPLY = "r\\";
+	public static final String ADDURL_ARTIST = "a/";
+	public static final String ADDURL_PROVIDER = "p/";
+	public static final String ADDURL_REPLY = "r/";
+	
+	public static String[] writeImageFileFromBase64(String userId , String path , String url , String... encodedStrings) {		
 		String[] strs = new String[encodedStrings.length];
 		FileOutputStream fos = null;
 		int i = 0 ;
 		for(String image : encodedStrings) {
 			try {
 				String fileName = userId + "_" + i + ".png";
-				fos = new FileOutputStream(new File(FILEPATH + fileName));
-				strs[i++] = URL+fileName;
+				fos = new FileOutputStream(new File(FILEPATH + path + fileName));
+				strs[i++] = URL +url+fileName;
 				fos.write(Base64.decodeBase64(image));
 			} catch (Exception e) {
 				// TODO: handle exception

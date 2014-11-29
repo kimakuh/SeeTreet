@@ -1,4 +1,5 @@
 var slide = null;
+var mAritstApplication = null;
 var Listtab = {};
 Listtab.TAB_PROVIDER = 0;
 Listtab.TAB_ARTIST = 1;
@@ -54,6 +55,33 @@ Listtab.show = function(STATE) {
 				'</div>'
 			);
 		
+		mArtistApplication = new ArtistApplication();
+		mArtistApplication.create($(".listtab.artist") , function() {
+			getUser(function(data , state) {
+				if(state == "success") {
+					var artistId = data.data.user_artist._id;	
+					var page = mArtistApplication.getPage();
+					getArtistApplications(artistId, page, function(res , state2) {
+						if(state2 == "success") {
+							console.log(res);
+						}else {
+							
+						}
+					});					
+				} else {
+					
+				}				
+			})
+		});
+		
+		getArtistRecommends(mArtistApplication.getRecPage() , function(data ,state) {
+			if(state == "success") {
+				console.log(data);
+			}else {
+				
+			}
+		})
+		
 		break;
 	}
 };
@@ -67,7 +95,7 @@ var ProviderView = function() {
 	var contentId = "";
 	return {
 		create : function(target , callback) {
-			var str = '<div class="p_content_container" data-id="empty" data-state="init">'+													
+			var str = '<div class="content_container p_content_container" data-id="empty" data-state="init">'+													
 					  '</div>';		
 			target.prepend(str);		
 			
@@ -75,7 +103,7 @@ var ProviderView = function() {
 			isInit = true;
 			
 			setTimeout(function() {
-				$(".p_content_container").removeAttr("data-state");
+				$(".content_container").removeAttr("data-state");
 				if(callback != undefined)callback();
 			},300);
 		},
@@ -102,7 +130,7 @@ var ProviderView = function() {
 			}));
 			
 			print(content.provider.providerImage[0]);
-			$(id+ " .identity.box").css({"background-image" : 'url(http://'+content.provider.providerImage[0]+')'});
+			$(id+ " .identity.box").css({"background-image" : 'url('+content.provider.providerImage[0]+')'});
 			
 			if(hlist.isInited() == false) hlist.create($(id) , contentId , true);
 		}, 
@@ -124,6 +152,46 @@ var ProviderView = function() {
 		}
 	};
 };
+
+var ArtistApplication = function() {
+	var id = "";
+	var hlist = null;
+	var mPage = 1;
+	var mRecPage = 1;
+	return {
+		create : function(target , callback) {
+			var str = '<div class="content_container a_content_container" data-id="empty" data-state="init">'
+					+ '</div>';
+			target.prepend(str);
+			
+			hlist = new HSlider();			
+
+			setTimeout(function() {
+				$(".a_content_container").removeAttr("data-state");
+				if (callback != undefined)
+					callback();
+			}, 300);
+		} , 
+		addProvider : function( pData , isPassed) {
+			
+		} , 
+		getPage : function() {
+			return mPage;
+		} , 
+		setPage : function(page) {
+			mPage = page;
+		} ,
+		getRecPage : function() {
+			return mRecPage;
+		} ,
+		setRecPage : function(page) {
+			mRecPage = page;
+		},
+		addRecProvider : function ( pData ) {
+			
+		}
+	};
+}
 
 
 var BoxFactory = {};
@@ -156,7 +224,14 @@ BoxFactory.create = function(key , info) {
 						'<div class="box_hover"><h3><strong>'+title+'</strong>은 누구일까요?<br/> 클릭해봐요!</h3></div>'+
 					'</div>';	
 	break;
-	case BoxFactory.KEY_CREATE_PROVIDER :		
+	case BoxFactory.KEY_CREATE_PROVIDER :	
+		var image = info.image;
+		box_str += '<div class="identity box" data-id="'+id+'">'+
+						'<div class="image" ></div>'+
+						'<div class="title">'+title+'</div>'+
+						'<div class="option descript">'+desc+'</div>'+
+						'<div class="box_hover"></div>'+
+					'</div>';
 	break;
 	}	
 	
@@ -175,20 +250,34 @@ var HSlider = function() {
 				print("Did not init");
 				return;
 			}
-						
-			var artist = BoxFactory.create(BoxFactory.KEY_CREATE_ARTIST ,
-			{
-				title : data.name,
-				desc : data.description,				
-				id : data._id,
-				confirm : isConfirmed
-			});			
-			$(mId+ " .viewport").append(artist);			
-			$(mId+ " .viewport .artist.box[data-id='"+data._id+"']")
-				.css("background-image" , "url('"+data.artistImages[0]+"')");				
-			mMap[data._id] = mId+ " .viewport .artist.box[data-id='"+data._id+"']";
+			if (isArtist) {
+				var artist = BoxFactory.create(BoxFactory.KEY_CREATE_ARTIST, {
+					title : data.name,
+					desc : data.description,
+					id : data._id,
+					confirm : isConfirmed
+				});
+				$(mId + " .viewport").append(artist);
+				$(mId + " .viewport .artist.box[data-id='" + data._id + "']")
+						.css("background-image","url('" + data.artistImages[0] + "')");
+				mMap[data._id] = mId + " .viewport .artist.box[data-id='"+ data._id + "']";
+
+				$(mId).removeClass("empty");
+			} else {
+				var provider = BoxFactory.create(BoxFactory.KEY_CREATE_PROVIDER, {
+					title : data.name,
+					desc : data.description , 
+					id : data._id,
+					confirm : isConfirmed
+				});
+				$(mId + " .viewport").append(provider);
+				$(mId + " .viewport .provider.box[data-id='" + data._id + "']")
+						.css("background-image","url('" + data.providerImage[0] + "')");
+				mMap[data._id] = mId + " .viewport .provider.box[data-id='"+ data._id + "']";
+
+				$(mId).removeClass("empty");
+			}	
 			
-			$(mId).removeClass("empty");
 		},
 		getData : function(data) {
 			print(mMap);
@@ -196,14 +285,19 @@ var HSlider = function() {
 		create : function(target , id , isArtistList) {
 			mId += "[data-id='"+id+"']";
 			isArtist = isArtistList;
-			target.append(
-				'<div class="listview empty" data-id="'+id+'">'+
-					'<h2 class="p_empty_text">지원자가 없다.</h2>'+
-					'<div class="prev_btn list_btn"></div>'+
-					'<div class="next_btn list_btn"></div>'+
-					'<div class="viewport"></div>'+
-				'</div>'
-			);
+			if(isArtist) {
+				target.append(
+						'<div class="listview empty" data-id="'+id+'">'+
+							'<h2 class="p_empty_text">지원자가 없다.</h2>'+
+							'<div class="prev_btn list_btn"></div>'+
+							'<div class="next_btn list_btn"></div>'+
+							'<div class="viewport"></div>'+
+						'</div>'
+				);
+			} else {
+				
+			}
+			
 			
 			$(mId + " .prev_btn").click(function(e) {				
 				$(mId + " .viewport").animate({

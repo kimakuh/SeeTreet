@@ -183,23 +183,26 @@
 	/*transform: rotateY(0deg);*/
 }
 
-.p_content_container {
+.content_container {
 	position:relative;	
 	height : 350px;
-	transition : height .5s ease-out , background .5s ease-out;
+	transition : height .5s ease-out , background .5s ease-out;		
+}
+
+.content_container.p_content_container {
 	border-top: 1px solid #aaa;
 	overflow: hidden;
 }
 
-.p_content_container[data-id='empty'][data-state='init'] {	
+.content_container.p_content_container[data-id='empty'][data-state='init'] {	
 	height : 10px;
 }
 
-.p_content_container:nth-child(2) {
+.content_container.p_content_container:nth-child(2) {
 	border-top: none;
 }
 
-.p_content_container[data-id='empty'] {
+.content_container.p_content_container[data-id='empty'] {
 	height : 300px;
 	margin-left : 20px;
 	background-color : rgba(0 ,0,0, 0.4);
@@ -209,30 +212,30 @@
 	border-radius : 10px;	
 }
 
-.p_content_container[data-id='empty']:hover {	
+.content_container.p_content_container[data-id='empty']:hover {	
 	background-color : rgba(0 ,0,0, 0.6);
 	background-image : url("../../images/seetreetimg/btn-plus-yel.png");
 }
 
-.p_content_container[data-id='empty']:active {	
+.content_container.p_content_container[data-id='empty']:active {	
 	background-color : rgba(0 ,0,0, 0.8);
 	background-image : url("../../images/seetreetimg/btn-plus-red.png");
 	transition : none;
 }
 
 
-.p_content_container .identity.box {
+.content_container.p_content_container .identity.box {
 	float : left;
 	margin : 25px 40px 25px 20px;
 }
 
-.p_content_container .listview {
+.content_container.p_content_container .listview {
 	float : left;
 	width : -webkit-calc(100% - 265px);
 	min-width: 200px;
 }
 
-.p_content_container .listview h2.p_empty_text {
+.content_container.p_content_container .listview h2.p_empty_text {
 	display : none;
 	visibility : hidden;
 	width : 100%;
@@ -244,7 +247,7 @@
 	transition: display .5 ease-out
 }
 
-.p_content_container .listview.empty h2.p_empty_text {
+.content_container.p_content_container .listview.empty h2.p_empty_text {
 	display : block;
 	visibility: visible;
 }
