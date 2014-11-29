@@ -135,7 +135,7 @@ public class JoinController extends HttpServlet {
 				encodedImages[i] = images.getString(i);
 			}			
 			
-			imageURLs = C.writeImageFileFromBase64(token, encodedImages);		
+			imageURLs = C.writeImageFileFromBase64(token, C.ADDPATH_ARTIST , C.ADDURL_ARTIST, encodedImages);		
 						
 			String modTime = C.currentDate();
 			
@@ -196,11 +196,10 @@ public class JoinController extends HttpServlet {
 				encodedImages[i] = images.getString(i);
 			}
 			
-			imageURLs = C.writeImageFileFromBase64(token, encodedImages);			
+			imageURLs = C.writeImageFileFromBase64(token, C.ADDPATH_PROVIDER , C.ADDURL_PROVIDER , encodedImages);			
 			
 			String modTime = C.currentDate();
-			
-			
+	
 			double latitude = (double)location.getDouble(LocationBean.KEY_LATITUDE);
 			double longitude = (double)location.getDouble(LocationBean.KEY_LONGITUDE);
 			String l_descript = location.has(LocationBean.KEY_DESCRIPT)?"":location.getString(LocationBean.KEY_DESCRIPT);

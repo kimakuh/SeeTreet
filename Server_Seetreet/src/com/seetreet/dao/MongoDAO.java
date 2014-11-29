@@ -425,8 +425,7 @@ public class MongoDAO {
 		BasicDBList position = new BasicDBList();
 		position.put(LocationBean.LAT, l_lat);
 		position.put(LocationBean.LONG, l_long);		
-		
-		System.out.println(l_lat + " , " + l_long);
+		System.out.println(position.toString());
 		DBCursor iter = 
 				col.find(new BasicDBObject("provider.location", 
 							new BasicDBObject("$near" , 
@@ -545,6 +544,14 @@ public class MongoDAO {
 		colContent.update(findQuery, updateQuery);		
 		
 		return true;
+	}
+	
+	public static int countReplayByContentId(String contentId) {
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_REPLY);
+		
+		long count = col.count(new BasicDBObject(ReplyBean.KEY_CONTENTID, contentId));
+		return (int)count;
 	}
 	
 	public static JSONObject getArtist(String email , String token) throws JSONException {

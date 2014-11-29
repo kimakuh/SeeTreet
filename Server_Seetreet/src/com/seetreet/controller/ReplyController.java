@@ -30,7 +30,7 @@ public class ReplyController extends HttpServlet {
 	final String PREFIX = "/user/content/user/reply"; 
 	private final String ENROLL = "/user/content/user/reply/enroll";
 	private final String SEARCH = "/user/content/user/reply/search";
-    private final String UPDATE = "/user/content/user/reply/update";
+    private final String COUNT = "/user/content/user/reply/count";
     private final String DELETE = "/user/content/user/reply/delete";
     /**
      * @see HttpServlet#HttpServlet()
@@ -49,22 +49,27 @@ public class ReplyController extends HttpServlet {
 		String contextPath = req.getContextPath();
 		String cmd = reqURI.substring(contextPath.length());
 		
-		if(cmd.contains(SEARCH)) {					
-			PrintWriter out = res.getWriter();
-			
-			try {
+		PrintWriter out = res.getWriter();
+		try {
+			if (cmd.contains(SEARCH)) {
 				JSONArray arr = searchReply(req, res);
-				if(arr.length()== 0) {
-					out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_EMPTY, null));
+				if (arr.length() == 0) {
+					out.write(ResBodyFactory.create(false,
+							ResBodyFactory.STATE_FAIL_ABOUT_EMPTY, null));
 					return;
 				}
-				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, arr));
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			} finally {
-				if(out!= null) try{out.close();}catch(Exception e) {e.printStackTrace();}
-			}			
+				out.write(ResBodyFactory.create(true,
+						ResBodyFactory.STATE_GOOD_WITH_DATA, arr));
+
+			} else if (cmd.contains(COUNT)) {
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, countReply(req, res)));
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			if (out != null)try {out.close();} catch (Exception e) {e.printStackTrace();}
 		}
 	}
 
@@ -82,9 +87,7 @@ public class ReplyController extends HttpServlet {
 		try {
 			if(cmd.contains(ENROLL)) {				
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, enrollReply(req, res)));
-			}else if(cmd.contains(UPDATE)) {
-				System.out.println(">> update");
-			}else if(cmd.contains(DELETE)) {
+			} else if(cmd.contains(DELETE)) {
 				boolean isDeleted = deleteReply(req, res);
 				if(isDeleted) {
 					out.write(ResBodyFactory.create(isDeleted, ResBodyFactory.STATE_GOOD_WITH_DATA, null));
@@ -109,6 +112,11 @@ public class ReplyController extends HttpServlet {
 		
 	}
 	
+	/* 중요!!
+	 * JSONObject 에서 append, put 의 차이점!
+	 * put 으로 넣으면 value 값이 값으로 저장이 된다.  key : value
+	 * append 하면 value 값이 배열로 저장이 된다. key : [value]
+	 * */
 	private JSONObject enrollReply(HttpServletRequest req, HttpServletResponse res) throws Exception {			
 		String contentId = req.getParameter(ReplyBean.KEY_CONTENTID);
 		String replytext = req.getParameter(ReplyBean.KEY_REPLYTEXT);
@@ -118,17 +126,17 @@ public class ReplyController extends HttpServlet {
 		String token = req.getHeader(UserBean.KEY_TOKEN);
 		
 		String hash = modtime+token;		
-		String[] replyimages= C.writeImageFileFromBase64(hash.hashCode()+"", replyimage);
+		String[] replyimages= C.writeImageFileFromBase64(hash.hashCode()+"", C.ADDPATH_REPLY , C.ADDURL_REPLY , replyimage);
 		
 //		ReplyBean reply = new ReplyBean((String)req.getAttribute(UserBean.KEY_EMAIL) , contentId, replytext, replyimage);
 		JSONObject reply = null;
 		try {
 			reply = new JSONObject()
-				  .append(ReplyBean.KEY_USEREMAIL , (String)(req.getAttribute(UserBean.KEY_EMAIL)))
-				  .append(ReplyBean.KEY_CONTENTID , contentId)
-				  .append(ReplyBean.KEY_REPLYTEXT , replytext)
-				  .append(ReplyBean.KEY_REPLYIMAGE , replyimages[0])
-				  .append(ReplyBean.KEY_MODTIME, modtime);
+				  .put(ReplyBean.KEY_USEREMAIL , (String)(req.getAttribute(UserBean.KEY_EMAIL)))
+				  .put(ReplyBean.KEY_CONTENTID , contentId)
+				  .put(ReplyBean.KEY_REPLYTEXT , replytext)
+				  .put(ReplyBean.KEY_REPLYIMAGE , replyimages[0])
+				  .put(ReplyBean.KEY_MODTIME, modtime);
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
@@ -138,8 +146,9 @@ public class ReplyController extends HttpServlet {
 		return MongoDAO.enrollReply(reply);					
 	}
 	
-	private void updateReply(HttpServletRequest req, HttpServletResponse res) {
-		
+	private int countReply(HttpServletRequest req, HttpServletResponse res) {
+		String contentId = req.getParameter(ReplyBean.KEY_CONTENTID);
+		return MongoDAO.countReplayByContentId(contentId);
 	}
 	
 	private boolean deleteReply(HttpServletRequest req, HttpServletResponse res) {
