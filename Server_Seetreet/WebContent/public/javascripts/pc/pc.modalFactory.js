@@ -176,13 +176,12 @@ modal_Factory.getReply = function(contentId){
 // 댓글 이미지 등록 때 담아 놓을 변수
 modal_Factory.replyImage = '';
 
-
 modal_Factory.reply.replyImage ='';
 modal_Factory.reply.submitReply = function(contentId){
     var replytext = $('#content-comment').val();
-//    var replyImage = modal_Factory.reply.replyImage;
+    var replyImage = modal_Factory.reply.replyImage;
     // http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg
-    var replyImage = 'http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg';
+//    var replyImage = 'http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg';
     postwriteReply(contentId, replytext, replyImage, function(data, status, res){
         if(status == 'success'){
             modal_Factory.reply.clearReply();
@@ -204,9 +203,16 @@ modal_Factory.reply.clearReplyList = function(){
     modal_Factory.reply.current_replypage = 1;
 };
 modal_Factory.reply.prependReplyData = function(replydata){
+    var replyImage;
+    if(replydata.replyimage == ''){
+        replyImage = "./images/seetreetimg/default_image.jpg";
+    }
+    else{
+        replyImage = "http://" + replydata.replyimage;
+    }
     $('#content-popup').find('.content-comment-area').prepend(
         '<div class = "comment-object" comment-id = "' + replydata.contentId + '">'
-            + '<img  class = "user-upload-image" src = ' + replydata.replyimage + '>'
+            + '<img  class = "user-upload-image" src = ' + replyImage + '>'
             + '<div class = "comment-user-name">' + replydata.userEmail + '</div>'
             + '<div class = "comment-upload-time">2014/09/07 17:53:00</div>'
             + '<div class = "comment-user-content">' + replydata.replytext +'</div>'
@@ -287,6 +293,7 @@ modal_Factory.artistModal.getArtistInfo = function(artistId, callback){
     getArtist(artistId, function(data, status, res){
         if(status == 'success'){
             modal_Factory.artistModal.artistInfo = data.data;
+
             callback();
         }
         else{
@@ -310,8 +317,8 @@ modal_Factory.artistModal.loadModal = function(){
     var show_genre = artist_genre + ' / ' + artist_detailgenre;
     $('#artist-popup').find('.detail-category').find('.detail-body').text(show_genre);
     // 선호지역
-//    var favorite_location = artistInfo.favoriteLocation[0].l_name;
-    var favorite_location = "서울시 마포구 서교동";
+    var favorite_location = artistInfo.favoriteLocation[0].name;
+//    var favorite_location = "서울시 마포구 서교동";
     $('#artist-popup').find('.detail-location').find('.detail-body').text(favorite_location);
     // 소개
     var artist_description = artistInfo.description;

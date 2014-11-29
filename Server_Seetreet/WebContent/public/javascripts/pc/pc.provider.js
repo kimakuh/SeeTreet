@@ -15,8 +15,9 @@ $(document).ready(function(){
 
     $('.main-provider').find('.start-area').find('button').click(function(e){
         var targetIdname = $(e.currentTarget).attr('id');
+        console.log(targetIdname);
         // ~targetIdname.indexOf('providerinput')
-        if(targetIdname.match('providerinput')){
+        if(targetIdname.indexOf('providerinput') != -1){
             var nth = targetIdname.substr(13,1);
             if(manage_providerinfo.join_input_check(nth) == true){
                 manage_providerinfo.loadjoinprovider(targetIdname);
@@ -119,6 +120,7 @@ manage_providerinfo.uploadimage = function(arrindex){
 var providerImage = '';
 var changeImage = function(ev){
     var targetImageid = $('#imageFileInput').attr('name');
+    console.log(targetImageid);
     var file = $('#imageFileInput').prop('files')[0];
     if(file != null && file.name != null && file.name.length >0){
         $('#'+targetImageid).attr('src', URL.createObjectURL(file));
@@ -215,7 +217,6 @@ manage_providerinfo.loadjoinprovider = function(btntag){
             l_long : map_Manage.providerSelectLocation.getLng()
         };
         manage_providerinfo.providerformat.location = JSON.stringify(locationobject);
-
         $('#input-provider-description').val('');
         $('.main-provider').find('.start-area').find('.start-input-fourth').show();
         $('.main-provider').find('.start-area').find('.start-input-fourth *').show();

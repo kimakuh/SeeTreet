@@ -94,7 +94,7 @@ public class C {
 		return dbobject.replaceAll(REX_ID, "$1");
 	}
 	
-	public static final String FILEPATH = "C:\\Users\\Limjiuk\\git\\SeeTreet\\Server_Seetreet\\WebContent\\public\\images\\upload";
+	public static final String FILEPATH = "C:\\Users\\Limjiuk\\git\\SeeTreet\\Server_Seetreet\\WebContent\\public\\images\\upload\\";
 	public static final String URL = "211.189.127.63:8080/Server_Seetreet/images/upload/";
 	//http://211.189.127.61:8090/TEST/images/seetreetimg/btn-person-grey.png
 	public static String[] writeImageFileFromBase64(String userId , String... encodedStrings) {		

@@ -486,6 +486,8 @@ public class MongoDAO {
 		
 		BasicDBObject rep = new BasicDBObject();
 		
+		System.out.println(bean.toString());
+		
 		rep.append(ReplyBean.KEY_CONTENTID, bean.getString(ReplyBean.KEY_CONTENTID))
 		   .append(ReplyBean.KEY_REPLYIMAGE, bean.getString(ReplyBean.KEY_REPLYIMAGE))
 		   .append(ReplyBean.KEY_REPLYTEXT, bean.getString(ReplyBean.KEY_REPLYTEXT))

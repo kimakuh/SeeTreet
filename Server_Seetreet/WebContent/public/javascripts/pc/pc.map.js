@@ -52,8 +52,15 @@ map_Manage.searchlocation = function(locatestr, callback){
 map_Manage.searchlocation_provider = function(locatestr,callback){
     getlocatestr2coord(locatestr, function(data, status, res){
         if(status == 'success'){
-            console.log(data);
             map_Manage.providerSelectLocation = new nhn.api.map.LatLng(data.data[0].lat, data.data[0].lng);
+            callback();
+        }
+    });
+};
+map_Manage.searchlocation_artist = function(locatestr,callback){
+    getlocatestr2coord(locatestr, function(data, status, res){
+        if(status == 'success'){
+            map_Manage.artistSelectLocation = new nhn.api.map.LatLng(data.data[0].lat, data.data[0].lng);
             callback();
         }
     });
@@ -64,6 +71,9 @@ map_Manage.set_searchMap = function(mode){
     }
     else if(mode == 'provider'){
         provider_location_oMap.setCenter(map_Manage.providerSelectLocation);
+    }
+    else if(mode == 'artist'){
+        artist_location_oMap.setCenter(map_Manage.artistSelectLocation);
     }
 };
 // 검색 정보를 화면에 드랍다운으로 출력해주는 부분입니다.

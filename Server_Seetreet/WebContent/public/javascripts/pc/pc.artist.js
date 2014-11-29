@@ -17,20 +17,33 @@ $(document).ready(function(){
     });
 
     // start-area에 있는 다음 버튼을 눌렀을 때의 동작
-    $('.main-artist').find('.start-area').find('button').click(function(e){
-        var targetIdname = $(e.currentTarget).attr('id');
-        if(targetIdname.match('artistinput')){
-            manage_artistinfo.join.loadjoinartist(targetIdname);
-        }
-    });
+//    $('.main-artist').find('.start-area').find('button').click(function(e){
+//        var targetIdname = $(e.currentTarget).attr('id');
+//        console.log(targetIdname.indexOf('artistinput'));
+//        if(targetIdname.indexOf('artistinput') != -1){
+//            manage_artistinfo.join.loadjoinartist(targetIdname);
+//        }
+//    });
+
     $('.main-artist').find('.start-pic-list').find('img').click(function(e){
         $('#imageFileInput').attr('name', $(e.currentTarget).attr('id'));
         document.getElementById('imageFileInput').click();
     });
+    $('#artist-search-body').keyup(function(e){
+        var code = e.keyCode || e.which;
+        if(code == 13){
+            var find_location = $('#artist-search-body').val();
+            map_Manage.searchlocation_artist(find_location, function(){
+                map_Manage.set_searchMap('artist');
+            });
+        }
+    });
+
     $('.main-artist').find('.start-area').find('button').click(function(e){
         var targetIdname = $(e.currentTarget).attr('id');
+        console.log(targetIdname);
         var comparestring = 'artistinput';
-        if(targetIdname.indexOf(comparestring)){
+        if(targetIdname.indexOf(comparestring) != -1){
             var nth = targetIdname.substr(comparestring.length, 1);
             if(manage_artistinfo.join.input_check(nth) == true){
                 manage_artistinfo.join.loadjoinartist(targetIdname);
@@ -142,7 +155,7 @@ manage_artistinfo.join.loadjoinartist = function(buttonId){
     else if(nth == 3){
         // start-input-third save
         var locationObject = {
-            name : $('.main-artist').find('.start-input-third').find('.targetaddress').text(addressname),
+            name : $('.main-artist').find('.start-input-third').find('.targetaddress').text(),
             description : null,
             l_lat : map_Manage.artistSelectLocation.getLat(),
             l_long : map_Manage.artistSelectLocation.getLng()
@@ -189,7 +202,7 @@ manage_artistinfo.join.input_check = function(pagenum){
     }
     else if(pagenum == 3){
         // 맵정보가 입력되었는지
-        if($('.main-artist').find('.start-input-third').find('.targetaddress').text(addressname) == ''){
+        if($('.main-artist').find('.start-input-third').find('.targetaddress').text() == ''){
             inputcheck = false;
             artistCreate_caution = '맵에 특정 지역을 선택해주세요';
         }
@@ -227,7 +240,7 @@ manage_artistinfo.modify.setModifyTab = function(artistInfo){
     $('.modifytab.artist').find('.modify-category').find('select.main-category option').eq(maincategoryIndex).prop('selected', true);
     $('.modifytab.artist').find('.modify-category').find('select.sub-category option').eq(subcategoryIndex).prop('selected', true);
     // 선호지역
-    var location_address = artistInfo.favoriteLocation[0].l_name;
+    var location_address = artistInfo.favoriteLocation[0].name;
     $('.modifytab.artist').find('.modify-location').find('input').val(location_address);
     // YouTubeUrl
     var youtube_url = artistInfo.artistUrl;
@@ -237,7 +250,7 @@ manage_artistinfo.modify.setModifyTab = function(artistInfo){
     $('.modifytab.artist').find('.modify-description').find('textarea').val(artist_description);
     // 아티스트 사진 정보 세팅
     for(var i in artistInfo.artistImages){
-        $('.modifytab.artist').find('.pic-youtube').find('.pic' + i).attr('src', artistInfo.artistImages[i]);
+        $('.modifytab.artist').find('.pic-youtube').find('.pic' + i).attr('src', 'http://' + artistInfo.artistImages[i]);
     }
 };
 

@@ -121,14 +121,16 @@ public class ReplyController extends HttpServlet {
 		String[] replyimages= C.writeImageFileFromBase64(hash.hashCode()+"", replyimage);
 		
 //		ReplyBean reply = new ReplyBean((String)req.getAttribute(UserBean.KEY_EMAIL) , contentId, replytext, replyimage);
+		
+		System.out.println(contentId);
 		JSONObject reply = null;
 		try {
 			reply = new JSONObject()
-				  .append(ReplyBean.KEY_USEREMAIL , (String)(req.getAttribute(UserBean.KEY_EMAIL)))
-				  .append(ReplyBean.KEY_CONTENTID , contentId)
-				  .append(ReplyBean.KEY_REPLYTEXT , replytext)
-				  .append(ReplyBean.KEY_REPLYIMAGE , replyimages[0])
-				  .append(ReplyBean.KEY_MODTIME, modtime);
+				  .put(ReplyBean.KEY_USEREMAIL , (String)(req.getAttribute(UserBean.KEY_EMAIL)))
+				  .put(ReplyBean.KEY_CONTENTID , contentId)
+				  .put(ReplyBean.KEY_REPLYTEXT , replytext)
+				  .put(ReplyBean.KEY_REPLYIMAGE , replyimages[0])
+				  .put(ReplyBean.KEY_MODTIME, modtime);
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

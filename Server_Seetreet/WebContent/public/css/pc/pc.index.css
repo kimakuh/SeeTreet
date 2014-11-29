@@ -390,7 +390,7 @@ textarea{
 }
 .seetreet-makecontent-container .start-area input{
     text-align : left;
-    height : 40px;
+    height : 35px;
 }
 .start-chain-button {
     height : 40px;
@@ -440,6 +440,10 @@ textarea{
     width : 605px;
     margin : auto;
     /*margin-left : 45px;*/
+}
+.start-area .start-input-third .next-btn{
+    display : block;
+    margin : auto;
 }
 .start-area .start-input-fourth{
     margin-top : 250px;
