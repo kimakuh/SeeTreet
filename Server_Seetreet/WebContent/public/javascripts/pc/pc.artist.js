@@ -250,7 +250,7 @@ manage_artistinfo.modify.setModifyTab = function(artistInfo){
     $('.modifytab.artist').find('.modify-description').find('textarea').val(artist_description);
     // 아티스트 사진 정보 세팅
     for(var i in artistInfo.artistImages){
-        $('.modifytab.artist').find('.pic-youtube').find('.pic' + i).attr('src', 'http://' + artistInfo.artistImages[i]);
+        $('.modifytab.artist').find('.pic-youtube').find('.pic' + i).attr('src', artistInfo.artistImages[i]);
     }
 };
 

@@ -96,7 +96,7 @@ public class LikeController extends HttpServlet {
 				// TODO: handle exception
 				e2.printStackTrace();
 			}
-			e.printStackTrace();
+			e.printStackTrace();  
 		} finally {
 			if(out!=null) out.close();
 		}

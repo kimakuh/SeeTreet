@@ -19,6 +19,7 @@ $(document).ready(function(){
         // ~targetIdname.indexOf('providerinput')
         if(targetIdname.indexOf('providerinput') != -1){
             var nth = targetIdname.substr(13,1);
+            var nth = targetIdname.substr(13,1);
             if(manage_providerinfo.join_input_check(nth) == true){
                 manage_providerinfo.loadjoinprovider(targetIdname);
             }
@@ -111,10 +112,6 @@ manage_providerinfo.providerformat = {
 };
 manage_providerinfo.providerImageArr = new Array();
 manage_providerinfo.putinfo = function(){
-};
-manage_providerinfo.uploadimage = function(arrindex){
-    // 사진 화면에 출력하고
-    // 어레이에 저장
 };
 
 var providerImage = '';

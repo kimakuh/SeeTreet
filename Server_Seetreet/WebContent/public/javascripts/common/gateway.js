@@ -226,6 +226,20 @@ var getUserContent = function(latitude, longitude, page, callback){
     };
     httpRequest(url, method, headers, null, callback);
 };
+
+// 장소 제공자의 히스토리를 가져옵니다.
+var getProviderHistory = function(page, callback){
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var url_param = '?page=' + page;
+    var url = '/user/content/provider/history/' + userId + url_param;
+    var method = 'GET';
+    var headers = {
+        "_id" : token
+    };
+    httpRequest(url, method, headers, null, callback);
+};
+
 // 문자열 주소를 통해 좌표값을 받아온다.
 var getlocatestr2coord = function(locatestr, callback){
     var token = getCookie(COOKIE_USER_TOKEN);

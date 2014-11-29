@@ -208,7 +208,7 @@ modal_Factory.reply.prependReplyData = function(replydata){
         replyImage = "./images/seetreetimg/default_image.jpg";
     }
     else{
-        replyImage = "http://" + replydata.replyimage;
+        replyImage = replydata.replyimage;
     }
     $('#content-popup').find('.content-comment-area').prepend(
         '<div class = "comment-object" comment-id = "' + replydata.contentId + '">'
@@ -293,7 +293,6 @@ modal_Factory.artistModal.getArtistInfo = function(artistId, callback){
     getArtist(artistId, function(data, status, res){
         if(status == 'success'){
             modal_Factory.artistModal.artistInfo = data.data;
-
             callback();
         }
         else{
@@ -317,8 +316,8 @@ modal_Factory.artistModal.loadModal = function(){
     var show_genre = artist_genre + ' / ' + artist_detailgenre;
     $('#artist-popup').find('.detail-category').find('.detail-body').text(show_genre);
     // 선호지역
-    var favorite_location = artistInfo.favoriteLocation[0].name;
-//    var favorite_location = "서울시 마포구 서교동";
+//    var favorite_location = artistInfo.favoriteLocation[0].name;
+    var favorite_location = "서울시 마포구 서교동";
     $('#artist-popup').find('.detail-location').find('.detail-body').text(favorite_location);
     // 소개
     var artist_description = artistInfo.description;
@@ -327,7 +326,17 @@ modal_Factory.artistModal.loadModal = function(){
     $('#artist-popup').modal('show');
 };
 
+var youtubeplayer;
+modal_Factory.artistModal.onYouTubeIframeAPIReady = function(){
+    youtubeplayer = new YT.Player('player', {
+        events:{
+            'onStateChange' : onPlayerStateChange
+        }
+    });
+};
+function onPlayerStateChange(){
 
+}
 
 var teststring = '2014년 3월부터 매월 셋째 주 목요일마다&lt; 성남아트센터 &lt;마티네 콘서트&gt;가 진행된다. 보&lt;다 다양한 주제를 통해 폭넓은 클래식 레퍼토리를다루고자 한다. 최수열 지취자가 이끄는 여러 단체의 유려한 연주와 4년 연속 &lt;마티네콘서트&gt;의진행' +
     '을 맡은 팝페라 가수 카이의 따뜻한 해설로 클래식에 대한 궁금증을 ' +
