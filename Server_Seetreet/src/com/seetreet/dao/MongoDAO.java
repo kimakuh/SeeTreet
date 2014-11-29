@@ -425,7 +425,6 @@ public class MongoDAO {
 		BasicDBList position = new BasicDBList();
 		position.put(LocationBean.LAT, l_lat);
 		position.put(LocationBean.LONG, l_long);		
-		System.out.println(position.toString());
 		DBCursor iter = 
 				col.find(new BasicDBObject("provider.location", 
 							new BasicDBObject("$near" , 
@@ -484,6 +483,8 @@ public class MongoDAO {
 		DBCollection contentRe = db.getCollection(MongoDB.COLLECTION_REPLY);
 		
 		BasicDBObject rep = new BasicDBObject();
+		
+		System.out.println(bean.toString());
 		
 		rep.append(ReplyBean.KEY_CONTENTID, bean.getString(ReplyBean.KEY_CONTENTID))
 		   .append(ReplyBean.KEY_REPLYIMAGE, bean.getString(ReplyBean.KEY_REPLYIMAGE))

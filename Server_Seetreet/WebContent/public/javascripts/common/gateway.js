@@ -1,7 +1,7 @@
 /**
  * Created by Limjiuk on 2014-10-28.
  */
-var SERVER_ADDRESS = 'http://211.189.127.61:8090/TEST';
+var SERVER_ADDRESS = 'http://211.189.127.63:8080/Server_Seetreet';
 
 // create user account
 var postUserCreate = function(userId, user, callback){
@@ -79,7 +79,6 @@ var postProviderCreate = function(providerinfo, callback){
         "_id" : token
     };
     var body = providerinfo;
-    console.log(JSON.stringify(body));
     httpRequest(url, method, headers, body, callback);
 };
 
@@ -134,28 +133,92 @@ var getArtist = function(artistId, callback){
     };
     httpRequest(url, method, headers, null, callback);
 };
-
 // 아티스트 정보 수정하기
-
 
 // content Id로 댓글을 10개를 받는다.
 
-
 // content Id로 댓글을 등록한다.
 
-
 // contentId에 replyId의 댓글을 삭제한다.
+
+
+// 해당 컨텐트의 좋아요 카운트를 가져온다.
+var getLikecount = function(contentId, callback){
+    // 토큰, 유저 아이디, 컨텐트 아이디
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var url_param = '?_id=' + contentId;
+    var url = '/user/content/user/like/search/' + userId + url_param;
+    var method = 'GET';
+    var headers = {
+        "_id" : token
+    };
+    httpRequest(url, method, headers, null, callback);
+};
+
+var getChecklikefromMe = function(contentId, callback){
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var url_param = '?_id=' + contentId;
+    var url = '/user/content/user/like/check/' + userId + url_param;
+    var method = 'GET';
+    var headers = {
+        "_id" : token
+    };
+    httpRequest(url, method, headers, null, callback);
+};
+
+var postlikeContent = function(contentId, islike, callback){
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var method = 'POST';
+    var headers = {
+        "_id" : token
+    };
+    var url = '/user/content/user/like/update/' + userId;
+    var body = {
+        "_id" : contentId,
+        islike : islike
+    };
+    httpRequest(url, method, headers, body, callback);
+};
+
+// 컨텐트의 댓글 정보들을 가져옵니다.
+var getcontentReply = function(contentId, page, callback){
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var method = 'GET';
+    var headers = {
+        "_id" : token
+    };
+    var url_param = '?contentId=' + contentId + '&page=' + page;
+    var url = '/user/content/user/reply/search/' + userId + url_param;
+    httpRequest(url, method, headers, null, callback);
+};
+
+
+// 컨텐트의 댓글을 추가합니다.
+var postwriteReply = function(contentId, replytext, replyImage, callback){
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var method = 'POST';
+    var headers = {
+        "_id" : token
+    };
+    var url = '/user/content/user/reply/enroll/' + userId;
+    var body = {
+        contentId : contentId,
+        replytext : replytext,
+        replyimage : replyImage
+    };
+    httpRequest(url, method, headers, body, callback);
+};
 
 
 // 일반 사용자가 content 리스트를 가져온다.
 var getUserContent = function(latitude, longitude, page, callback){
     var token = getCookie(COOKIE_USER_TOKEN);
     var userId = getCookie(COOKIE_USER_ID);
-    var bodycontent = {
-        "l_lat" : latitude,
-        "l_long" : longitude,
-        "page" : page
-    };
     var url = '/user/content/user/search/' + userId + '?' + 'l_lat=' + latitude + '&' + 'l_long=' + longitude + '&' + 'page=' + page;
     var method = 'GET';
     var headers = {
@@ -225,18 +288,15 @@ var postNewProviderContents = function(title , address , stime , etime , callbac
 
 
 
-
-
-
 // httpRequest
 var httpRequest = function ( url, method, headers, body , callback  ){
     var fullUrl =  SERVER_ADDRESS + url;
-//    console.log('=======request start!==========');
-//    console.log('method=' + method );
-//    console.log('url='+ fullUrl );
-//    console.log('header=' + JSON.stringify(headers) );
-//    console.log('body=' + body);
-//    console.log('========request end!=========');
+    console.log('=======request start!==========');
+    console.log('method=' + method );
+    console.log('url='+ fullUrl );
+    console.log('header=' + JSON.stringify(headers) );
+    console.log('body=' + JSON.stringify(body));
+    console.log('========request end!=========');
     $.ajax({
         crossDomain : true,
         dataType : "json",
@@ -249,13 +309,13 @@ var httpRequest = function ( url, method, headers, body , callback  ){
         success: function(data, state, res){
             if ( data == null )
                 data = '';
-//            console.log( '[[[[[[[[SUCCESS!!]]]]]]]   url: ' + url + ',   state:' + state + ',   data : ' + JSON.stringify( data ) );
+            console.log( '[[[[[[[[SUCCESS!!]]]]]]]   url: ' + url + ',   state:' + state + ',   data : ' + JSON.stringify( data ) );
             callback ( data, state, res );
         },
         error: function(data, state){
             if ( data == null )
                 data = '';
-//            console.log( '[[[[[[[[[ERROR!!]]]]]]]]]   url: ' + url + ', s  tate:' + state + ',   data : ' + JSON.stringify( data ) );
+            console.log( '[[[[[[[[[ERROR!!]]]]]]]]]   url: ' + url + ', s  tate:' + state + ',   data : ' + JSON.stringify( data ) );
             callback( data, state , null );
         }
     });

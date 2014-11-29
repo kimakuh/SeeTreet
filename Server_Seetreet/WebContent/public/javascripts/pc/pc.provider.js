@@ -15,14 +15,17 @@ $(document).ready(function(){
 
     $('.main-provider').find('.start-area').find('button').click(function(e){
         var targetIdname = $(e.currentTarget).attr('id');
-        var nth = targetIdname.substr(13,1);
-        if(manage_providerinfo.join_input_check(nth) == true){
-            manage_providerinfo.loadjoinprovider(targetIdname);
+        console.log(targetIdname);
+        // ~targetIdname.indexOf('providerinput')
+        if(targetIdname.indexOf('providerinput') != -1){
+            var nth = targetIdname.substr(13,1);
+            if(manage_providerinfo.join_input_check(nth) == true){
+                manage_providerinfo.loadjoinprovider(targetIdname);
+            }
+            else{
+                alert(caution_message);
+            }
         }
-        else{
-            alert(caution_message);
-        }
-
     });
     $('.main-provider').find('.start-pic-list').find('img').click(function(e){
         var imageindex = $(e.currentTarget).attr('id').substr(18,1);
@@ -30,16 +33,14 @@ $(document).ready(function(){
         $('#imageFileInput').attr('name', $(e.currentTarget).attr('id'));
         document.getElementById('imageFileInput').click();
     });
-
     $('#provider-search-body').keyup(function(e){
-//        var code = e.keyCode || e.which;
-//        if(code == 13){
-//            var find_location = $('#provider-search-body').val();
-//            console.log(find_location);
-////            map_Manage.searchlocation2(find_location, function(){
-////                map_Manage.set_searchMap('provider');
-////            });
-//        }
+        var code = e.keyCode || e.which;
+        if(code == 13){
+            var find_location = $('#provider-search-body').val();
+            map_Manage.searchlocation_provider(find_location, function(){
+                map_Manage.set_searchMap('provider');
+            });
+        }
     });
     $('#provider-search-btn').click(function(){
         var find_location = $('#provider-search-body').val();
@@ -115,18 +116,32 @@ manage_providerinfo.uploadimage = function(arrindex){
     // 사진 화면에 출력하고
     // 어레이에 저장
 };
+
 var providerImage = '';
 var changeImage = function(ev){
-    var TargetImageid = $('#imageFileInput').attr('name');
-    console.log(TargetImageid);
+    var targetImageid = $('#imageFileInput').attr('name');
+    console.log(targetImageid);
     var file = $('#imageFileInput').prop('files')[0];
     if(file != null && file.name != null && file.name.length >0){
-        $('#'+TargetImageid).attr('src', URL.createObjectURL(file));
+        $('#'+targetImageid).attr('src', URL.createObjectURL(file));
     }
-    readFile2Base64(file, function(e){
-        providerImage = btoa(event.target.result);
-        manage_providerinfo.providerImageArr.push(providerImage);
-    });
+    if(targetImageid == 'upload-comment-image'){
+        readFile2Base64(file, function(e){
+            modal_Factory.reply.replyImage = btoa(event.target.result);
+        });
+    }
+    if(~targetImageid.indexOf('providerInputimage')){
+        readFile2Base64(file, function(e){
+            providerImage = btoa(event.target.result);
+            manage_providerinfo.providerImageArr.push(providerImage);
+        });
+    }
+    else{
+        readFile2Base64(file, function(e){
+            manage_artistinfo.join.tempImage = btoa(event.target.result);
+            manage_artistinfo.join.imageArr.push(manage_artistinfo.join.tempImage);
+        });
+    }
 };
 var readFile2Base64 = function(file, callback){
     var reader = new FileReader();
@@ -153,19 +168,11 @@ manage_providerinfo.loadpage = function(){
             }
         }
     });
-//    if(getCheckProvider(function(){}) == true){
-//    }
-//    else{
-//        manage_providerinfo.joinprovider('');
-//    }
 };
 manage_providerinfo.loadmainprovider = function(){
     $('.main-provider').find('.modifytab').show();
     $('.main-provider').find('.listtab').show();
     $('.main-provider').find('.start-area').hide();
-    // 제공자 정보 불러와서 세팅
-
-    //
 };
 manage_providerinfo.loadjoinprovider = function(btntag){
     $('.main-provider').find('.modifytab').hide();
@@ -210,7 +217,6 @@ manage_providerinfo.loadjoinprovider = function(btntag){
             l_long : map_Manage.providerSelectLocation.getLng()
         };
         manage_providerinfo.providerformat.location = JSON.stringify(locationobject);
-
         $('#input-provider-description').val('');
         $('.main-provider').find('.start-area').find('.start-input-fourth').show();
         $('.main-provider').find('.start-area').find('.start-input-fourth *').show();
@@ -222,11 +228,11 @@ manage_providerinfo.loadjoinprovider = function(btntag){
         postProviderCreate(manage_providerinfo.providerformat, function(data, status, res){
             if(status == 'success'){
                 if(data.data == true){
-                    alert('가입되었습니다.');
+                    alert('장소제공자 정보가 입력되었습니다.');
                     manage_providerinfo.loadpage('');
                 }
                 else{
-                    alert('가입이  거절되었습니다.');
+                    alert('입력이  거절되었습니다.');
                 }
             }
         });
@@ -258,6 +264,7 @@ manage_providerinfo.getProviderInfo = function(providerId){
 };
 manage_providerinfo.setModifyTab = function(providerInfo){
     manage_providerinfo.myProviderInfo = providerInfo;
+    console.log(providerInfo);
 //    var providerInfo =
 //    {
 //        providerImage : ["./images/seetreetimg/5mile1.jpg", "./images/seetreetimg/5mile2.jpg", "./images/seetreetimg/5mile3.jpg"],
@@ -270,9 +277,9 @@ manage_providerinfo.setModifyTab = function(providerInfo){
 //        description : "안녕하세요 주커피입니다."
 //    };
     // 사진 세장
-//    for(var i in providerInfo.providerImage){
-//        $('.main-provider').find('.modifytab').find('.tabdetailinfo').find('.pic-youtube').find('.pic' + i).attr('src', providerInfo.providerImage[i]);
-//    }
+    for(var i in providerInfo.providerImage){
+        $('.main-provider').find('.modifytab').find('.tabdetailinfo').find('.pic-youtube').find('.pic' + i).attr('src', providerInfo.providerImage[i]);
+    }
     // 상호명
     $('.main-provider').find('.modifytab').find('.tabdetailinfo').find('.modify-name').find('input').val(providerInfo.StoreTitle);
     // 업종

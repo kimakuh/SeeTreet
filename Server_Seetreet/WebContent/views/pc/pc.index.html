@@ -387,26 +387,8 @@
                         SeeTreet
                     </div>
                     <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
-                    <form class = "form-horizontal" role = "form">
-                        <div class = "form-group">
-                            <div class = "col-lg-4 col-lg-offset-4">
-                                <input type = "text" class = "form-control" class = "start-input" id = "input-storename" placeholder = "가게명을 입력해주세요">
-                            </div>
-                        </div>
-                    </form>
+                    <input type = "text" class = "form-control" class = "start-input" id = "input-storename" placeholder = "가게명을 입력해주세요">
                     <div class = "choose-photo-area">
-                        <form class = "form-horizontal" role = "form">
-                            <div class = "form-group">
-                                <div class = "col-lg-4 col-lg-offset-4">
-                                    <label>가게의 사진을 넣어주세요</label>
-                                </div>
-                                <!--<div class = "col-lg-4 col-lg-offset-4">-->
-                                    <!--<button type = "button" class = "btn btn-lg btn-primary" id = "provider-picture-button">-->
-                                        <!--추가-->
-                                    <!--</button>-->
-                                <!--</div>-->
-                            </div>
-                        </form>
                         <div class = "start-pic-list provider">
                             <input id = "imageFileInput" type = "file" onchange = "changeImage(event)" name = "" accept = "image/*" style = "visibility: hidden;position:absolute;">
                             <!--<input id = "imageFileInput" type = "file" accept = "image/*" style = "visibility: hidden;">-->
@@ -426,140 +408,83 @@
                         SeeTreet
                     </div>
                     <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
-                    <form class = "form-horizontal" role = "form">
-                        <div class = "form-group">
-                            <div class = "col-lg-4 col-lg-offset-4">
-                                <label>좋아하는 장르를 선택해주세요</label>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <div class = "col-lg-2 col-lg-offset-4">
-                                <select class = "start-main-category form-control">
-                                </select>
-                            </div>
-                            <div class = "col-lg-2">
-                                <select class = "start-sub-category form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <div class = "col-lg-4 col-lg-offset-4">
-                                <button type = "button" id = "providerinput2" class = "btn btn-primary btn-lg next-btn">
-                                    다음
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <label>좋아하는 장르를 선택해주세요</label>
+                    <select class = "start-main-category form-control">
+                    </select>
+                    <select class = "start-sub-category form-control">
+                    </select>
+                    <button type = "button" id = "providerinput2" class = "btn btn-primary btn-lg next-btn">
+                        다음
+                    </button>
                 </div>
                 <div class = "start-input-third">
                     <div class = "start-title">
                         SeeTreet
                     </div>
                     <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
-                    <form class = "form-horizontal" role = "form">
-                        <!--<label class = "input-information">상호의 위치를 선택해주세요</label>-->
-                        <div class="input-group">
-                            <input type="text" class="form-control" id = "provider-search-body" placeholder="주소검색">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id = "provider-search-body" placeholder="주소검색">
                             <span class="input-group-btn">
                                 <!--<button class = "btn btn-default dropdown-toggle" data-toggle = "dropdown" type = "button" id = "location-search-button">-->
                                 <button class = "btn btn-default" type = "button" id = "provider-search-button">
                                     <span class = "glyphicon glyphicon-search"></span>
                                 </button>
                             </span>
-                        </div>
-                        <!--<div class = "row">-->
-                            <!--<div class = "col-lg-6 col-lg-offset-3">-->
-                                <!--<div class = "input-group" style = "width : 600px;margin-left : 48px;">-->
-                                    <!--<input type = "text" id = "provider-search-body" class = "form-control">-->
-                                    <!--<span class = "input-group-btn">-->
-                                        <!--&lt;!&ndash;<button type = "button" class = "btn btn-default start-chain-button" id = "provider-search-btn" >&ndash;&gt;-->
-                                        <!--<button type = "button" class = "btn btn-default"id = "provider-search-btn">-->
-                                            <!--<span class = "glyphicon glyphicon-search"></span>-->
-                                        <!--</button>-->
-                                    <!--</span>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <div class = "form-group">
-                            <div class = "provider start-map" id = "provider-map">
-                                <script type = "text/javascript">
-                                    var provider_TargetPoint = new nhn.api.map.LatLng(37.567541, 126.9773356);
-                                    var defaultLevel = 10;
-                                    var provider_location_oMap = new nhn.api.map.Map(document.getElementById('provider-map'), {
-                                        point : provider_TargetPoint,
-                                        zoom : defaultLevel,
-                                        enableWheelZoom : true,
-                                        enableDragPan : true,
-                                        enableDblClickZoom : false,
-                                        mapMode : 0,
-                                        activateTrafficMap : false,
-                                        activateBicycleMap : false,
-                                        minMaxLevel : [ 1, 14 ],
-                                        size : new nhn.api.map.Size(600, 400)
-                                    });
-                                    provider_location_oMap.attach('click', function(oCustomEvent){
-                                        provider_location_oMap.clearOverlay();
-                                        var oPoint = oCustomEvent.point;
-                                        var oTarget = oCustomEvent.target;
-                                        var oSize = new nhn.api.map.Size(28, 37);
-                                        var oOffset = new nhn.api.map.Size(14, 37);
-                                        var oIcon = new nhn.api.map.Icon('http://static.naver.com/maps2/icons/pin_spot2.png', oSize, oOffset);
-                                        var oMarker = new nhn.api.map.Marker(oIcon);
-                                        oMarker.setPoint(oPoint);
-                                        provider_location_oMap.addOverlay(oMarker);
-                                        map_Manage.providerSelectLocation = oPoint;
-                                        // map_Manage.providerSelectLocation
-                                        getcoord2locatestr(map_Manage.providerSelectLocation.getLat(), map_Manage.providerSelectLocation.getLng(), function(data, status, res){
-                                            if(status == 'success'){
-                                                var addressname = data.data.name1+ " " + data.data.name2 + " " + data.data.name3;
-                                                $('.main-provider').find('.start-input-third').find('.targetaddress').text(addressname);
-                                            }
-                                        });
-
-                                    });
-                                </script>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <label class = "targetaddress"></label>
-                        </div>
-                        <div class = "form-group">
-                            <button type = "button" id = "providerinput3" class = "btn btn-lg btn-primary next-btn">
-                                다음
-                            </button>
-                        </div>
-                    </form>
-
+                    </div>
+                    <div class = "provider start-map" id = "provider-map">
+                        <script type = "text/javascript">
+                            var provider_TargetPoint = new nhn.api.map.LatLng(37.567541, 126.9773356);
+                            var defaultLevel = 10;
+                            var provider_location_oMap = new nhn.api.map.Map(document.getElementById('provider-map'), {
+                                point : provider_TargetPoint,
+                                zoom : defaultLevel,
+                                enableWheelZoom : true,
+                                enableDragPan : true,
+                                enableDblClickZoom : false,
+                                mapMode : 0,
+                                activateTrafficMap : false,
+                                activateBicycleMap : false,
+                                minMaxLevel : [ 1, 14 ],
+                                size : new nhn.api.map.Size(600, 400)
+                            });
+                            provider_location_oMap.attach('click', function(oCustomEvent){
+                                provider_location_oMap.clearOverlay();
+                                var oPoint = oCustomEvent.point;
+                                var oTarget = oCustomEvent.target;
+                                var oSize = new nhn.api.map.Size(28, 37);
+                                var oOffset = new nhn.api.map.Size(14, 37);
+                                var oIcon = new nhn.api.map.Icon('http://static.naver.com/maps2/icons/pin_spot2.png', oSize, oOffset);
+                                var oMarker = new nhn.api.map.Marker(oIcon);
+                                oMarker.setPoint(oPoint);
+                                provider_location_oMap.addOverlay(oMarker);
+                                map_Manage.providerSelectLocation = oPoint;
+                                // map_Manage.providerSelectLocation
+                                getcoord2locatestr(map_Manage.providerSelectLocation.getLat(), map_Manage.providerSelectLocation.getLng(), function(data, status, res){
+                                    if(status == 'success'){
+                                        var addressname = data.data.name1+ " " + data.data.name2 + " " + data.data.name3;
+                                        $('.main-provider').find('.start-input-third').find('.targetaddress').text(addressname);
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+                    <label class = "targetaddress"></label>
+                    <button type = "button" id = "providerinput3" class = "btn btn-lg btn-primary next-btn">
+                        다음
+                    </button>
                 </div>
                 <div class = "start-input-fourth">
                     <div class = "start-title">
                         SeeTreet
                     </div>
                     <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
-                    <form class = "form-horizontal" role = "form">
-                        <div class = "form-group">
-                            <div class= "col-lg-offset-5">
-                                <select class = "form-control" id = "provider_storetype" style = "width : 240px;">
-                                </select>
-                            </div>
-                        </div>
-                        <!--<div class = "form-group">-->
-                            <!--<div class = "col-lg-2 col-lg-offset-5">-->
-                                <!--<label>간단한 소개를 부탁드려요</label>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <div class = "form-group">
-                            <div class = "col-lg-4 col-lg-offset-4">
-                                <textarea class = "form-control" id = "input-provider-description" placeholder = "간단한 가게 소개를 부탁드려요." rows = "4">
-                                </textarea>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <button type = "button" id = "providerinput4" class = "btn btn-lg btn-primary next-btn">
-                                완료
-                            </button>
-                        </div>
-                    </form>
+                    <select class = "form-control" id = "provider_storetype" style = "width : 240px;">
+                    </select>
+                    <textarea class = "form-control" id = "input-provider-description" placeholder = "간단한 가게 소개를 부탁드려요." rows = "4">
+                    </textarea>
+                    <button type = "button" id = "providerinput4" class = "btn btn-lg btn-primary next-btn">
+                        완료
+                    </button>
                 </div>
             </div>
             <div class = "modifytab provider">
@@ -606,35 +531,21 @@
                         <span>업종</span>
                         <span class = "modifycolon">:</span>
                         <select class = "form-control">
-                            <option>업종을 선택하세요</option>
-                            <option>커피전문점</option>
-                            <option>호프</option>
-                            <option>음식점</option>
-                            <option>라이브카페</option>
                         </select>
                     </div>
                     <div class = "modify-location">
                         <span>지역</span>
                         <span class = "modifycolon">:</span>
                         <input type = "text" class = "form-control" value = "수원시 팔달구 인계동 1125번지" disabled>
+
                         <button type = "button" class = "btn btn-default" id = "provider-search-map-button">Map</button>
                     </div>
                     <div class = "modify-favorite">
                         <span>선호장르</span>
                         <span class = "modifycolon">:</span>
                         <select class = "form-control category">
-                            <option>장르를 선택하세요</option>
-                            <option>음악</option>
-                            <option>미술</option>
-                            <option>마술</option>
-                            <option>플래시몹</option>
                         </select>
                         <select class = "form-control detailGenre">
-                            <option>세부 장르를 선택하세요</option>
-                            <option>인디밴드</option>
-                            <option>팝</option>
-                            <option>힙합</option>
-                            <option>전시회</option>
                         </select>
                     </div>
                     <div class = "modify-description">
@@ -687,176 +598,11 @@
                                     });
                                 </script>
                             </div>
-
                         </div>
                     </div>
                 </div>
                 <div class = "provider-list-area">
-                    <!--<div class = "listboxgroup provider" data-group = "2">-->
-                        <!--<div class = "listbox createbox provider">-->
-                            <!--<div class = "beforecreate" style = "display : none;">-->
-                                <!--<img src = "./images/providerimage/create_icon.png"/>-->
-                            <!--</div>-->
-                            <!--<div class = "input-time" style = "display : none;">-->
-                            <!--</div>-->
-                            <!--<div class = "finish-create">-->
-                                <!--<img class = "content-image" src = "./images/providerimage/alohatable.jpg"/>-->
-                                <!--<div class = "content-info">-->
-                                    <!--<div class = "place-title">5Mile</div>-->
-                                    <!--<div class = "showdate-title">2014/11/10</div>-->
-                                    <!--<div class = "showtime-title">08:00PM ~ 10:00PM</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class = "listbox artist">-->
-                            <!--<img class = "image" src = "./images/providerimage/artist7.jpg"/>-->
-                            <!--<div class = "info">-->
-                                <!--<div class = "title">브로콜리너마저</div>-->
-                                <!--<div class = "category">Music-Pop</div>-->
-                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class = "listbox artist">-->
-                            <!--<img class = "image" src = "./images/providerimage/artist8.jpg"/>-->
-                            <!--<div class = "info">-->
-                                <!--<div class = "title">버스커버스커</div>-->
-                                <!--<div class = "category">Music-Pop</div>-->
-                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class = "listbox artist">-->
-                            <!--<img class = "image" src = "./images/providerimage/artist9.jpg"/>-->
-                            <!--<div class = "info">-->
-                                <!--<div class = "title">3호선버터플라이</div>-->
-                                <!--<div class = "category">Music-Pop</div>-->
-                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class = "listbox artist">-->
-                            <!--<img class = "image" src = "./images/providerimage/artist10.jpg"/>-->
-                            <!--<div class = "info">-->
-                                <!--<div class = "title">게토밤즈</div>-->
-                                <!--<div class = "category">Music-Pop</div>-->
-                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class = "listbox artist">-->
-                            <!--<img class = "image" src = "./images/providerimage/artist11.jpg"/>-->
-                            <!--<div class = "info">-->
-                                <!--<div class = "title">허밍어반스테레오</div>-->
-                                <!--<div class = "category">Music-Pop</div>-->
-                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class = "listbox artist">-->
-                            <!--<img class = "image" src = "./images/providerimage/artist12.jpg"/>-->
-                            <!--<div class = "info">-->
-                                <!--<div class = "title">재주소년</div>-->
-                                <!--<div class = "category">Music-Pop</div>-->
-                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class = "listbox artist">-->
-                            <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                            <!--<div class = "info">-->
-                                <!--<div class = "title">Maroon5</div>-->
-                                <!--<div class = "category">Music-Pop</div>-->
-                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class = "listbox artist">-->
-                            <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                            <!--<div class = "info">-->
-                                <!--<div class = "title">슈퍼키드</div>-->
-                                <!--<div class = "category">Music-Rock</div>-->
-                                <!--<button type = "button" class = "btn btn-default">승인</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </div>
-
-
-                <!--<div class = "listboxgroup provider" data-status = "beforecreate">-->
-                    <!--<div class = "listbox createbox provider">-->
-                        <!--<div class = "beforecreate" style = "display : none;">-->
-                            <!--<img src = "./images/providerimage/create_icon.png"/>-->
-                        <!--</div>-->
-                        <!--<div class = "input-time" style = "display : none;">-->
-                        <!--</div>-->
-                        <!--<div class = "finish-create">-->
-                            <!--<img class = "content-image" src = "./images/providerimage/8.jpg"/>-->
-                            <!--<div class = "content-info">-->
-                                <!--<div class = "place-title">Zoo Coffee</div>-->
-                                <!--<div class = "showdate-title">2014/09/21</div>-->
-                                <!--<div class = "showtime-title">08:00PM ~ 10:00PM</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class = "listbox artist">-->
-                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                        <!--<div class = "info">-->
-                            <!--<div class = "title">Maroon5</div>-->
-                            <!--<div class = "category">Music-Pop</div>-->
-                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class = "listbox artist">-->
-                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                        <!--<div class = "info">-->
-                            <!--<div class = "title">Maroon5</div>-->
-                            <!--<div class = "category">Music-Pop</div>-->
-                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class = "listbox artist">-->
-                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                        <!--<div class = "info">-->
-                            <!--<div class = "title">Maroon5</div>-->
-                            <!--<div class = "category">Music-Pop</div>-->
-                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class = "listbox artist">-->
-                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                        <!--<div class = "info">-->
-                            <!--<div class = "title">Maroon5</div>-->
-                            <!--<div class = "category">Music-Pop</div>-->
-                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class = "listbox artist">-->
-                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                        <!--<div class = "info">-->
-                            <!--<div class = "title">Maroon5</div>-->
-                            <!--<div class = "category">Music-Pop</div>-->
-                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class = "listbox artist">-->
-                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                        <!--<div class = "info">-->
-                            <!--<div class = "title">Maroon5</div>-->
-                            <!--<div class = "category">Music-Pop</div>-->
-                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class = "listbox artist">-->
-                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                        <!--<div class = "info">-->
-                            <!--<div class = "title">Maroon5</div>-->
-                            <!--<div class = "category">Music-Pop</div>-->
-                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class = "listbox artist">-->
-                        <!--<img class = "image" src = "./images/providerimage/artist_image.jpg"/>-->
-                        <!--<div class = "info">-->
-                            <!--<div class = "title">Maroon5</div>-->
-                            <!--<div class = "category">Music-Pop</div>-->
-                            <!--<button type = "button" class = "btn btn-default">confirmed</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
         </div>
         <div class = "tabinfo main-artist" style = "display : none">
@@ -866,35 +612,16 @@
                         SeeTreet
                     </div>
                     <div class = "start-info">artist 정보를 입력해주세요</div>
-                    <form class = "form-horizontal" role = "form">
-                        <div class = "form-group">
-                            <div class = "col-lg-4 col-lg-offset-4">
-                                <input type = "text" class = "form-control" class = "start-input" placeholder = "아티스트명을 입력해주세요">
-                            </div>
-                        </div>
-                    </form>
+                    <input type = "text" class = "form-control" class = "start-input" placeholder = "아티스트명을 입력해주세요" id = "input-artist-name">
                     <div class = "choose-photo-area">
-                        <!--<form class = "form-horizontal" role = "form">-->
-                            <!--<div class = "form-group">-->
-                                <!--<div class = "col-lg-4 col-lg-offset-4">-->
-                                    <!--<label>Artist의 사진을 넣어주세요</label>-->
-                                <!--</div>-->
-                                <!--<div class = "col-lg-4 col-lg-offset-4">-->
-                                    <!--<button type = "button" class = "btn btn-lg btn-primary" id = "picture-button">-->
-                                        <!--추가-->
-                                    <!--</button>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</form>-->
                         <div class = "start-pic-list provider">
-                            <img class = "pic0" src = "./images/seetreetimg/default_image.jpg"/>
-                            <img class = "pic1" src = "./images/seetreetimg/default_image.jpg"/>
-                            <img class = "pic2" src = "./images/seetreetimg/default_image.jpg"/>
-                            <!--<img src = "./images/providerimage/8.jpg"/>-->
-                            <!--<img src = "./images/providerimage/8.jpg"/>-->
+                            <!--providerInputimage0-->
+                            <img id = "artistInputimage0" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img id = "artistInputimage1" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img id = "artistInputimage2" src = "./images/seetreetimg/default_image.jpg"/>
                         </div>
                     </div>
-                    <button type = "button" class = "btn btn-lg btn-primary next-btn">
+                    <button type = "button" id = "artistinput1" class = "btn btn-lg btn-primary next-btn">
                         다음
                     </button>
                 </div>
@@ -903,118 +630,78 @@
                         SeeTreet
                     </div>
                     <div class = "start-info">artist 정보를 입력해주세요</div>
-                    <form class = "form-horizontal" role = "form">
-                        <div class = "form-group">
-                            <div class = "col-lg-4 col-lg-offset-4">
-                                <label>아티스트의 장르를 선택해주세요</label>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <div class = "col-lg-2 col-lg-offset-4">
-                                <select class = "start-main-category form-control">
-                                    <!--<option>장르</option>-->
-                                    <option>Music</option>
-                                    <option>Art</option>
-                                </select>
-                            </div>
-                            <div class = "col-lg-2">
-                                <select class = "start-sub-category form-control">
-                                    <!--<option>세부장르</option>-->
-                                    <option>hiphop</option>
-                                    <option>guitar</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <div class = "col-lg-4 col-lg-offset-4">
-                                <button type = "button" class = "btn btn-primary btn-lg next-btn">
-                                    다음
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <label>아티스트의 장르를 선택해주세요</label>
+                    <select class = "start-main-category form-control">
+                    </select>
+                    <select class = "start-sub-category form-control">
+                    </select>
+                    <button type = "button" id = "artistinput2" class = "btn btn-primary btn-lg next-btn">
+                        다음
+                    </button>
                 </div>
                 <div class = "start-input-third" style = "display : none;">
                     <div class = "start-title">
                         SeeTreet
                     </div>
                     <div class = "start-info">artist 정보를 입력해주세요</div>
-                    <form class = "form-horizontal" role = "form">
-                        <label class = "input-information">선호하는 위치를 선택해주세요</label>
-                        <div class = "row">
-                            <div class = "col-lg-6 col-lg-offset-3">
-                                <div class = "input-group">
-                                    <input type = "text" class = "form-control">
-                                    <span class = "input-group-btn">
-                                        <button class = "btn btn-default start-chain-button" type = "button">Search</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <div class = "provider start-map" style = "background-color : red;">
-                                map
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <label>마포구 서교동 232-21</label>
-                        </div>
-                        <div class = "form-group">
-                            <button type = "button" class = "btn btn-lg btn-primary next-btn">
-                                다음
-                            </button>
-                        </div>
-                    </form>
-
+                    <div class = "input-group">
+                        <input type = "text" class = "form-control" id = 'artist-search-body'>
+                        <span class = "input-group-btn">
+                            <button class = "btn btn-default start-chain-button" type = "button">Search</button>
+                        </span>
+                    </div>
+                    <div class = "provider start-map" id = "artist-map">
+                        <script type = "text/javascript">
+                            var artist_TargetPoint = new nhn.api.map.LatLng(37.567541, 126.9773356);
+                            var defaultLevel = 10;
+                            var artist_location_oMap = new nhn.api.map.Map(document.getElementById('artist-map'), {
+                                point : artist_TargetPoint,
+                                zoom : defaultLevel,
+                                enableWheelZoom : true,
+                                enableDragPan : true,
+                                enableDblClickZoom : false,
+                                mapMode : 0,
+                                activateTrafficMap : false,
+                                activateBicycleMap : false,
+                                minMaxLevel : [ 1, 14 ],
+                                size : new nhn.api.map.Size(600, 400)
+                            });
+                            artist_location_oMap.attach('click', function(oCustomEvent){
+                                artist_location_oMap.clearOverlay();
+                                var oPoint = oCustomEvent.point;
+                                var oTarget = oCustomEvent.target;
+                                var oSize = new nhn.api.map.Size(28, 37);
+                                var oOffset = new nhn.api.map.Size(14, 37);
+                                var oIcon = new nhn.api.map.Icon('http://static.naver.com/maps2/icons/pin_spot2.png', oSize, oOffset);
+                                var oMarker = new nhn.api.map.Marker(oIcon);
+                                oMarker.setPoint(oPoint);
+                                artist_location_oMap.addOverlay(oMarker);
+                                map_Manage.artistSelectLocation = oPoint;
+                                // map_Manage.providerSelectLocation
+                                getcoord2locatestr(map_Manage.artistSelectLocation.getLat(), map_Manage.artistSelectLocation.getLng(), function(data, status, res){
+                                    if(status == 'success'){
+                                        var addressname = data.data.name1+ " " + data.data.name2 + " " + data.data.name3;
+                                        $('.main-artist').find('.start-input-third').find('.targetaddress').text(addressname);
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+                    <label class = "targetaddress"></label>
+                    <button type = "button" id = "artistinput3" class = "btn btn-lg btn-primary next-btn">
+                        다음
+                    </button>
                 </div>
                 <div class = "start-input-fourth">
                     <div class = "start-title">
                         SeeTreet
                     </div>
-                    <div class = "start-info">나의 가게를 artist에게 공유해주세요</div>
-                    <form class = "form-horizontal" role = "form">
-                        <div class = "form-group">
-                            <div class = "col-lg-2 col-lg-offset-4">
-                                업종을 선택해주세요
-                            </div>
-                            <div class = "col-lg-2">
-                                <select class = "form-control">
-                                    <option>Coffee</option>
-                                    <option>Food</option>
-                                    <option>Pub</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <div class = "col-lg-2 col-lg-offset-5">
-                                <label>YouTube URL을 입력해주세요</label>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <div class = "col-lg-4 col-lg-offset-4">
-                                <input type = "text" class = "form-control" placeholder="YouTube URL">
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <div class = "col-lg-2 col-lg-offset-5">
-                                <label>간단한 소개를 해주세요</label>
-                            </div>
-                        </div>
-                        <div class = "form-group">
-                            <div class = "col-lg-4 col-lg-offset-4">
-                                <textarea class = "form-control" placeholder="소개말" rows = "3">
-
-                                </textarea>
-                            </div>
-                        </div>
-
-                        <div class = "form-group">
-                            <button type = "button" class = "btn btn-lg btn-primary next-btn">
-                                완료
-                            </button>
-                        </div>
-                    </form>
-
+                    <div class = "start-info">아티스트 정보를 입력해주세요</div>
+                    <input type = "text" class = "form-control" placeholder="YouTube URL" id = "artist-youtube-url">
+                    <textarea class = "form-control" placeholder="소개말" rows = "4" id = "artist-description"></textarea>
+                    <button type = "button" id = "artistinput4" class = "btn btn-lg btn-primary next-btn">
+                        완료
+                    </button>
                 </div>
             </div>
             <div class = "modifytab artist">
@@ -1033,13 +720,13 @@
                             <!--Wrapper for slides-->
                             <div class = "carousel-inner">
                                 <div class = "item active">
-                                    <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                                    <img class = "pic0" src = "./images/seetreetimg/default_image.jpg"/>
                                 </div>
                                 <div class = "item">
-                                    <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                                    <img class = "pic1" src = "./images/seetreetimg/default_image.jpg"/>
                                 </div>
                                 <div class = "item">
-                                    <!--<img src = "./images/seetreetimg/default_image.jpg"/>-->
+                                    <img class = "pic2" src = "./images/seetreetimg/default_image.jpg"/>
                                 </div>
                             </div>
                             <a class = "left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -1058,23 +745,15 @@
                     </div>
                     <div class = "modify-category">
                         <span>장르 : </span>
-                        <select class = "form-control">
-                            <option>Music</option>
+                        <select class = "form-control main-category">
                         </select>
-                        <select class = "form-control">
-                            <option>Pop</option>
+                        <select class = "form-control sub-category">
                         </select>
                     </div>
                     <div class = "modify-location">
                         <span>선호지역 : </span>
                         <input type = "text" class = "form-control" value = "수원시 팔달구 인계동" disabled>
                         <button type = "button" class = "btn btn-default">Map</button>
-                    </div>
-                    <div class = "modify-favorite">
-                        <span>선호업종 : </span>
-                        <select class = "form-control">
-                            <option>Music</option>
-                        </select>
                     </div>
                     <div class = "modify-youtube">
                         <span>YouTube : </span>
@@ -1085,10 +764,9 @@
                         <textarea class = "form-control" rows = "3">
                         </textarea>
                     </div>
-
                     <div class = "modify-button">
                         <button class = "btn btn-lg btn-primary" id = "modify-artist-confirmed">
-                            modify
+                            수정
                         </button>
                     </div>
                 </div>
@@ -1272,12 +950,13 @@
                         </div>
                     </div>
                         <div class = "content-detail-commentcount">
-                            <img src = "./images/seetreetimg/comment_icon.png"/>
-                            <span>100</span>
+                            <img src = "./images/seetreetimg/btn-reply-white.png"/>
+                            <span class = "likeCount">100</span>
                         </div>
-                        <div class = "content-detail-likecount">
-                            <img src = "./images/seetreetimg/like.png"/>
-                            <span>85</span>
+                        <div class = "content-detail-likecount" data-index = "111111">
+                            <img style = "display : none;" class = "likeActivate" src = "./images/seetreetimg/btn-heart-grey-red.png"/>
+                            <img class = "likeDeActivate" src = "./images/seetreetimg/btn-heart-grey-white.png"/>
+                            <span class = "likecount">85</span>
                         </div>
                     </div>
                 </div>
@@ -1285,20 +964,25 @@
                     <div class = "write-comment-area">
                         <span class = "comment-title  topofcomment">댓글작성</span>
                         <span class = "comment-id">seetreetEditor</span>
-                        <textarea class = "form-control" id = "content-comment" rows = "4" placeholder="댓글을 작성해주세요!"></textarea>
-                        <button type = "button" class = "btn btn-primary">댓글등록</button>
+                        <table>
+                            <td>
+                                <img id = "upload-comment-image" class = "comment-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            </td>
+                            <td>
+                                <textarea class = "form-control" id = "content-comment" rows = "6" placeholder="댓글을 작성해주세요!"></textarea>
+                            </td>
+                        </table>
+                        <img content-index = "111" id = "comment-submit" src = "./images/seetreetimg/btn-ok-grey.png"/>
                     </div>
+                    <div class = "comment-title">댓글</div>
                     <div class = "content-comment-area">
-                        <div class = "comment-title">댓글</div>
-                        <div class = "comment-object">
+                        <div class = "comment-object" comment-id = "1">
                             <img  class = "user-upload-image" src = "./images/seetreetimg/5mile2.jpg">
                             <div class = "comment-user-name">임지욱</div>
                             <div class = "comment-upload-time">2014/09/07 17:53:00</div>
-                            <div class = "comment-user-content">
-                                공연 너무 기대되네요!
-                            </div>
+                            <div class = "comment-user-content">공연 너무 기대되네요!</div>
                         </div>
-                        <div class = "comment-object">
+                        <div class = "comment-object" comment-id = "1">
                             <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
                             <div class = "comment-user-name">임지욱</div>
                             <div class = "comment-upload-time">2014/09/07 17:53:00</div>
@@ -1306,7 +990,55 @@
                                 공백포함250자, 공백제외 156자
                             </div>
                         </div>
-                        <div class = "comment-object">
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
+                            <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
+                            <div class = "comment-user-name">임지욱</div>
+                            <div class = "comment-upload-time">2014/09/07 17:53:00</div>
+                            <div class = "comment-user-content">
+                                공백포함250자, 공백제외 156자
+                            </div>
+                        </div>
+                        <div class = "comment-object" comment-id = "1">
                             <img  class = "user-upload-image" src = "./images/seetreetimg/default_image.jpg">
                             <div class = "comment-user-name">임지욱</div>
                             <div class = "comment-upload-time">2014/09/07 17:53:00</div>
@@ -1562,16 +1294,16 @@
                             <span>장기하와 얼굴들</span>
                         </div>
                         <div class = "detail-category">
-                            <span class = "detail-title">장르 : </span><span>모던락</span>
+                            <span class = "detail-title">장르 : </span><span class = "detail-body">모던락</span>
                         </div>
                         <div class = "detail-location">
-                            <span class = "detail-title">선호지역 : </span><span>수원시 팔달구 인계동</span>
+                            <span class = "detail-title">선호지역 : </span><span class = "detail-body">수원시 팔달구 인계동</span>
                         </div>
                         <div class = "detail-description">
-                            <span class = "detail-title">소개 : </span><span>모던락밴드 장기하와 얼굴들입니다.</span>
+                            <span class = "detail-title">소개 : </span><span class = "detail-body">모던락밴드 장기하와 얼굴들입니다.</span>
                         </div>
                         <div class = "detail-want-category">
-                            <span class = "detail-title">선호공연장소 : </span><span>라이브카페</span>
+                            <span class = "detail-title">선호공연장소 : </span><span class = "detail-body">라이브카페</span>
                         </div>
                         <div class = "detail-history-count">
                             <img src = "./images/seetreetimg/number.png"/>

@@ -129,6 +129,8 @@ public class ReplyController extends HttpServlet {
 		String[] replyimages= C.writeImageFileFromBase64(hash.hashCode()+"", C.ADDPATH_REPLY , C.ADDURL_REPLY , replyimage);
 		
 //		ReplyBean reply = new ReplyBean((String)req.getAttribute(UserBean.KEY_EMAIL) , contentId, replytext, replyimage);
+		
+		System.out.println(contentId);
 		JSONObject reply = null;
 		try {
 			reply = new JSONObject()
