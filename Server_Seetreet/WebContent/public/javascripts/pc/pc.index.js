@@ -57,7 +57,7 @@ tabmanager.topbarmanager = function(select_menu){
         $('.seetreet-container').show();
         box_Factory.content.initContentData(function(){
             initialize_location(function(){
-                contentshow(latitude, longitude);
+                contentshow(client.latitude, client.longitude);
             });
         });
     }

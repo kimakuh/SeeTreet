@@ -452,13 +452,19 @@ textarea{
     margin-top : 20px;
 }
 
-.main-artist .start-area .start-input-fourth input,
-.main-artist .start-area .start-input-fourth textarea{
+/*.main-artist .start-area .start-input-fourth input,*/
+/*.main-artist .start-area .start-input-fourth textarea{*/
+    /*width : 400px;*/
+    /*margin : auto;*/
+    /*margin-bottom : 20px;*/
+/*}*/
+.start-area .start-input-fourth select,
+.start-area .start-input-fourth input,
+.start-area .start-input-fourth textarea{
     width : 400px;
     margin : auto;
     margin-bottom : 20px;
 }
-
 .tabinfo .modifytab{
     width : 400px;
     height : 720px;

@@ -125,9 +125,10 @@ public class ReplyController extends HttpServlet {
 		String modtime = C.currentDate();
 		String token = req.getHeader(UserBean.KEY_TOKEN);
 		
+		System.out.println(replyimage);
 		String hash = modtime+token;		
 		String[] replyimages= C.writeImageFileFromBase64(hash.hashCode()+"", C.ADDPATH_REPLY , C.ADDURL_REPLY , replyimage);
-		
+		System.out.println(replyimages[0]);
 //		ReplyBean reply = new ReplyBean((String)req.getAttribute(UserBean.KEY_EMAIL) , contentId, replytext, replyimage);
 		
 		System.out.println(contentId);

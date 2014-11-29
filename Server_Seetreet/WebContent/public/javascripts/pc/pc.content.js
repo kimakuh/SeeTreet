@@ -1,8 +1,11 @@
 /**
  * Created by Limjiuk on 2014-10-26.
  */
-var latitude;
-var longitude;
+var client = {};
+client.latitude = '';
+client.longitude = '';
+//var latitude
+//var longitude;
 var current_content_num = 0;
 var current_group_num = 0;
 
@@ -18,8 +21,8 @@ var initialize_location = function(cb){
     // Try HTML5 geolocation
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(function(position){
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
+            client.latitude = position.coords.latitude;
+            client.longitude = position.coords.longitude;
             cb();
         }, function(){
             handleNoGeolocation(true);
@@ -56,12 +59,11 @@ var contentshow = function(latitude_, longitude_){
 
 $(document).ready(function(){
     initialize_location(function(){
-        contentshow(latitude, longitude);
+        contentshow(client.latitude, client.longitude);
     });
     $(document).on("click", ".content", function(e){
             var target_dataindex = $(e.currentTarget).attr('data-index');
             var contentinfo = box_Factory.content.get_a_content(target_dataindex);
-//        var contentinfo = box_Factory.content.contentArray[target_dataindex];
             modal_Factory.contentModal.loadModal(contentinfo, function(){
                 modal_Factory.checkLike(target_dataindex, function(){
                    modal_Factory.getReply(target_dataindex);
@@ -69,7 +71,7 @@ $(document).ready(function(){
             });
     });
     $('.content-append-area').find('img').click(function(){
-        contentshow(latitude, longitude);
+        contentshow(client.latitude, client.longitude);
     });
     $('#content-popup').find('.provider-info-area').click(function(e){
         var targetId = $(e.currentTarget).attr('identification-value');
@@ -99,7 +101,9 @@ $(document).ready(function(){
         }
     });
     $('#finish-search').click(function(){
-        map_Manage.refreshContent(map_Manage.userSelectLocation.getLat(), map_Manage.userSelectLocation.getLng());
+        client.latitude = map_Manage.userSelectLocation.getLat();
+        client.longitude = map_Manage.userSelectLocation.getLng();
+        map_Manage.refreshContent(client.latitude, client.longitude);
         $('#location-search-popup').modal('hide');
     });
     $('#upload-comment-image').click(function(e){

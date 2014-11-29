@@ -86,17 +86,26 @@ var manage_providerinfo = {};
 manage_providerinfo.setProviderInput = function(){
     for(var i in CONST_MAINCATEGORY){
         $('.main-provider').find('.start-main-category').append(
-                '<option>' + CONST_MAINCATEGORY[i] + '</option>'
+            '<option>' + CONST_MAINCATEGORY[i] + '</option>'
+        );
+        $('.main-provider').find('.modifytab').find('.modify-favorite').find('.category').append(
+            '<option>' + CONST_MAINCATEGORY[i] + '</option>'
         );
     }
     for(var i in CONST_SUBCATEGORY){
         $('.main-provider').find('.start-sub-category').append(
+            '<option>' + CONST_SUBCATEGORY[i] + '</option>'
+        );
+        $('.main-provider').find('.modifytab').find('.modify-favorite').find('.detailGenre').append(
                 '<option>' + CONST_SUBCATEGORY[i] + '</option>'
         );
     }
     for(var i in CONST_STORETYPE){
         $('#provider_storetype').append(
-                '<option>' + CONST_STORETYPE[i] + '</option>'
+            '<option>' + CONST_STORETYPE[i] + '</option>'
+        );
+        $('.main-provider').find('.modifytab').find('.modify-category').find('select').append(
+            '<option>' + CONST_STORETYPE[i] + '</option>'
         );
     }
 };
@@ -261,7 +270,6 @@ manage_providerinfo.getProviderInfo = function(providerId){
 };
 manage_providerinfo.setModifyTab = function(providerInfo){
     manage_providerinfo.myProviderInfo = providerInfo;
-    console.log(providerInfo);
 //    var providerInfo =
 //    {
 //        providerImage : ["./images/seetreetimg/5mile1.jpg", "./images/seetreetimg/5mile2.jpg", "./images/seetreetimg/5mile3.jpg"],

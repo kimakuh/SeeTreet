@@ -779,8 +779,8 @@ public class MongoDAO {
 		col.update(findQuery, updateQuery);		
 		
 		DBObject content = col.findOne(new BasicDBObject(ContentBean.KEY_ID, new ObjectId(contentId)));		
-		String property = (String)content.get(ContentBean.KEY_GENRE);
-				
+		DBObject genre = (DBObject)content.get(ContentBean.KEY_GENRE);
+		String property = (String)genre.get(GenreBean.KEY_DETAIL);	
 		if(isLike) {
 			MongoRecDAO.plusUserLove(token, property);
 			MongoRecDAO.loveContent(token, contentId);
