@@ -534,6 +534,8 @@ public class MongoDAO {
 		DBCollection colReply = db.getCollection(MongoDB.COLLECTION_REPLY);
 		DBCollection colContent = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		
+		System.out.println("bean : " + bean.getReplyId() + " , " +bean.getUserEmail() + " , " + bean.getContentId());;
+		
 		colReply.remove(new BasicDBObject()
 							.append(ReplyBean.KEY_ID, new ObjectId(bean.getReplyId()))
 							.append(ReplyBean.KEY_USEREMAIL, bean.getUserEmail()));
@@ -571,10 +573,10 @@ public class MongoDAO {
 		
 		DBObject artist = (DBObject)user.get(UserBean.KEY_ARTIST);		
 		
-		return new JSONObject(C.convertObjectId(artist.toString()));
+		return new JSONObject(artist.toString());
 	}
 	
-	public static JSONArray searchContentByLocationFromArtist(double l_lat,	double l_long, int page , String artistId) {
+	public static JSONArray searchContentByLocationFromArtist(double l_lat,	double l_long, int page) {
 //		ContentProviderBean[] res = null;
 		JSONArray res = new JSONArray();
 
@@ -584,6 +586,8 @@ public class MongoDAO {
 		BasicDBList position = new BasicDBList();
 		position.put(LocationBean.LAT, l_lat);
 		position.put(LocationBean.LONG, l_long);
+		
+		
 		DBCursor iter = col.find(
 						new BasicDBObject("provider.location", 
 								new BasicDBObject("$near", 
@@ -591,11 +595,10 @@ public class MongoDAO {
 												new BasicDBObject("type", "Point")
 													.append("coordinates", position))))
 							.append(ContentBean.KEY_FINISHIED, false)
-							.append(ContentBean.KEY_C_ARTIST, null)
-							.append(ContentBean.KEY_ARTIST+"."+ArtistBean.KEY_ID , 
-									new BasicDBObject().put("$ne", new ObjectId(artistId))))
+							.append(ContentBean.KEY_C_ARTIST, null))
 						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
 
+		System.out.println(iter.size());
 		try {
 			while(iter.hasNext()) {
 				DBObject item = iter.next();
@@ -623,7 +626,6 @@ public class MongoDAO {
 		   	   .append(ContentProviderBean.KEY_STARTTIME, _contentStartTime)
 		   	   .append(ContentProviderBean.KEY_ENDTIME, _contentEndTime)
 			   .append(ContentProviderBean.KEY_PROVIDER, _providerObject)
-			   .append(ContentProviderBean.KEY_TYPE, "SEETREET")
 			   .append(ContentBean.KEY_C_ARTIST, null)
 			   .append(ContentBean.KEY_FINISHIED, false);
 		
@@ -635,8 +637,7 @@ public class MongoDAO {
 				.put(ContentProviderBean.KEY_STARTTIME , content.get(ContentProviderBean.KEY_STARTTIME))
 				.put(ContentProviderBean.KEY_ENDTIME , content.get(ContentProviderBean.KEY_ENDTIME))
 				.put(ContentProviderBean.KEY_PROVIDER , content.get(ContentProviderBean.KEY_PROVIDER))
-				.put(ContentBean.KEY_FINISHIED , false)
-				.put(ContentProviderBean.KEY_TYPE, "SEETREET");
+				.put(ContentBean.KEY_FINISHIED , false);
 		}catch(Exception e){
 			e.printStackTrace();
 		}		
@@ -711,8 +712,26 @@ public class MongoDAO {
 		BasicDBObject findArtistQuery = new BasicDBObject(UserBean.KEY_EMAIL, email);		
 		DBObject user = userCol.findOne(findArtistQuery);
 		DBObject artist = (DBObject)user.get(UserBean.KEY_ARTIST);
-		
+					
 		if(artist == null) return false;
+		
+		BasicDBObject findArtistInContentQuery = new BasicDBObject();
+		findArtistInContentQuery.put(ContentBean.KEY_ID, new ObjectId(contentId));
+		findArtistInContentQuery.put(ArtistBean.KEY_ID, artist.get(ArtistBean.KEY_ID));
+		DBObject isInserted 
+		= contentCol.findOne(
+				new BasicDBObject().append(ContentBean.KEY_ID , new ObjectId(contentId)),
+				new BasicDBObject()
+					.append(ContentBean.KEY_ARTIST, 
+							new BasicDBObject()
+								.append("$elemMatch",
+										new BasicDBObject()
+											.append(ArtistBean.KEY_ID, artist.get(ArtistBean.KEY_ID))
+										)								
+							)				
+				);		
+		
+		if(isInserted != null) return false;
 		
 		BasicDBObject findContentQuery 		= new BasicDBObject();
 		findContentQuery.append(ContentBean.KEY_ID , new ObjectId(contentId));
@@ -790,6 +809,7 @@ public class MongoDAO {
 								.append(ContentBean.KEY_TYPE, "SEETREET")
 								.append(ContentBean.KEY_ARTIST+"."+ArtistBean.KEY_ID , new ObjectId(artistId))
 								);
+
 		
 		JSONArray res = new JSONArray();
 		try {
@@ -840,6 +860,7 @@ public class MongoDAO {
 		System.out.println(res.toString());
 		return res;
 	}
+
 	
 	public static boolean enrollConfirmedArtist(String _artistId, String _contentId) throws Exception{
 		DB db = MongoDB.getDB();
@@ -884,4 +905,5 @@ public class MongoDAO {
 		contentCol.update(findQuery, updateQuery);
 		return true;
 	}
+
 }

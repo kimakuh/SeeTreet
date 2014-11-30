@@ -62,6 +62,10 @@
 	transition: box-shadow .5s ease-out, height .5s ease-out;
 }
 
+.box.init {
+	height : 10px;
+}
+
 .box:hover {	
 	z-index: 10;
 	box-shadow: none;
@@ -213,11 +217,6 @@
 	overflow: hidden;
 }
 
-.content_container.a_content_container {
-	margin-top : -25px;
-	overflow : hidden;
-}
-
 .content_container.p_content_container[data-id='empty'][data-state='init'] {	
 	height : 10px;
 }
@@ -278,14 +277,7 @@
 	visibility: visible;
 }
 
-.content_container .listview.empty .list_btn {
-	display : none;
-}
-
-.content_container .listview.empty .viewport {
-	display : none;
-}
-
+<<<<<<< HEAD
 #provider_create_content .modal-body{
     display : table;
 }
@@ -306,5 +298,11 @@
 .common-button.cancel-button {
     background-color: #a9b9c5;
 }
+.content_container .listview.empty .list_btn {
+	display : none;
+}
 
+.content_container .listview.empty .viewport {
+	display : none;
+}
 

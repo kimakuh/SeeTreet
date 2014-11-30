@@ -28,7 +28,6 @@ Listtab.show = function(STATE) {
 		
 		getProviderContents( 1 , function(data , state , res) {			
 			contents = data.data;
-			console.log(data);
 			for(var i in contents) {
 				$(slide.getId()).unbind("click");
 				
@@ -66,14 +65,7 @@ Listtab.show = function(STATE) {
 					getArtistApplications(artistId, page, function(res , state2) {
 						print(artistId + " , " + page);
 						if(state2 == "success") {
-							var arr = res.data;
-							for(var i in arr) {
-								if(arr[i].isConfirmed_artistId == artistId) {
-									mArtistApplication.addProvider(arr[i], true);
-								} else {
-									mArtistApplication.addProvider(arr[i], false);
-								}
-							}							
+							
 						}else {
 							
 						}
@@ -177,9 +169,11 @@ var ArtistApplication = function() {
 			target.prepend(str);
 			
 			hlist = new HSlider();		
-			callback();
+			
 			setTimeout(function() {
-				$(".a_content_container").removeAttr("data-state");					
+				$(".a_content_container").removeAttr("data-state");
+				if (callback != undefined)
+					callback();
 			}, 300);
 		} , 
 		addProvider : function( pData , isPassed) {
@@ -199,7 +193,7 @@ var ArtistApplication = function() {
 		},
 		addRecProvider : function ( target,  pData ) {
 			target.append(BoxFactory.create(BoxFactory.KEY_CREATE_PROVIDER , {
-				title : pData.contentTitle,
+				title : pData.provider.StoreTitle,
 				desc : pData.provider.description,
 				id : pData._id,
 				confirm : false
@@ -208,33 +202,26 @@ var ArtistApplication = function() {
 			$(".listtab.artist .provider.box[data-id='"+pData._id+"']").css("background-image" , "url('"+pData.provider.providerImage[0]+"')");
 			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .option.btn_apply").unbind("click");
 			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .option.btn_apply").bind("click" , function() {								
-				mArtistApplication.applyContent(pData._id , pData.provider._id);
+				mArtistApplication.applyContent(pData._id);
 			});
-			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .box_hover").unbind("click");
-			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .box_hover").bind("click" , function() {
-				modal_Factory.providerModal.getProviderInfo(pData.provider._id);
-			});
+			setTimeout(function(){
+				$(".listtab.artist .provider.init.box[data-id='"+pData._id+"']").removeClass("init");
+			} ,200);			
 		},
-		applyContent : function(id , providerid) {		
-			postApplication(id, function(result , state) {				
-				if(state == "success") {
-					var title = $(".listtab.artist .provider.box[data-id='"+id+"'] .title").text();
-					var url = $(".listtab.artist .provider.box[data-id='"+id+"']").css("background-image");
-					$(".listtab.artist .provider.box[data-id='"+id+"']").remove();
-					mArtistApplication.addProvider({
-						_id : id,
-						contentTitle : title ,
-						description : "" ,
-						provider : {_id : providerid} ,
-						providerImage : url,
-						isFinished : false
-					} , false);
-				}
-			});			
+		applyContent : function(id) {			
+			var title = $(".listtab.artist .provider.box[data-id='"+id+"'] .title").text();
+			var url = $(".listtab.artist .provider.box[data-id='"+id+"']").css("background-image");
+			$(".listtab.artist .provider.box[data-id='"+id+"']").remove();
+			mArtistApplication.addProvider({
+				_id : id,
+				name : title ,
+				description : "" ,
+				providerImage : url
+			} , false);
 		} , 
 		initHSlide : function(artistId) {
 			hlist.create($(".content_container.a_content_container") , artistId , false);
-		} 
+		}
 	};
 }
 
@@ -243,7 +230,7 @@ var BoxFactory = {};
 BoxFactory.KEY_CREATE_CONTENT = 0;
 BoxFactory.KEY_CREATE_ARTIST = 1;
 BoxFactory.KEY_CREATE_PROVIDER = 2;
-BoxFactory.KEY_CREATE_HISTORY = 3;
+
 BoxFactory.create = function(key , info) {
 	var box_str = "";
 	var title = info.title;
@@ -270,19 +257,10 @@ BoxFactory.create = function(key , info) {
 					'</div>';	
 	break;
 	case BoxFactory.KEY_CREATE_PROVIDER :		
-		box_str += '<div class="provider box" data-id="'+id+'">'+
+		box_str += '<div class="provider box init" data-id="'+id+'">'+
 						'<div class="image" ></div>'+
 						'<div class="title">'+title+'</div>'+
 						'<div class="option btn_apply '+(isConfirmed?'passed':'')+'">지원하기</div>'+
-						'<div class="box_hover"></div>'+
-					'</div>';
-	break;
-	case BoxFactory.KEY_CREATE_HISTORY :
-		var isFinished = info.isFinished;
-		box_str += '<div class="provider box" data-id="'+id+'">'+
-						'<div class="image" ></div>'+
-						'<div class="title">'+title+'</div>'+
-						'<div class="option btn_apply '+(isConfirmed?'passed':'')+'">'+(isFinished?'종료된 공연' : isConfirmed? '승인됨' : '대기중')+'</div>'+
 						'<div class="box_hover"></div>'+
 					'</div>';
 	break;
@@ -330,35 +308,18 @@ var HSlider = function() {
 				
 				mMap[data._id] = mId + " .viewport .artist.box[data-id='"+ data._id + "']";				
 				$(mId).removeClass("empty");
-			} else {	
-				var provider = BoxFactory.create(BoxFactory.KEY_CREATE_HISTORY, {
-					title : data.contentTitle,
-					desc : data.contentStartTime + " ~ " +data.contentEndTime , 
+			} else {				
+				var provider = BoxFactory.create(BoxFactory.KEY_CREATE_PROVIDER, {
+					title : data.name,
+					desc : data.description , 
 					id : data._id,
-					confirm : isConfirmed,
-					isFinished : data.isFinished
+					confirm : isConfirmed
 				});
-				
 				$(mId + " .viewport").append(provider);
 				$(mId + " .viewport .provider.box[data-id='" + data._id + "']")
-						.css("background-image",(data.providerImage||"url('"+data.provider.providerImage[0]+"')"));
-		
+						.css("background-image",data.providerImage);
 				mMap[data._id] = mId + " .viewport .provider.box[data-id='"+ data._id + "']";
-				$(mId + " .viewport .provider.box[data-id='" + data._id + "'] .box_hover").click(function() {
-					modal_Factory.providerModal.getProviderInfo(data.provider._id);
-				});	
-				
-				if(isConfirmed) {
-					$(mId + " .viewport .provider.box[data-id='" + data._id + "'] .option.passed").click(function() {
-						postConfirmFromArtist({
-							category : $("select.main-category option:selected").text(),
-							detailGenre : $("select.sub-category option:selected").text() 
-						}, data._id, function(res , state) {
-							$(mId + " .viewport .provider.box[data-id='" + data._id + "'] .option").text("완료");
-						});
-					});	
-				}
-				
+				console.log(mId);				
 				$(mId).removeClass("empty");
 			}	
 			

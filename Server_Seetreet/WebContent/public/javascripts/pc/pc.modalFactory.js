@@ -6,7 +6,8 @@ var modal_Factory = {};
 
 modal_Factory.contentModal = {};
 modal_Factory.contentModal.loadModal = function(contentinfo, callback){
-    modal_Factory.reply.clearReplyList();
+    console.log(contentinfo);
+	modal_Factory.reply.clearReplyList();
     modal_Factory.reply.clearReply();
     var content_type = '';
     if(contentinfo["contentType"] == 'PUBLIC'){
@@ -16,8 +17,19 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
         content_type = 'private';
     }
     var content_name = contentinfo.contentTitle;
+    
+    var artist_name = '';
     if(content_type == 'private'){
-        var artist_name = contentinfo.artists[0].name;
+    	var isConfirmed_artistId = contentinfo.isConfirmed_artistId;
+    	var artistArray = contentinfo.artists;
+    	var artistdata = {};
+    	for(var i in artistArray){
+    		if(isConfirmed_artistId == artistArray[i]._id){
+    			artistdata = artistArray[i];
+    			break;
+    		}
+    	}
+        artist_name = artistdata.name;
     }
     var content_time = modal_Factory.content_convert_time(contentinfo.contentStartTime, contentinfo.contentEndTime);
 
@@ -192,13 +204,23 @@ modal_Factory.replyImage = '';
 modal_Factory.reply.replyImage ='';
 modal_Factory.reply.submitReply = function(contentId){
     var replytext = $('#content-comment').val();
-    var replyImage = modal_Factory.reply.replyImage;
-    // http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg
-//    var replyImage = 'http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg';
+    var replyImage;
+    if(modal_Factory.reply.replyImage == ''){
+        replyImage = null;
+    }
+    else{
+        replyImage = modal_Factory.reply.replyImage;
+    }
+    console.log(replyImage);
     postwriteReply(contentId, replytext, replyImage, function(data, status, res){
         if(status == 'success'){
             // Prepend Reply 함수 호출
-            modal_Factory.reply.prependReplyData(data.data);
+//            modal_Factory.reply.prependReplyData(data.data);
+            modal_Factory.reply.clearReplyList();
+            modal_Factory.reply.clearReply();
+            modal_Factory.getReply(contentId, function(){
+                modal_Factory.getReplyCount(contentId);
+            });
         }
     });
 };
@@ -215,7 +237,6 @@ modal_Factory.reply.clearReplyList = function(){
     modal_Factory.reply.current_replypage = 1;
 };
 modal_Factory.reply.prependReplyData = function(replydata){
-
     var replyImage;
     if(replydata.replyimage == ''){
         replyImage = "./images/seetreetimg/default_image.jpg";
@@ -259,7 +280,7 @@ modal_Factory.providerModal.getProviderInfo = function(providerId){
         if(status == 'success'){
             var providerdata = data.data;
             var provider_id = data.data._id;
-            modal_Factory.providerModal.loadHistory(provider_id);
+            modal_Factory.providerModal.loadHistory(providerId);
             modal_Factory.providerModal.loadModal(providerdata);
             $('#provider-popup').modal('show');
         }
@@ -286,7 +307,6 @@ modal_Factory.providerModal.loadHistory = function(providerId){
                 var confirmed_artistId = historydata.isConfirmed_artistId;
                 var confirmed_artist_data = {};
                 for(var i in historydata.artists){
-                    console.log(historydata.artists[i]._id.$oid);
                     if(confirmed_artistId == historydata.artists[i]._id.$oid){
                         confirmed_artist_data = historydata.artists[i];
                         break;
@@ -308,7 +328,6 @@ modal_Factory.providerModal.loadHistory = function(providerId){
 };
 
 modal_Factory.providerModal.prependHistory = function(corehistorydata){
-    console.log(corehistorydata);
     $('#provider-popup').find('.history-list').prepend(
         '<div class = "history-content" data-index = "abc">'
             + '<img class = "history-content-image" src = "' + corehistorydata.artistImage + '"/>'
@@ -336,10 +355,10 @@ modal_Factory.providerModal.loadModal = function(providerInfo){
     $('#provider-popup').find('.detail-area').find('.provider-detail-title').find('span').text(Modal_storeTitle);
     // StoreType
     var Modal_storeType = providerInfo.StoreType;
-    $('#provider-popup').find('.detail-area').find('.detail-location').find('.detail-body').text(Modal_storeType);
+    $('#provider-popup').find('.detail-area').find('.detail-category').find('.detail-body').text(Modal_storeType);
     // location address
     var Modal_storeAddress = providerInfo.location.name;
-    $('#provider-popup').find('.detail-area').find('.detail-category').find('.detail-body').text(Modal_storeAddress);
+    $('#provider-popup').find('.detail-area').find('.detail-location').find('.detail-body').text(Modal_storeAddress);
     // store description
     var Modal_description = modal_Factory.omit_unnecessary_description(providerInfo.description);
     $('#provider-popup').find('.detail-area').find('.detail-description').find('.detail-body').text(Modal_description);
@@ -499,7 +518,6 @@ modal_Factory.reply_convert_time = function(time){
     var showtime;
     showtime = "20" + time.substr(0,2) + "/" + time.substr(2,2) + "/" + time.substr(4,2) + "/ "
         + time.substr(6,2) + ":" + time.substr(8,2) + ":" + time.substr(10,2) + " " + time.substr(12,2);
-
     return showtime;
 };
 

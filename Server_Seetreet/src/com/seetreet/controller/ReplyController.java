@@ -122,30 +122,35 @@ public class ReplyController extends HttpServlet {
 		String replytext = req.getParameter(ReplyBean.KEY_REPLYTEXT);
 		String replyimage= req.getParameter(ReplyBean.KEY_REPLYIMAGE);	
 		
+		//System.out.println("Enroll Request : "+req.getParameter(ReplyBean.KEY_REPLYIMAGE));
+		
 		String modtime = C.currentDate();
 		String token = req.getHeader(UserBean.KEY_TOKEN);
-		
-		System.out.println(replyimage);
-		String hash = modtime+token;		
-		String[] replyimages= C.writeImageFileFromBase64(hash.hashCode()+"", C.ADDPATH_REPLY , C.ADDURL_REPLY , replyimage);
-		System.out.println(replyimages[0]);
-//		ReplyBean reply = new ReplyBean((String)req.getAttribute(UserBean.KEY_EMAIL) , contentId, replytext, replyimage);
-		
-		System.out.println(contentId);
+		String[] replyimages;
 		JSONObject reply = null;
-		try {
-			reply = new JSONObject()
+		try{
+			if(replyimage.length() != 0){
+				String hash = modtime+token;		
+				replyimages = C.writeImageFileFromBase64(hash.hashCode()+"", C.ADDPATH_REPLY , C.ADDURL_REPLY , replyimage);
+				reply = new JSONObject()
 				  .put(ReplyBean.KEY_USEREMAIL , (String)(req.getAttribute(UserBean.KEY_EMAIL)))
 				  .put(ReplyBean.KEY_CONTENTID , contentId)
 				  .put(ReplyBean.KEY_REPLYTEXT , replytext)
 				  .put(ReplyBean.KEY_REPLYIMAGE , replyimages[0])
 				  .put(ReplyBean.KEY_MODTIME, modtime);
-		} catch (Exception e) {
+			}else{
+				replyimages = null;
+				reply = new JSONObject()
+				  .put(ReplyBean.KEY_USEREMAIL , (String)(req.getAttribute(UserBean.KEY_EMAIL)))
+				  .put(ReplyBean.KEY_CONTENTID , contentId)
+				  .put(ReplyBean.KEY_REPLYTEXT , replytext)
+				  .put(ReplyBean.KEY_REPLYIMAGE , "")
+				  .put(ReplyBean.KEY_MODTIME, modtime);
+			}	
+		}catch(Exception e){
+			System.out.println(reply.toString());
 			e.printStackTrace();
-			// TODO: handle exception
 		}
-		
-		
 		return MongoDAO.enrollReply(reply);					
 	}
 	

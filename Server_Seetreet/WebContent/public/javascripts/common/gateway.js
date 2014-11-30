@@ -1,8 +1,8 @@
 /**
  * Created by Limjiuk on 2014-10-28.
  */
-//var SERVER_ADDRESS = 'http://211.189.127.63:8080/Server_Seetreet';
-var SERVER_ADDRESS = 'http://211.189.127.61:8090/TEST';
+var SERVER_ADDRESS = 'http://211.189.127.63:8080/Server_Seetreet';
+//var SERVER_ADDRESS = 'http://211.189.127.61:8090/TEST';
 
 // create user account
 var postUserCreate = function(userId, user, callback){
@@ -404,12 +404,12 @@ var postConfirmFromArtist = function(genre , contentId , callback) {
 // httpRequest
 var httpRequest = function ( url, method, headers, body , callback  ){
     var fullUrl =  SERVER_ADDRESS + url;
-//    console.log('=======request start!==========');
-//    console.log('method=' + method );
-//    console.log('url='+ fullUrl );
-//    console.log('header=' + JSON.stringify(headers) );
-//    console.log('body=' + JSON.stringify(body));
-//    console.log('========request end!=========');
+    console.log('=======request start!==========');
+    console.log('method=' + method );
+    console.log('url='+ fullUrl );
+    console.log('header=' + JSON.stringify(headers) );
+    console.log('body=' + JSON.stringify(body));
+    console.log('========request end!=========');
     $.ajax({
         crossDomain : true,
         dataType : "json",
@@ -420,6 +420,7 @@ var httpRequest = function ( url, method, headers, body , callback  ){
         headers:headers,
         data: body,
         success: function(data, state, res){
+            console.log(data);
             if ( data == null )
                 data = '';
 //            console.log( '[[[[[[[[SUCCESS!!]]]]]]]   url: ' + url + ',   state:' + state + ',   data : ' + JSON.stringify( data ) );
