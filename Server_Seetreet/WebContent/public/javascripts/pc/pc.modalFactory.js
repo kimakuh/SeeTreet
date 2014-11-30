@@ -307,7 +307,6 @@ modal_Factory.providerModal.loadHistory = function(providerId){
                 var confirmed_artistId = historydata.isConfirmed_artistId;
                 var confirmed_artist_data = {};
                 for(var i in historydata.artists){
-                    console.log(historydata.artists[i]._id.$oid);
                     if(confirmed_artistId == historydata.artists[i]._id.$oid){
                         confirmed_artist_data = historydata.artists[i];
                         break;
@@ -329,7 +328,6 @@ modal_Factory.providerModal.loadHistory = function(providerId){
 };
 
 modal_Factory.providerModal.prependHistory = function(corehistorydata){
-    console.log(corehistorydata);
     $('#provider-popup').find('.history-list').prepend(
         '<div class = "history-content" data-index = "abc">'
             + '<img class = "history-content-image" src = "' + corehistorydata.artistImage + '"/>'
@@ -357,10 +355,10 @@ modal_Factory.providerModal.loadModal = function(providerInfo){
     $('#provider-popup').find('.detail-area').find('.provider-detail-title').find('span').text(Modal_storeTitle);
     // StoreType
     var Modal_storeType = providerInfo.StoreType;
-    $('#provider-popup').find('.detail-area').find('.detail-location').find('.detail-body').text(Modal_storeType);
+    $('#provider-popup').find('.detail-area').find('.detail-category').find('.detail-body').text(Modal_storeType);
     // location address
     var Modal_storeAddress = providerInfo.location.name;
-    $('#provider-popup').find('.detail-area').find('.detail-category').find('.detail-body').text(Modal_storeAddress);
+    $('#provider-popup').find('.detail-area').find('.detail-location').find('.detail-body').text(Modal_storeAddress);
     // store description
     var Modal_description = modal_Factory.omit_unnecessary_description(providerInfo.description);
     $('#provider-popup').find('.detail-area').find('.detail-description').find('.detail-body').text(Modal_description);

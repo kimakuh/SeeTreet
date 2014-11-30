@@ -85,6 +85,12 @@ $(document).ready(function(){
     }, function(){
         $('.seetreet-container').find('.content-append-area').find('img').attr('src', './images/seetreetimg/btn-plus-grey.png');
     });
+    
+    $('#content-popup').find('.write-comment-area').find('#comment-submit').hover(function(){
+    	$('#content-popup').find('.write-comment-area').find('#comment-submit').attr('src', './images/seetreetimg/btn-ok-yel.png');
+    }, function(){
+    	$('#content-popup').find('.write-comment-area').find('#comment-submit').attr('src', './images/seetreetimg/btn-ok-grey.png');
+    });
 
 });
 
