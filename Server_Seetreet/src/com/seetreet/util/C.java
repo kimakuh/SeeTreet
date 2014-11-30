@@ -111,7 +111,6 @@ public class C {
 		for(String image : encodedStrings) {
 			try {
 				String fileName = userId + "_" + i + ".png";
-				
 				fos = new FileOutputStream(new File(FILEPATH + path + fileName));
 				strs[i++] = URL +url+fileName;
 				fos.write(Base64.decodeBase64(image));

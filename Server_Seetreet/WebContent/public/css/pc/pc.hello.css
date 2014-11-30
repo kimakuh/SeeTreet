@@ -40,7 +40,19 @@ body#hellomain{
     height: 100%;
     overflow: auto;
 }
-
+.common-button {
+    width : 130px;
+    height : 40px;
+    color : #fff;
+    border :none;
+    border-radius: 5px;
+}
+.common-button.save-button {
+    background-color: #34495e;
+}
+.common-button.cancel-button {
+    background-color: #a9b9c5;
+}
 .container .seetreet-main-title{
     margin-top : 250px;
     text-align: center;

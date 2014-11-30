@@ -183,6 +183,18 @@ var postlikeContent = function(contentId, islike, callback){
     httpRequest(url, method, headers, body, callback);
 };
 
+var getcontentReplyCount = function(contentId, callback){
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var method = 'GET';
+    var headers = {
+        "_id" : token
+    };
+    var url_param = '?contentId=' + contentId;
+    var url = '/user/content/user/reply/count/' + userId + url_param;
+    httpRequest(url, method, headers, null, callback);
+};
+
 // 컨텐트의 댓글 정보들을 가져옵니다.
 var getcontentReply = function(contentId, page, callback){
     var token = getCookie(COOKIE_USER_TOKEN);
@@ -352,6 +364,7 @@ var httpRequest = function ( url, method, headers, body , callback  ){
         headers:headers,
         data: body,
         success: function(data, state, res){
+            console.log(data);
             if ( data == null )
                 data = '';
 //            console.log( '[[[[[[[[SUCCESS!!]]]]]]]   url: ' + url + ',   state:' + state + ',   data : ' + JSON.stringify( data ) );
