@@ -27,9 +27,9 @@ html {height:94%;}
 body#hellomain{
     /*margin : 56px 0 0 0 ;*/
     font-family : OpenSans-Bold, nanum-gothic, OpenSans-SemiBold, OpenSans-Regular;
-    background-image : url("http://upload.wikimedia.org/wikipedia/commons/6/67/Buskers_on_Royal_Street,_New_Orleans,_2004.jpg");
-    backgroun-repeat : no-repeat;
-    /*background-color : #eaeeed;*/
+    /*background-image : url("http://upload.wikimedia.org/wikipedia/commons/6/67/Buskers_on_Royal_Street,_New_Orleans,_2004.jpg");*/
+    /*backgroun-repeat : no-repeat;*/
+    background-color : #36465D;
     padding-bottom : 56px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -39,6 +39,7 @@ body#hellomain{
     user-select: none;
     height: 100%;
     overflow: auto;
+    
 }
 .common-button {
     width : 130px;
@@ -56,9 +57,12 @@ body#hellomain{
 .container .seetreet-main-title{
     margin-top : 250px;
     text-align: center;
+    color : #ffffff;
 }
+ 
 .container .seetreet-main-title .seetreet-title{
     font-size : 50px;
+    
 }
 .container .seetreet-main-title form{
     margin-top : 20px;
@@ -131,6 +135,9 @@ body#hellomain{
 }
 .seetreet-navbar .seetreet-bottombar-container .bottom-element button{
     margin-top : 20px;
+}
+.seetreet-navbar .seetreet-bottombar-container .seetreetcount{
+	color : #ffffff;
 }
 .seetreet-navbar .seetreet-bottombar-container .info-number{
     font-weight : bold;
