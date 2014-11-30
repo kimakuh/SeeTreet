@@ -374,12 +374,12 @@ var postApplication = function(contentId , callback) {
 // httpRequest
 var httpRequest = function ( url, method, headers, body , callback  ){
     var fullUrl =  SERVER_ADDRESS + url;
-//    console.log('=======request start!==========');
-//    console.log('method=' + method );
-//    console.log('url='+ fullUrl );
-//    console.log('header=' + JSON.stringify(headers) );
-//    console.log('body=' + JSON.stringify(body));
-//    console.log('========request end!=========');
+    console.log('=======request start!==========');
+    console.log('method=' + method );
+    console.log('url='+ fullUrl );
+    console.log('header=' + JSON.stringify(headers) );
+    console.log('body=' + JSON.stringify(body));
+    console.log('========request end!=========');
     $.ajax({
         crossDomain : true,
         dataType : "json",

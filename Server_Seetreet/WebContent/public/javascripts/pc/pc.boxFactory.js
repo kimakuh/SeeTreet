@@ -72,12 +72,21 @@ box_Factory.content.createContent = function(contentinfo, groupnumber, size){
     var content_name = contentinfo.contentTitle;
     // 아티스트명 또는 공공주최명
     var performed_name = '';
+    
+    
+    var confirmed_artistId = contentinfo.isConfirmed_artistId;
+    var artistArray = contentinfo.artists;
+    var artistdata = {};
+    for(var i in artistArray){
+    	if(confirmed_artistId == artistArray[i]._id){
+    		artistdata = artistArray[i];
+    	}
+    }
     if(content_type == 'public'){
         performed_name = contentinfo.provider.StoreTitle;
     }
     else{
-        performed_name = contentinfo.artists[0].name;
-//        performed_name = '임지욱';
+        performed_name = artistdata.name;
     }
     // 공연 시간 만들기 시간 단위면 XX월 XX일 XX:XXPM ~ XX:XXPM
     // 일이 넘어가게 되면 XX월 XX일 ~ XX월 XX일
@@ -99,7 +108,6 @@ box_Factory.content.createContent = function(contentinfo, groupnumber, size){
     else{
         content_description = contentinfo.artists[0].description;
     }
-
 
     // 공연 이미지
 

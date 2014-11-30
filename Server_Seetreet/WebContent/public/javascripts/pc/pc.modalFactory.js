@@ -6,7 +6,8 @@ var modal_Factory = {};
 
 modal_Factory.contentModal = {};
 modal_Factory.contentModal.loadModal = function(contentinfo, callback){
-    modal_Factory.reply.clearReplyList();
+    console.log(contentinfo);
+	modal_Factory.reply.clearReplyList();
     modal_Factory.reply.clearReply();
     var content_type = '';
     if(contentinfo["contentType"] == 'PUBLIC'){
@@ -16,8 +17,19 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
         content_type = 'private';
     }
     var content_name = contentinfo.contentTitle;
+    
+    var artist_name = '';
     if(content_type == 'private'){
-        var artist_name = contentinfo.artists[0].name;
+    	var isConfirmed_artistId = contentinfo.isConfirmed_artistId;
+    	var artistArray = contentinfo.artists;
+    	var artistdata = {};
+    	for(var i in artistArray){
+    		if(isConfirmed_artistId == artistArray[i]._id){
+    			artistdata = artistArray[i];
+    			break;
+    		}
+    	}
+        artist_name = artistdata.name;
     }
     var content_time = modal_Factory.content_convert_time(contentinfo.contentStartTime, contentinfo.contentEndTime);
 
