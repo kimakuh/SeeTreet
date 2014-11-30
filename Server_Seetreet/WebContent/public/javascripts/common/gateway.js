@@ -240,11 +240,22 @@ var getUserContent = function(latitude, longitude, page, callback){
 };
 
 // 장소 제공자의 히스토리를 가져옵니다.
-var getProviderHistory = function(page, callback){
+var getProviderHistory = function(providerId, callback){
     var token = getCookie(COOKIE_USER_TOKEN);
     var userId = getCookie(COOKIE_USER_ID);
-    var url_param = '?page=' + page;
-    var url = '/user/content/provider/history/' + userId + url_param;
+    var url_param = '?_id=' + providerId + '&isProvider=true';
+    var url = '/user/content/user/history/' + userId + url_param;
+    var method = 'GET';
+    var headers = {
+        "_id" : token
+    };
+    httpRequest(url, method, headers, null, callback);
+};
+var getArtistHistory = function(artistId, callback){
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var url_param = '?_id=' + artistId + '&isProvider=false';
+    var url = '/user/content/user/history/' + userId + url_param;
     var method = 'GET';
     var headers = {
         "_id" : token
@@ -261,7 +272,7 @@ var getlocatestr2coord = function(locatestr, callback){
     var body = {
         address : locatestr
     };
-    var url = '/admin/map/addtocoord';
+    var url = '/admin/map/addtocoord/';
     var method = 'POST';
     httpRequest(url, method, headers, body, callback);
 };
@@ -274,7 +285,7 @@ var getcoord2locatestr = function(lat, long, callback){
         longitude : long,
         latitude : lat
     };
-    var url = '/admin/map/coordtoadd';
+    var url = '/admin/map/coordtoadd/';
     var method = 'POST';
     httpRequest(url, method, headers, body, callback);
 };

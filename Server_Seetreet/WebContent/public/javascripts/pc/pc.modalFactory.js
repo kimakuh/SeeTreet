@@ -258,7 +258,8 @@ modal_Factory.providerModal.getProviderInfo = function(providerId){
     getProvider(providerId, function(data, status, res){
         if(status == 'success'){
             var providerdata = data.data;
-            console.log(providerdata);
+            var provider_id = data.data._id;
+            modal_Factory.providerModal.loadHistory(provider_id);
             modal_Factory.providerModal.loadModal(providerdata);
             $('#provider-popup').modal('show');
         }
@@ -267,6 +268,64 @@ modal_Factory.providerModal.getProviderInfo = function(providerId){
         }
     });
 };
+modal_Factory.providerModal.loadHistory = function(providerId){
+    // history line 지우기
+    $('#provider-popup').find('.history-list *').remove();
+    var historydata2submit = {
+        historyTime : '',
+        storeTitle : '',
+        artistname : '',
+        Genre : '',
+        likecount : '',
+        artistImage : ''
+    };
+    getProviderHistory(providerId, function(data,status,res){
+        if(status == 'success'){
+            for(var i in data.data){
+                var historydata = data.data[i];
+                var confirmed_artistId = historydata.isConfirmed_artistId;
+                var confirmed_artist_data = {};
+                for(var i in historydata.artists){
+                    console.log(historydata.artists[i]._id.$oid);
+                    if(confirmed_artistId == historydata.artists[i]._id.$oid){
+                        confirmed_artist_data = historydata.artists[i];
+                        break;
+                    }
+                }
+                historydata2submit.historyTime = modal_Factory.content_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                historydata2submit.likecount = historydata.likecount;
+                historydata2submit.storeTitle = historydata.provider.StoreTitle;
+                historydata2submit.artistname = confirmed_artist_data.name;
+                historydata2submit.Genre = historydata.contentGenre.category + ' / ' + historydata.contentGenre.detailGenre;
+                historydata2submit.artistImage = confirmed_artist_data.artistImages[0];
+                modal_Factory.providerModal.prependHistory(historydata2submit);
+            }
+        }
+        else{
+            alert('히스토리 정보를 가져오는데 실패했습니다.');
+        }
+    });
+};
+
+modal_Factory.providerModal.prependHistory = function(corehistorydata){
+    console.log(corehistorydata);
+    $('#provider-popup').find('.history-list').prepend(
+        '<div class = "history-content" data-index = "abc">'
+            + '<img class = "history-content-image" src = "' + corehistorydata.artistImage + '"/>'
+            + '<div class = "history-info">'
+                + '<div class = "history-date">' + corehistorydata.historyTime  +'</div>'
+                + '<div class = "history-place">' + corehistorydata.storeTitle + '</div>'
+                + '<div class = "history-artist">'  + corehistorydata.artistname + '</div>'
+                + '<div class = "history-category">' + corehistorydata.Genre + '</div>'
+            + '</div>'
+            + '<div class = "history-like-count">'
+            + '<img src = "./images/seetreetimg/btn-heart-grey-red.png"/>'
+            + '<span>' + corehistorydata.likecount + '</span>'
+            + '</div>'
+        + '</div>'
+    );
+};
+
 modal_Factory.providerModal.loadModal = function(providerInfo){
     // provider Image Array
     var providerImageSlider = $('#provider-popup').find('.provider-image-slider');
@@ -299,19 +358,19 @@ modal_Factory.providerModal.loadModal = function(providerInfo){
 
 };
 
-modal_Factory.providerModal.loadHistory = function(){
 
-};
 
 
 modal_Factory.artistModal = {};
 modal_Factory.artistModal.artistInfo = {};
-modal_Factory.artistModal.getArtistInfo = function(artistId, callback){
+modal_Factory.artistModal.getArtistInfo = function(artistId){
     // 5475b49be7760be08ac72c00
     getArtist(artistId, function(data, status, res){
         if(status == 'success'){
-            modal_Factory.artistModal.artistInfo = data.data;
-            callback();
+//            modal_Factory.artistModal.artistInfo = data.data;
+            modal_Factory.artistModal.loadModal(data.data);
+            var artistId = data.data._id;
+            modal_Factory.artistModal.loadHistory(artistId);
         }
         else{
             alert('실패');
@@ -319,8 +378,8 @@ modal_Factory.artistModal.getArtistInfo = function(artistId, callback){
     });
 };
 
-modal_Factory.artistModal.loadModal = function(){
-    var artistInfo = modal_Factory.artistModal.artistInfo;
+modal_Factory.artistModal.loadModal = function(artistInfo){
+//    var artistInfo = modal_Factory.artistModal.artistInfo;
     // 사진
     var artistImages = artistInfo.artistImages;
     var targetSlider = $('#artist-popup').find('.artist-image-slider');
@@ -347,13 +406,82 @@ modal_Factory.artistModal.loadModal = function(){
     // 유튜브 url 변경
 //    var youtube_url = 'http://www.youtube.com/watch?v=LoF_fk363oE';
     var youtube_url = artistInfo.videoUrl;
-    console.log(youtube_url);
     var url_length = youtube_url.length;
     var youtube_id = youtube_url.substr(url_length-11, 11);
     player.loadVideoById(youtube_id);
     $('#content-popup').modal('hide');
     $('#artist-popup').modal('show');
 };
+modal_Factory.artistModal.loadHistory = function(artistId){
+    // history line 지우기
+    $('#artist-popup').find('.history-list *').remove();
+    var historydata2submit = {
+        historyTime : '',
+        storeTitle : '',
+        artistname : '',
+        Genre : '',
+        likecount : '',
+        artistImage : ''
+    };
+    getArtistHistory(artistId, function(data,status,res){
+        if(status == 'success'){
+            for(var i in data.data){
+                var historydata = data.data[i];
+                var confirmed_artistId = historydata.isConfirmed_artistId;
+                var confirmed_artist_data = {};
+                for(var i in historydata.artists){
+                    console.log(historydata.artists[i]._id.$oid);
+                    if(confirmed_artistId == historydata.artists[i]._id.$oid){
+                        confirmed_artist_data = historydata.artists[i];
+                        break;
+                    }
+                }
+                historydata2submit.historyTime = modal_Factory.content_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                historydata2submit.likecount = historydata.likecount;
+                historydata2submit.storeTitle = historydata.provider.StoreTitle;
+                historydata2submit.artistname = confirmed_artist_data.name;
+                historydata2submit.Genre = historydata.contentGenre.category + ' / ' + historydata.contentGenre.detailGenre;
+                if(historydata.provider.providerImage.length != 0){
+                    historydata2submit.artistImage = historydata.provider.providerImage[0];
+                }
+                else{
+                    historydata2submit.artistImage = './images/seetreetimg/default_image.jpg';
+                }
+                modal_Factory.artistModal.prependHistory(historydata2submit);
+            }
+        }
+        else{
+            alert('히스토리 정보를 가져오는데 실패했습니다.');
+        }
+    });
+};
+
+modal_Factory.artistModal.prependHistory = function(corehistorydata){
+    console.log(corehistorydata);
+    $('#artist-popup').find('.history-list').prepend(
+            '<div class = "history-content" data-index = "abc">'
+            + '<img class = "history-content-image" src = "' + corehistorydata.artistImage + '"/>'
+            + '<div class = "history-info">'
+            + '<div class = "history-date">' + corehistorydata.historyTime  +'</div>'
+            + '<div class = "history-place">' + corehistorydata.storeTitle + '</div>'
+            + '<div class = "history-artist">'  + corehistorydata.artistname + '</div>'
+            + '<div class = "history-category">' + corehistorydata.Genre + '</div>'
+            + '</div>'
+            + '<div class = "history-like-count">'
+            + '<img src = "./images/seetreetimg/btn-heart-grey-red.png"/>'
+            + '<span>' + corehistorydata.likecount + '</span>'
+            + '</div>'
+            + '</div>'
+    );
+};
+
+
+
+
+
+
+
+
 
 var unnessary_description = ["<br>", "<br />", "&lt;", "&gt;", "&nbsp;"];
 modal_Factory.omit_unnecessary_description = function(description){
@@ -365,6 +493,7 @@ modal_Factory.omit_unnecessary_description = function(description){
     }
     return result_description;
 };
+
 // 모달에 띄우는 시간을 변형시키는 함수
 modal_Factory.reply_convert_time = function(time){
     var showtime;

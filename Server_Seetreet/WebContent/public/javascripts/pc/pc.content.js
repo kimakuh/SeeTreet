@@ -80,6 +80,10 @@ $(document).ready(function(){
         var targetId = $(e.currentTarget).attr('identification-value');
         modal_Factory.providerModal.getProviderInfo(targetId);
     });
+    // 여기 까지 구현
+
+
+
     $('#content-popup').find('.artist-info-area').click(function(e){
         var targetId = $(e.currentTarget).attr('identification-value');
         modal_Factory.artistModal.getArtistInfo(targetId, function(){
