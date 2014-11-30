@@ -319,13 +319,12 @@ var HSlider = function() {
 				});
 				
 				$(mId + " .viewport .artist.box[data-id='" + data._id + "'] .option.btn_permit").click(function() {
+					var str = mId + " .viewport .artist.box[data-id='" + data._id + "']";
+					var str1 = mId + " .viewport .confirm.artist.box";
 					var contentId = $(mId).attr("data-id");
 					permitArtist(data._id, contentId, function(data, state) {
-						console.log(data);
-						if(state == "success") {
-							$(mId + " .viewport .confirm.artist.box").removeClass("confirm");
-							$(mId + " .viewport .artist.box[data-id='" + data._id + "']").addClass("confirm");
-						}						
+						$(str1).removeClass("confirm");
+						$(str).addClass("confirm");					
 					});
 				});
 				

@@ -789,7 +789,7 @@ public class MongoDAO {
 		DBCursor iter = col.find(new BasicDBObject()
 								.append(ContentBean.KEY_TYPE, "SEETREET")
 								.append(ContentBean.KEY_ARTIST+"."+ArtistBean.KEY_ID , new ObjectId(artistId))
-								).skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
+								);
 		
 		JSONArray res = new JSONArray();
 		try {
