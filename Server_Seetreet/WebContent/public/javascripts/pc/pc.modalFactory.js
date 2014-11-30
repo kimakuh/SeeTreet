@@ -192,13 +192,23 @@ modal_Factory.replyImage = '';
 modal_Factory.reply.replyImage ='';
 modal_Factory.reply.submitReply = function(contentId){
     var replytext = $('#content-comment').val();
-    var replyImage = modal_Factory.reply.replyImage;
-    // http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg
-//    var replyImage = 'http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg';
+    var replyImage;
+    if(modal_Factory.reply.replyImage == ''){
+        replyImage = null;
+    }
+    else{
+        replyImage = modal_Factory.reply.replyImage;
+    }
+    console.log(replyImage);
     postwriteReply(contentId, replytext, replyImage, function(data, status, res){
         if(status == 'success'){
             // Prepend Reply 함수 호출
-            modal_Factory.reply.prependReplyData(data.data);
+//            modal_Factory.reply.prependReplyData(data.data);
+            modal_Factory.reply.clearReplyList();
+            modal_Factory.reply.clearReply();
+            modal_Factory.getReply(contentId, function(){
+                modal_Factory.getReplyCount(contentId);
+            });
         }
     });
 };
@@ -215,7 +225,6 @@ modal_Factory.reply.clearReplyList = function(){
     modal_Factory.reply.current_replypage = 1;
 };
 modal_Factory.reply.prependReplyData = function(replydata){
-
     var replyImage;
     if(replydata.replyimage == ''){
         replyImage = "./images/seetreetimg/default_image.jpg";
@@ -499,7 +508,6 @@ modal_Factory.reply_convert_time = function(time){
     var showtime;
     showtime = "20" + time.substr(0,2) + "/" + time.substr(2,2) + "/" + time.substr(4,2) + "/ "
         + time.substr(6,2) + ":" + time.substr(8,2) + ":" + time.substr(10,2) + " " + time.substr(12,2);
-
     return showtime;
 };
 

@@ -2,6 +2,7 @@
  * Created by Limjiuk on 2014-10-28.
  */
 var SERVER_ADDRESS = 'http://211.189.127.63:8080/Server_Seetreet';
+//var SERVER_ADDRESS = 'http://211.189.127.61:8090/TEST';
 
 // create user account
 var postUserCreate = function(userId, user, callback){
@@ -354,17 +355,31 @@ var getArtistRecommends = function(page , callback) {
 	httpRequest(url, method, headers, body, callback);
 }
 
+var postApplication = function(contentId , callback) {
+	var token = getCookie(COOKIE_USER_TOKEN);
+	var userId = getCookie(COOKIE_USER_ID);
+	var url = '/user/content/artist/apply/' + userId;
+	var method = 'POST';
+	var headers = {
+		"_id" : token
+	};
+	var body = {
+		"_id" : contentId	
+	};
+	httpRequest(url, method, headers, body, callback);
+};
+
 
 
 // httpRequest
 var httpRequest = function ( url, method, headers, body , callback  ){
     var fullUrl =  SERVER_ADDRESS + url;
-    console.log('=======request start!==========');
-    console.log('method=' + method );
-    console.log('url='+ fullUrl );
-    console.log('header=' + JSON.stringify(headers) );
-    console.log('body=' + JSON.stringify(body));
-    console.log('========request end!=========');
+//    console.log('=======request start!==========');
+//    console.log('method=' + method );
+//    console.log('url='+ fullUrl );
+//    console.log('header=' + JSON.stringify(headers) );
+//    console.log('body=' + JSON.stringify(body));
+//    console.log('========request end!=========');
     $.ajax({
         crossDomain : true,
         dataType : "json",
@@ -384,7 +399,7 @@ var httpRequest = function ( url, method, headers, body , callback  ){
         error: function(data, state){
             if ( data == null )
                 data = '';
-            console.log( '[[[[[[[[[ERROR!!]]]]]]]]]   url: ' + url + ', s  tate:' + state + ',   data : ' + JSON.stringify( data ) );
+//            console.log( '[[[[[[[[[ERROR!!]]]]]]]]]   url: ' + url + ', s  tate:' + state + ',   data : ' + JSON.stringify( data ) );
             callback( data, state , null );
         }
     });

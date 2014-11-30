@@ -595,9 +595,10 @@ public class MongoDAO {
 												new BasicDBObject("type", "Point")
 													.append("coordinates", position))))
 							.append(ContentBean.KEY_FINISHIED, false)
-							.append(ContentBean.KEY_C_ARTIST, ""))
+							.append(ContentBean.KEY_C_ARTIST, null))
 						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
 
+		System.out.println(iter.size());
 		try {
 			while(iter.hasNext()) {
 				DBObject item = iter.next();
