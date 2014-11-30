@@ -76,10 +76,8 @@ public class MongoDAO {
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);		
 	
-		
-		//if(col.findOne(new BasicDBObject(UserBean.KEY_EMAIL, bean.getEmail())) != null)
-			//return false;
-		
+		BasicDBObject genre = new BasicDBObject().append(GenreBean.KEY_CATEGORY, bean.getContentGenre().getCategory())
+												 .append(GenreBean.KEY_DETAIL, bean.getContentGenre().getDetailGenre());
 
 		if(bean != null && provObj != null){
 			BasicDBList artists = new BasicDBList();
@@ -87,7 +85,7 @@ public class MongoDAO {
 			BasicDBObject newContent 
 			= new BasicDBObject()
 					.append(ContentPublicApiBean.KEY_CONTENTTITLE, bean.getContentName())
-					.append(ContentPublicApiBean.KEY_GENRE, bean.getContentGenre())
+					.append(ContentPublicApiBean.KEY_GENRE, genre)
 					.append(ContentPublicApiBean.KEY_TYPE, bean.getContentType())
 					.append(ContentPublicApiBean.KEY_EVENTSTARTDATE, bean.getEventStartDate())
 					.append(ContentPublicApiBean.KEY_EVENTENDDATE , bean.getEventEndDate())
@@ -119,7 +117,7 @@ public class MongoDAO {
 	
 		//같은게 있으면 false
 		if(col.findOne(new BasicDBObject(ContentPublicApiBean.KEY_CONTENTID, String.valueOf(contentId))) != null){
-			System.out.println("FALSE");
+			System.out.println("Exist ContentId : "+contentId);
 			return false;	
 		}
 			
@@ -165,23 +163,32 @@ public class MongoDAO {
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_PROVIDER);	
 		try{
 			BasicDBObject provider = new BasicDBObject();
+			
 			BasicDBList list = new BasicDBList();
 			BasicDBObject local = new BasicDBObject();
 			if(obj.getLocation() != null){
-				list.add(LocationBean.LAT, obj.getLocation().getLatitude());
-				list.add(LocationBean.LONG, obj.getLocation().getLongitude());
-				local.append("type", "Point")
-					.append("coordinates", list);
+				list.add(obj.getLocation().getLatitude());
+				list.add(obj.getLocation().getLongitude());
+				local.append(LocationBean.KEY_NAME, obj.getAddress())
+					 .append(LocationBean.KEY_DESCRIPT, obj.getStoreTitle())
+					 .append("type", "Point")
+					 .append(LocationBean.KEY_COORDINATE, list);
 			}
 			else{
 				local = null;
 			}
 			
-			
+			BasicDBList genres = new BasicDBList();
+			for(GenreBean genre : obj.getFavoriteGenre()) {
+				genres.add(new BasicDBObject()
+							   .append(GenreBean.KEY_CATEGORY, genre.getCategory())
+							   .append(GenreBean.KEY_DETAIL, genre.getDetailGenre())
+						  );
+			}
 			
 			provider.append("providerImage", obj.getImages())
 					.append("contentType", obj.getContentType())
-					.append("favoriteGenre", obj.getFavoriteGenre()[0].getDetailGenre())
+					.append("favoriteGenre", genres)
 					.append("location", local)
 					.append("StoreTitle", obj.getStoreTitle())
 					.append("StoreType", obj.getStoreType())
@@ -192,6 +199,7 @@ public class MongoDAO {
 			return provider;
 		}catch(Exception e){
 			e.printStackTrace();
+			System.out.println("Error Title : " + obj.getStoreTitle());
 			//System.out.println(obj.getStoreTitle());
 			//System.out.println(obj.getProviderId());
 			return null;
@@ -819,6 +827,39 @@ public class MongoDAO {
 			e.printStackTrace();
 		}
 		
+		return res;
+	}
+	
+	public static JSONArray searchContentHistory(String _id, boolean check){
+		JSONArray res = new JSONArray();
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		try{
+			if(check == true){
+				
+				DBCursor iter = 
+						col.find(new BasicDBObject("provider._id", new ObjectId(_id)));
+				System.out.println("PROVIDER ITER COUNT : " + iter.count());
+				while(iter.hasNext()){
+					DBObject obj = iter.next();
+					String resObj = obj.toString();
+					res.put(new JSONObject(resObj));
+				}
+			}
+			else if(check == false){
+				DBCursor iter = 
+						col.find(new BasicDBObject(ContentBean.KEY_C_ARTIST, _id));
+				System.out.println("ARTIST ITER COUNT : " + iter.count());
+				while(iter.hasNext()){
+					DBObject obj = iter.next();
+					res.put(new JSONObject(obj.toString()));
+				}
+			}	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		System.out.println(res.toString());
 		return res;
 	}
 }
