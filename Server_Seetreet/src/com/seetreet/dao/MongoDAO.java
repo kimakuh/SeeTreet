@@ -863,4 +863,50 @@ public class MongoDAO {
 		System.out.println(res.toString());
 		return res;
 	}
+
+	
+	public static boolean enrollConfirmedArtist(String _artistId, String _contentId) throws Exception{
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		ObjectId contentId = new ObjectId(_contentId);
+		
+		
+		BasicDBObject findQuery = new BasicDBObject()
+									  .append(ContentBean.KEY_ID, contentId);
+		BasicDBObject updateQuery 
+		= new BasicDBObject()
+			  .append("$set", new BasicDBObject()
+								   .append(ContentBean.KEY_C_ARTIST, _artistId)
+					 );
+		contentCol.update(findQuery, updateQuery);
+		
+		BasicDBObject updateTimeQuery 
+		= new BasicDBObject()
+			  .append("$set", new BasicDBObject()
+								   .append(ContentBean.KEY_C_TIME, C.currentDate())
+					 );
+		contentCol.update(findQuery, updateTimeQuery);
+		return true;
+	}
+	
+	public static boolean confirmContentGenreByArtist(String _contentId, String genre) throws Exception{
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		ObjectId contentId = new ObjectId(_contentId);
+		
+		JSONObject genreObj = new JSONObject(genre);
+		BasicDBObject genreDBObject = new BasicDBObject().append(GenreBean.KEY_CATEGORY, genreObj.get(GenreBean.KEY_CATEGORY))
+														 .append(GenreBean.KEY_DETAIL, genreObj.get(GenreBean.KEY_DETAIL));
+		
+		BasicDBObject findQuery = new BasicDBObject()
+									  .append(ContentBean.KEY_ID, contentId);
+		BasicDBObject updateQuery 
+		= new BasicDBObject()
+			  .append("$set", new BasicDBObject()
+								   .append(ContentBean.KEY_GENRE, genreDBObject)
+					 );
+		contentCol.update(findQuery, updateQuery);
+		return true;
+	}
+
 }

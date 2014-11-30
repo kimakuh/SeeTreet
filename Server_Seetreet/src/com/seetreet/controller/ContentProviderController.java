@@ -38,7 +38,7 @@ public class ContentProviderController extends HttpServlet {
     public final String UPDATE = "/user/content/provider/update/";
     public final String DELETE = "/user/content/provider/delete/";
     public final String HISTORY = "/user/content/provider/history/";
-
+    public final String PERMIT = "/user/content/provider/permit/";
     
     /**
      * @see HttpServlet#HttpServlet()
@@ -95,6 +95,9 @@ public class ContentProviderController extends HttpServlet {
 				}else {
 					out.write(ResBodyFactory.create(isDeleted, ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, null));
 				}	
+			}else if(cmd.contains(PERMIT)) {
+				System.out.println(">> permit Post");
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, confirmArtistByProvider(req, res)));
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -144,6 +147,18 @@ public class ContentProviderController extends HttpServlet {
 			e.printStackTrace();
 		}
 		return arr;
+	}
+	
+	private boolean confirmArtistByProvider(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		String confirmedArtistId 	= (String)req.getParameter("artistId");
+		String contentId 			= (String)req.getParameter("contentId");
+		boolean state = false;
+		try {
+			state = MongoDAO.enrollConfirmedArtist(confirmedArtistId, contentId);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return state;
 	}
 
 }
