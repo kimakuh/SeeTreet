@@ -8,6 +8,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.seetreet.bean.content.ContentBean;
+import com.seetreet.http.HttpCall;
 
 public class ProviderBean implements BeanJson{
 	private String providerId;
@@ -117,7 +118,7 @@ public class ProviderBean implements BeanJson{
 			}
 			if(obj.has("cat3")){
 				this.StoreType = ContentPublicApiBean.getCategoryTocontentGenre(obj.getString("cat3"));
-				GenreBean[] genre = {new GenreBean("public", ContentPublicApiBean.getCategoryTocontentGenre(obj.getString("cat3")))};
+				GenreBean[] genre = {new GenreBean("공공", ContentPublicApiBean.getCategoryTocontentGenre(obj.getString("cat3")))};
 				this.favoriteGenre = genre;
 			}
 			if(obj.has("modifiedtime")){
@@ -125,7 +126,9 @@ public class ProviderBean implements BeanJson{
 			}	
 			if(obj.has("addr1")){
 				this.address = obj.getString("addr1");
-			}	
+			}
+			
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

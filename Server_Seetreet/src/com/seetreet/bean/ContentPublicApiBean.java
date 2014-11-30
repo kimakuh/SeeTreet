@@ -5,7 +5,7 @@ import org.json.JSONObject;
 public class ContentPublicApiBean {
 	private String contentId;
 	private String contentTitle;
-	private String contentGenre;
+	private GenreBean contentGenre;
 	private String contentType;
 	private String contentStartTime;
 	private String contentEndTime;
@@ -40,7 +40,7 @@ public class ContentPublicApiBean {
 			// reply 처리 안함.
 			this.contentId = String.valueOf(_existObject.getLong("contentid"));
 			this.contentTitle = _existObject.getString("title");
-			this.contentGenre = _prov.getFavoriteGenre()[0].getDetailGenre();
+			this.contentGenre = _prov.getFavoriteGenre()[0];
 			this.contentType = "PUBLIC";
 			this.contentStartTime = String.valueOf(_existObject.getLong("eventstartdate") + "0000AM");
 			this.contentEndTime = String.valueOf(_existObject.getLong("eventenddate") + "0000AM");
@@ -119,7 +119,7 @@ public class ContentPublicApiBean {
 	public ArtistBean[] getArtist(){
 		return artist;
 	}
-	public String getContentGenre(){
+	public GenreBean getContentGenre(){
 		return contentGenre;
 	}
 	
