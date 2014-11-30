@@ -61,9 +61,11 @@ Listtab.show = function(STATE) {
 				if(state == "success") {
 					var artistId = data.data.user_artist._id;	
 					var page = mArtistApplication.getPage();
+					mArtistApplication.initHSlide(artistId);
 					getArtistApplications(artistId, page, function(res , state2) {
+						print(artistId + " , " + page);
 						if(state2 == "success") {
-							console.log(res);
+							
 						}else {
 							
 						}
@@ -76,7 +78,10 @@ Listtab.show = function(STATE) {
 		
 		getArtistRecommends(mArtistApplication.getRecPage() , function(data ,state) {
 			if(state == "success") {
-				console.log(data);
+				var arr = data.data;
+				for(var i in arr) {
+					mArtistApplication.addRecProvider($(".listtab.artist") , arr[i]);
+				}				
 			}else {
 				
 			}
@@ -129,7 +134,6 @@ var ProviderView = function() {
 				isConfirmed : null
 			}));
 			
-			print(content.provider.providerImage[0]);
 			$(id+ " .identity.box").css({"background-image" : 'url('+content.provider.providerImage[0]+')'});
 			
 			if(hlist.isInited() == false) hlist.create($(id) , contentId , true);
@@ -164,8 +168,8 @@ var ArtistApplication = function() {
 					+ '</div>';
 			target.prepend(str);
 			
-			hlist = new HSlider();			
-
+			hlist = new HSlider();		
+			
 			setTimeout(function() {
 				$(".a_content_container").removeAttr("data-state");
 				if (callback != undefined)
@@ -173,7 +177,7 @@ var ArtistApplication = function() {
 			}, 300);
 		} , 
 		addProvider : function( pData , isPassed) {
-			
+			hlist.setData(pData , isPassed);
 		} , 
 		getPage : function() {
 			return mPage;
@@ -187,8 +191,36 @@ var ArtistApplication = function() {
 		setRecPage : function(page) {
 			mRecPage = page;
 		},
-		addRecProvider : function ( pData ) {
+		addRecProvider : function ( target,  pData ) {
+			target.append(BoxFactory.create(BoxFactory.KEY_CREATE_PROVIDER , {
+				title : pData.provider.StoreTitle,
+				desc : pData.provider.description,
+				id : pData._id,
+				confirm : false
+			}));
 			
+			$(".listtab.artist .provider.box[data-id='"+pData._id+"']").css("background-image" , "url('"+pData.provider.providerImage[0]+"')");
+			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .option.btn_apply").unbind("click");
+			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .option.btn_apply").bind("click" , function() {								
+				mArtistApplication.applyContent(pData._id);
+			});
+			setTimeout(function(){
+				$(".listtab.artist .provider.init.box[data-id='"+pData._id+"']").removeClass("init");
+			} ,200);			
+		},
+		applyContent : function(id) {			
+			var title = $(".listtab.artist .provider.box[data-id='"+id+"'] .title").text();
+			var url = $(".listtab.artist .provider.box[data-id='"+id+"']").css("background-image");
+			$(".listtab.artist .provider.box[data-id='"+id+"']").remove();
+			mArtistApplication.addProvider({
+				_id : id,
+				name : title ,
+				description : "" ,
+				providerImage : url
+			} , false);
+		} , 
+		initHSlide : function(artistId) {
+			hlist.create($(".content_container.a_content_container") , artistId , false);
 		}
 	};
 }
@@ -224,12 +256,11 @@ BoxFactory.create = function(key , info) {
 						'<div class="box_hover"><h3><strong>'+title+'</strong>은 누구일까요?<br/> 클릭해봐요!</h3></div>'+
 					'</div>';	
 	break;
-	case BoxFactory.KEY_CREATE_PROVIDER :	
-		var image = info.image;
-		box_str += '<div class="identity box" data-id="'+id+'">'+
+	case BoxFactory.KEY_CREATE_PROVIDER :		
+		box_str += '<div class="provider box init" data-id="'+id+'">'+
 						'<div class="image" ></div>'+
 						'<div class="title">'+title+'</div>'+
-						'<div class="option descript">'+desc+'</div>'+
+						'<div class="option btn_apply '+(isConfirmed?'passed':'')+'">지원하기</div>'+
 						'<div class="box_hover"></div>'+
 					'</div>';
 	break;
@@ -260,10 +291,9 @@ var HSlider = function() {
 				$(mId + " .viewport").append(artist);
 				$(mId + " .viewport .artist.box[data-id='" + data._id + "']")
 						.css("background-image","url('" + data.artistImages[0] + "')");
-				mMap[data._id] = mId + " .viewport .artist.box[data-id='"+ data._id + "']";
-
+				mMap[data._id] = mId + " .viewport .artist.box[data-id='"+ data._id + "']";				
 				$(mId).removeClass("empty");
-			} else {
+			} else {				
 				var provider = BoxFactory.create(BoxFactory.KEY_CREATE_PROVIDER, {
 					title : data.name,
 					desc : data.description , 
@@ -272,9 +302,9 @@ var HSlider = function() {
 				});
 				$(mId + " .viewport").append(provider);
 				$(mId + " .viewport .provider.box[data-id='" + data._id + "']")
-						.css("background-image","url('" + data.providerImage[0] + "')");
+						.css("background-image",data.providerImage);
 				mMap[data._id] = mId + " .viewport .provider.box[data-id='"+ data._id + "']";
-
+				console.log(mId);				
 				$(mId).removeClass("empty");
 			}	
 			
@@ -295,7 +325,14 @@ var HSlider = function() {
 						'</div>'
 				);
 			} else {
-				
+				target.append(
+						'<div class="listview empty" data-id="'+id+'">'+
+							'<h2 class="p_empty_text">어서 지원해봐!</h2>'+
+							'<div class="prev_btn list_btn"></div>'+
+							'<div class="next_btn list_btn"></div>'+
+							'<div class="viewport"></div>'+
+						'</div>'
+				);
 			}
 			
 			
