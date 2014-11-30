@@ -268,7 +268,7 @@ modal_Factory.providerModal.getProviderInfo = function(providerId){
         if(status == 'success'){
             var providerdata = data.data;
             var provider_id = data.data._id;
-            modal_Factory.providerModal.loadHistory(provider_id);
+            modal_Factory.providerModal.loadHistory(providerId);
             modal_Factory.providerModal.loadModal(providerdata);
             $('#provider-popup').modal('show');
         }
