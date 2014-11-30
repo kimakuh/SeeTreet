@@ -99,10 +99,12 @@ public class ContentArtistController extends HttpServlet {
 			double l_long 	= Double.parseDouble(req.getParameter(LocationBean.KEY_LONGITUDE));
 			double l_lat 	= Double.parseDouble(req.getParameter(LocationBean.KEY_LATITUDE));
 			int page 	= Integer.parseInt(req.getParameter("page"));
+			String artistId = req.getParameter(ArtistBean.KEY_ID);
 			arr = MongoDAO.searchContentByLocationFromArtist(
 					l_lat, 
 					l_long, 
-					page);
+					page ,
+					artistId);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,11 +131,12 @@ public class ContentArtistController extends HttpServlet {
 			System.out.println(page);
 			
 			JSONArray coord =location.getJSONArray(LocationBean.KEY_COORDINATE);
-			
+			String artistId = artist.getString(ArtistBean.KEY_ID);
 			arr = MongoDAO.searchContentByLocationFromArtist(
 					coord.getDouble(LocationBean.LAT), 
 					coord.getDouble(LocationBean.LONG), 
-					page);			
+					page , 
+					artistId);			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -86,9 +86,7 @@ $(document).ready(function(){
 
     $('#content-popup').find('.artist-info-area').click(function(e){
         var targetId = $(e.currentTarget).attr('identification-value');
-        modal_Factory.artistModal.getArtistInfo(targetId, function(){
-            modal_Factory.artistModal.loadModal();
-        });
+        modal_Factory.artistModal.getArtistInfo(targetId);
     });
 
     $('#search-location').click(function(){

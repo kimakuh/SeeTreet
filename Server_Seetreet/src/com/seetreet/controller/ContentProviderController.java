@@ -122,7 +122,7 @@ public class ContentProviderController extends HttpServlet {
 		int page  = Integer.parseInt(req.getParameter("page"));
 		JSONArray arr = null;
 		try {
-			 arr = MongoDAO.searchContentByProvider(providerId , page , true);
+			 arr = MongoDAO.searchContentByProvider(providerId , page , false);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -139,7 +139,7 @@ public class ContentProviderController extends HttpServlet {
 		int page  = Integer.parseInt(req.getParameter("page"));
 		JSONArray arr = null;
 		try {
-			 arr = MongoDAO.searchContentByProvider(providerId , page , false);
+			 arr = MongoDAO.searchContentByProvider(providerId , page , true);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

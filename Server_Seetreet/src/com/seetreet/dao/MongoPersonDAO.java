@@ -71,7 +71,7 @@ public class MongoPersonDAO {
 	public static JSONObject getArtist(String artistId) {
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_ARTIST);
-	
+		System.out.println(artistId);
 		DBObject artist = col.findOne(new BasicDBObject().append(ArtistBean.KEY_ID, new ObjectId(artistId)));
 		System.out.println(artist.toString());
 		JSONObject result = null;

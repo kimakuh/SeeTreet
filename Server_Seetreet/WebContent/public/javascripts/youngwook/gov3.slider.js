@@ -28,6 +28,7 @@ Listtab.show = function(STATE) {
 		
 		getProviderContents( 1 , function(data , state , res) {			
 			contents = data.data;
+			console.log(data);
 			for(var i in contents) {
 				$(slide.getId()).unbind("click");
 				
@@ -65,7 +66,14 @@ Listtab.show = function(STATE) {
 					getArtistApplications(artistId, page, function(res , state2) {
 						print(artistId + " , " + page);
 						if(state2 == "success") {
-							
+							var arr = res.data;
+							for(var i in arr) {
+								if(arr[i].isConfirmed_artistId == artistId) {
+									mArtistApplication.addProvider(arr[i], true);
+								} else {
+									mArtistApplication.addProvider(arr[i], false);
+								}
+							}							
 						}else {
 							
 						}
@@ -169,11 +177,9 @@ var ArtistApplication = function() {
 			target.prepend(str);
 			
 			hlist = new HSlider();		
-			
+			callback();
 			setTimeout(function() {
-				$(".a_content_container").removeAttr("data-state");
-				if (callback != undefined)
-					callback();
+				$(".a_content_container").removeAttr("data-state");					
 			}, 300);
 		} , 
 		addProvider : function( pData , isPassed) {
@@ -193,7 +199,7 @@ var ArtistApplication = function() {
 		},
 		addRecProvider : function ( target,  pData ) {
 			target.append(BoxFactory.create(BoxFactory.KEY_CREATE_PROVIDER , {
-				title : pData.provider.StoreTitle,
+				title : pData.contentTitle,
 				desc : pData.provider.description,
 				id : pData._id,
 				confirm : false
@@ -202,26 +208,33 @@ var ArtistApplication = function() {
 			$(".listtab.artist .provider.box[data-id='"+pData._id+"']").css("background-image" , "url('"+pData.provider.providerImage[0]+"')");
 			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .option.btn_apply").unbind("click");
 			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .option.btn_apply").bind("click" , function() {								
-				mArtistApplication.applyContent(pData._id);
+				mArtistApplication.applyContent(pData._id , pData.provider._id);
 			});
-			setTimeout(function(){
-				$(".listtab.artist .provider.init.box[data-id='"+pData._id+"']").removeClass("init");
-			} ,200);			
+			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .box_hover").unbind("click");
+			$(".listtab.artist .provider.box[data-id='"+pData._id+"'] .box_hover").bind("click" , function() {
+				modal_Factory.providerModal.getProviderInfo(pData.provider._id);
+			});
 		},
-		applyContent : function(id) {			
-			var title = $(".listtab.artist .provider.box[data-id='"+id+"'] .title").text();
-			var url = $(".listtab.artist .provider.box[data-id='"+id+"']").css("background-image");
-			$(".listtab.artist .provider.box[data-id='"+id+"']").remove();
-			mArtistApplication.addProvider({
-				_id : id,
-				name : title ,
-				description : "" ,
-				providerImage : url
-			} , false);
+		applyContent : function(id , providerid) {		
+			postApplication(id, function(result , state) {				
+				if(state == "success") {
+					var title = $(".listtab.artist .provider.box[data-id='"+id+"'] .title").text();
+					var url = $(".listtab.artist .provider.box[data-id='"+id+"']").css("background-image");
+					$(".listtab.artist .provider.box[data-id='"+id+"']").remove();
+					mArtistApplication.addProvider({
+						_id : id,
+						contentTitle : title ,
+						description : "" ,
+						provider : {_id : providerid} ,
+						providerImage : url,
+						isFinished : false
+					} , false);
+				}
+			});			
 		} , 
 		initHSlide : function(artistId) {
 			hlist.create($(".content_container.a_content_container") , artistId , false);
-		}
+		} 
 	};
 }
 
@@ -230,7 +243,7 @@ var BoxFactory = {};
 BoxFactory.KEY_CREATE_CONTENT = 0;
 BoxFactory.KEY_CREATE_ARTIST = 1;
 BoxFactory.KEY_CREATE_PROVIDER = 2;
-
+BoxFactory.KEY_CREATE_HISTORY = 3;
 BoxFactory.create = function(key , info) {
 	var box_str = "";
 	var title = info.title;
@@ -257,10 +270,19 @@ BoxFactory.create = function(key , info) {
 					'</div>';	
 	break;
 	case BoxFactory.KEY_CREATE_PROVIDER :		
-		box_str += '<div class="provider box init" data-id="'+id+'">'+
+		box_str += '<div class="provider box" data-id="'+id+'">'+
 						'<div class="image" ></div>'+
 						'<div class="title">'+title+'</div>'+
 						'<div class="option btn_apply '+(isConfirmed?'passed':'')+'">지원하기</div>'+
+						'<div class="box_hover"></div>'+
+					'</div>';
+	break;
+	case BoxFactory.KEY_CREATE_HISTORY :
+		var isFinished = info.isFinished;
+		box_str += '<div class="provider box" data-id="'+id+'">'+
+						'<div class="image" ></div>'+
+						'<div class="title">'+title+'</div>'+
+						'<div class="option btn_apply '+(isConfirmed?'passed':'')+'">'+(isFinished?'종료된 공연' : isConfirmed? '승인됨' : '대기중')+'</div>'+
 						'<div class="box_hover"></div>'+
 					'</div>';
 	break;
@@ -291,20 +313,53 @@ var HSlider = function() {
 				$(mId + " .viewport").append(artist);
 				$(mId + " .viewport .artist.box[data-id='" + data._id + "']")
 						.css("background-image","url('" + data.artistImages[0] + "')");
+				$(mId + " .viewport .artist.box[data-id='" + data._id + "'] .box_hover").click(function() {
+					console.log(data._id);
+					modal_Factory.artistModal.getArtistInfo(data._id);
+				});
+				
+				$(mId + " .viewport .artist.box[data-id='" + data._id + "'] .option.btn_permit").click(function() {
+					var contentId = $(mId).attr("data-id");
+					permitArtist(data._id, contentId, function(data, state) {
+						console.log(data);
+						if(state == "success") {
+							$(mId + " .viewport .confirm.artist.box").removeClass("confirm");
+							$(mId + " .viewport .artist.box[data-id='" + data._id + "']").addClass("confirm");
+						}						
+					});
+				});
+				
 				mMap[data._id] = mId + " .viewport .artist.box[data-id='"+ data._id + "']";				
 				$(mId).removeClass("empty");
-			} else {				
-				var provider = BoxFactory.create(BoxFactory.KEY_CREATE_PROVIDER, {
-					title : data.name,
-					desc : data.description , 
+			} else {	
+				var provider = BoxFactory.create(BoxFactory.KEY_CREATE_HISTORY, {
+					title : data.contentTitle,
+					desc : data.contentStartTime + " ~ " +data.contentEndTime , 
 					id : data._id,
-					confirm : isConfirmed
+					confirm : isConfirmed,
+					isFinished : data.isFinished
 				});
+				
 				$(mId + " .viewport").append(provider);
 				$(mId + " .viewport .provider.box[data-id='" + data._id + "']")
-						.css("background-image",data.providerImage);
+						.css("background-image",(data.providerImage||"url('"+data.provider.providerImage[0]+"')"));
+		
 				mMap[data._id] = mId + " .viewport .provider.box[data-id='"+ data._id + "']";
-				console.log(mId);				
+				$(mId + " .viewport .provider.box[data-id='" + data._id + "'] .box_hover").click(function() {
+					modal_Factory.providerModal.getProviderInfo(data.provider._id);
+				});	
+				
+				if(isConfirmed) {
+					$(mId + " .viewport .provider.box[data-id='" + data._id + "'] .option.passed").click(function() {
+						postConfirmFromArtist({
+							category : $("select.main-category option:selected").text(),
+							detailGenre : $("select.sub-category option:selected").text() 
+						}, data._id, function(res , state) {
+							$(mId + " .viewport .provider.box[data-id='" + data._id + "'] .option").text("완료");
+						});
+					});	
+				}
+				
 				$(mId).removeClass("empty");
 			}	
 			

@@ -62,10 +62,6 @@
 	transition: box-shadow .5s ease-out, height .5s ease-out;
 }
 
-.box.init {
-	height : 10px;
-}
-
 .box:hover {	
 	z-index: 10;
 	box-shadow: none;
@@ -215,6 +211,11 @@
 .content_container.p_content_container {
 	border-top: 1px solid #aaa;
 	overflow: hidden;
+}
+
+.content_container.a_content_container {
+	margin-top : -25px;
+	overflow : hidden;
 }
 
 .content_container.p_content_container[data-id='empty'][data-state='init'] {	

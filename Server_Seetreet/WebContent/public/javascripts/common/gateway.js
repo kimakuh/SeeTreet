@@ -369,6 +369,36 @@ var postApplication = function(contentId , callback) {
 	httpRequest(url, method, headers, body, callback);
 };
 
+var permitArtist = function(artistId , contentId , callback) {
+	var token = getCookie(COOKIE_USER_TOKEN);
+	var userId = getCookie(COOKIE_USER_ID);
+	var url = '/user/content/provider/permit/' + userId;
+	var method = 'POST';
+	var headers = {
+		"_id" : token
+	};
+	var body = {
+		"artistId" : artistId,
+		"contentId" : contentId
+	};
+	httpRequest(url, method, headers, body, callback);
+};
+
+var postConfirmFromArtist = function(genre , contentId , callback) {
+	var token = getCookie(COOKIE_USER_TOKEN);
+	var userId = getCookie(COOKIE_USER_ID);
+	var url = '/user/content/artist/confirm/' + userId;
+	var method = 'POST';
+	var headers = {
+		"_id" : token
+	};
+	var body = {
+		"contentId" : contentId,
+		"genre" : genre
+	};
+	httpRequest(url, method, headers, body, callback);
+};
+
 
 
 // httpRequest
@@ -390,7 +420,6 @@ var httpRequest = function ( url, method, headers, body , callback  ){
         headers:headers,
         data: body,
         success: function(data, state, res){
-            console.log(data);
             if ( data == null )
                 data = '';
 //            console.log( '[[[[[[[[SUCCESS!!]]]]]]]   url: ' + url + ',   state:' + state + ',   data : ' + JSON.stringify( data ) );
