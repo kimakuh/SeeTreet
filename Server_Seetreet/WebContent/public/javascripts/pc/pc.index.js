@@ -16,6 +16,9 @@ $(document).ready(function(){
         var targetclass = $(e.currentTarget).parent().parent().attr('class');
         $('.'+targetclass).find('.carousel').carousel('next');
     });
+    $('.modal').on('show.bs.modal', function(){
+        $('.carousel').carousel(0);
+    });
     // 여기까지
 
     $('.topbar-user').click(function(e){
@@ -48,6 +51,7 @@ $(document).ready(function(){
             }
         });
     });
+
 });
 
 var tabmanager = {};
@@ -72,3 +76,21 @@ tabmanager.topbarmanager = function(select_menu){
         }
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

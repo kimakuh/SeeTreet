@@ -62,21 +62,28 @@ $(document).ready(function(){
         contentshow(client.latitude, client.longitude);
     });
     $(document).on("click", ".content", function(e){
-            var target_dataindex = $(e.currentTarget).attr('data-index');
-            var contentinfo = box_Factory.content.get_a_content(target_dataindex);
-            modal_Factory.contentModal.loadModal(contentinfo, function(){
-                modal_Factory.checkLike(target_dataindex, function(){
-                   modal_Factory.getReply(target_dataindex);
-                });
+        var target_dataindex = $(e.currentTarget).attr('data-index');
+        var contentinfo = box_Factory.content.get_a_content(target_dataindex);
+        modal_Factory.contentModal.loadModal(contentinfo, function(){
+            modal_Factory.checkLike(target_dataindex, function(){
+               modal_Factory.getReply(target_dataindex, function(){
+                   modal_Factory.getReplyCount(target_dataindex);
+               });
             });
+        });
     });
     $('.content-append-area').find('img').click(function(){
         contentshow(client.latitude, client.longitude);
     });
     $('#content-popup').find('.provider-info-area').click(function(e){
+        console.log('click!!!');
         var targetId = $(e.currentTarget).attr('identification-value');
         modal_Factory.providerModal.getProviderInfo(targetId);
     });
+    // 여기 까지 구현
+
+
+
     $('#content-popup').find('.artist-info-area').click(function(e){
         var targetId = $(e.currentTarget).attr('identification-value');
         modal_Factory.artistModal.getArtistInfo(targetId, function(){
@@ -128,6 +135,9 @@ $(document).ready(function(){
             likeflag = true;
             modal_Factory.submitLike(contentId, likeflag);
         }
+    });
+    $('#artist-popup').on('hide.bs.modal', function(){
+        stopVideo();
     });
 });
 

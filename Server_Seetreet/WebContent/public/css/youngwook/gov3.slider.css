@@ -191,15 +191,15 @@
 }
 
 .box.artist.confirm .option.btn_permit{
-	background-image = url("../../images/seetreetimg/btn-no-grey.png");	
+	background-image : url("../../images/seetreetimg/btn-no-grey.png");
 }
 
 .box.artist.confirm .option.btn_permit:hover{
-	background-image = url("../../images/seetreetimg/btn-no-yel.png");	
+	background-image : url("../../images/seetreetimg/btn-no-yel.png");
 }
 
 .box.artist.confirm .option.btn_permit:active{
-	background-image = url("../../images/seetreetimg/btn-no-red.png");	
+	background-image : url("../../images/seetreetimg/btn-no-red.png");
 }
 
 .box.artist:hover {	
@@ -284,4 +284,26 @@
 .content_container .listview.empty .viewport {
 	display : none;
 }
+
+#provider_create_content .modal-body{
+    display : table;
+}
+#provider_create_content .modal-body .input-group{
+    margin : 10px 0px 20px 0px;
+    width : 565px;
+}
+.common-button {
+    width : 130px;
+    height : 40px;
+    color : #fff;
+    border :none;
+    border-radius: 5px;
+}
+.common-button.save-button {
+    background-color: #34495e;
+}
+.common-button.cancel-button {
+    background-color: #a9b9c5;
+}
+
 

@@ -2,9 +2,10 @@ package com.seetreet.scheduler;
 
 import com.seetreet.dao.MongoDAO;
 import com.seetreet.dao.MongoDB;
-
+import com.seetreet.dao.MongoRecDAO;
 import com.seetreet.http.HttpCall;
 import com.seetreet.http.HttpControl;
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -27,6 +28,7 @@ public class TaskJob implements Job {
 			}
 		}
 		*/
+		MongoRecDAO.updateRecommandValue();
 		System.out.println("TaskJob end : ");
 		System.out.println("-------------------------------------\n");
 		

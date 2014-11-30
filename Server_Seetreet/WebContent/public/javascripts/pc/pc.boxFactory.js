@@ -121,6 +121,9 @@ box_Factory.content.createContent = function(contentinfo, groupnumber, size){
                     + '</div>'
                 + '</div>'
         );
+//        $('.content[data-index = "' +  content_id + '"]').hide('slow', function(){
+//            $('.content[data-index = "' +  content_id + '"]').show('blind');
+//        });
     }
     else{
         $('.contentlist[group-list = "' +  groupnumber + '"]').find('.smallsize-area').append(
@@ -145,9 +148,6 @@ box_Factory.content.get_a_content = function(dataindex){
         }
     }
 };
-
-
-
 
 box_Factory.provider = {};
 box_Factory.provider.create_provider_group = function(){
@@ -197,7 +197,6 @@ box_Factory.artist.create_busking_box = function(){
 // 14 11 13 08 00 PM
 // 01 23 45 67 89 1011
 box_Factory.convert_time = function(starttime, endtime){
-
     var startday = starttime.substr(6,2);
     var endday = endtime.substr(6,2);
 

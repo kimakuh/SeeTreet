@@ -7,6 +7,7 @@ var modal_Factory = {};
 modal_Factory.contentModal = {};
 modal_Factory.contentModal.loadModal = function(contentinfo, callback){
     modal_Factory.reply.clearReplyList();
+    modal_Factory.reply.clearReply();
     var content_type = '';
     if(contentinfo["contentType"] == 'PUBLIC'){
         content_type = 'public';
@@ -159,8 +160,7 @@ modal_Factory.submitLike = function(contentId, likeflag){
 
 modal_Factory.reply = {};
 modal_Factory.reply.current_replypage = 1;
-modal_Factory.getReply = function(contentId){
-    $('#content-popup').modal('show');
+modal_Factory.getReply = function(contentId, callback){
     getcontentReply(contentId, modal_Factory.reply.current_replypage, function(data, status, res){
         if(status == 'success'){
             if(data.state == true){
@@ -170,9 +170,22 @@ modal_Factory.getReply = function(contentId){
                 }
                 modal_Factory.reply.current_replypage++;
             }
+            callback();
         }
     });
 };
+
+modal_Factory.getReplyCount = function(contentId){
+    getcontentReplyCount(contentId, function(data, status, res){
+        if(status == 'success'){
+            var replyCount = data.data;
+            $('#content-popup').find('.content-detail-commentcount').find('.commentcount').text(replyCount);
+
+            $('#content-popup').modal('show');
+        }
+    });
+};
+
 // 댓글 이미지 등록 때 담아 놓을 변수
 modal_Factory.replyImage = '';
 
@@ -184,9 +197,8 @@ modal_Factory.reply.submitReply = function(contentId){
 //    var replyImage = 'http://cphoto.asiae.co.kr/listimglink/6/2013111815071932564_1.jpg';
     postwriteReply(contentId, replytext, replyImage, function(data, status, res){
         if(status == 'success'){
-            modal_Factory.reply.clearReply();
-            modal_Factory.reply.prependReplyData(data.data);
             // Prepend Reply 함수 호출
+            modal_Factory.reply.prependReplyData(data.data);
         }
     });
 };
@@ -203,6 +215,7 @@ modal_Factory.reply.clearReplyList = function(){
     modal_Factory.reply.current_replypage = 1;
 };
 modal_Factory.reply.prependReplyData = function(replydata){
+
     var replyImage;
     if(replydata.replyimage == ''){
         replyImage = "./images/seetreetimg/default_image.jpg";
@@ -210,11 +223,12 @@ modal_Factory.reply.prependReplyData = function(replydata){
     else{
         replyImage = replydata.replyimage;
     }
+    var reply_time = modal_Factory.reply_convert_time(replydata.modTime);
     $('#content-popup').find('.content-comment-area').prepend(
         '<div class = "comment-object" comment-id = "' + replydata.contentId + '">'
             + '<img  class = "user-upload-image" src = ' + replyImage + '>'
             + '<div class = "comment-user-name">' + replydata.userEmail + '</div>'
-            + '<div class = "comment-upload-time">2014/09/07 17:53:00</div>'
+            + '<div class = "comment-upload-time">' + reply_time + '</div>'
             + '<div class = "comment-user-content">' + replydata.replytext +'</div>'
     );
 };
@@ -225,12 +239,14 @@ modal_Factory.hideAndshowinfo = function(contentType){
         $('#content-popup').find('.content-detail-area').find('.content-detail-artistdescription').hide();
         // 아티스트 이름 (hide)
         $('#content-popup').find('.artist-info-area').hide();
+        $('#content-popup').find('.content-detail-area').find('.content-detail-artisttitle').hide();
     }
     else{
         // 아티스트 소개 (show)
         $('#content-popup').find('.content-detail-area').find('.content-detail-artistdescription').show();
         // 아티스트 이름 (show)
         $('#content-popup').find('.artist-info-area').show();
+        $('#content-popup').find('.content-detail-area').find('.content-detail-artisttitle').show();
     }
 };
 
@@ -242,6 +258,8 @@ modal_Factory.providerModal.getProviderInfo = function(providerId){
     getProvider(providerId, function(data, status, res){
         if(status == 'success'){
             var providerdata = data.data;
+            var provider_id = data.data._id;
+            modal_Factory.providerModal.loadHistory(provider_id);
             modal_Factory.providerModal.loadModal(providerdata);
             $('#provider-popup').modal('show');
         }
@@ -250,9 +268,68 @@ modal_Factory.providerModal.getProviderInfo = function(providerId){
         }
     });
 };
+modal_Factory.providerModal.loadHistory = function(providerId){
+    // history line 지우기
+    $('#provider-popup').find('.history-list *').remove();
+    var historydata2submit = {
+        historyTime : '',
+        storeTitle : '',
+        artistname : '',
+        Genre : '',
+        likecount : '',
+        artistImage : ''
+    };
+    getProviderHistory(providerId, function(data,status,res){
+        if(status == 'success'){
+            for(var i in data.data){
+                var historydata = data.data[i];
+                var confirmed_artistId = historydata.isConfirmed_artistId;
+                var confirmed_artist_data = {};
+                for(var i in historydata.artists){
+                    console.log(historydata.artists[i]._id.$oid);
+                    if(confirmed_artistId == historydata.artists[i]._id.$oid){
+                        confirmed_artist_data = historydata.artists[i];
+                        break;
+                    }
+                }
+                historydata2submit.historyTime = modal_Factory.content_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                historydata2submit.likecount = historydata.likecount;
+                historydata2submit.storeTitle = historydata.provider.StoreTitle;
+                historydata2submit.artistname = confirmed_artist_data.name;
+                historydata2submit.Genre = historydata.contentGenre.category + ' / ' + historydata.contentGenre.detailGenre;
+                historydata2submit.artistImage = confirmed_artist_data.artistImages[0];
+                modal_Factory.providerModal.prependHistory(historydata2submit);
+            }
+        }
+        else{
+            alert('히스토리 정보를 가져오는데 실패했습니다.');
+        }
+    });
+};
+
+modal_Factory.providerModal.prependHistory = function(corehistorydata){
+    console.log(corehistorydata);
+    $('#provider-popup').find('.history-list').prepend(
+        '<div class = "history-content" data-index = "abc">'
+            + '<img class = "history-content-image" src = "' + corehistorydata.artistImage + '"/>'
+            + '<div class = "history-info">'
+                + '<div class = "history-date">' + corehistorydata.historyTime  +'</div>'
+                + '<div class = "history-place">' + corehistorydata.storeTitle + '</div>'
+                + '<div class = "history-artist">'  + corehistorydata.artistname + '</div>'
+                + '<div class = "history-category">' + corehistorydata.Genre + '</div>'
+            + '</div>'
+            + '<div class = "history-like-count">'
+            + '<img src = "./images/seetreetimg/btn-heart-grey-red.png"/>'
+            + '<span>' + corehistorydata.likecount + '</span>'
+            + '</div>'
+        + '</div>'
+    );
+};
+
 modal_Factory.providerModal.loadModal = function(providerInfo){
     // provider Image Array
     var providerImageSlider = $('#provider-popup').find('.provider-image-slider');
+
     modal_Factory.addImageslider(providerInfo.providerImage, providerImageSlider);
     // StoreTitle
     var Modal_storeTitle = providerInfo.StoreTitle;
@@ -261,19 +338,19 @@ modal_Factory.providerModal.loadModal = function(providerInfo){
     var Modal_storeType = providerInfo.StoreType;
     $('#provider-popup').find('.detail-area').find('.detail-location').find('.detail-body').text(Modal_storeType);
     // location address
-    var Modal_storeAddress = providerInfo.StoreAddress;
+    var Modal_storeAddress = providerInfo.location.name;
     $('#provider-popup').find('.detail-area').find('.detail-category').find('.detail-body').text(Modal_storeAddress);
     // store description
     var Modal_description = modal_Factory.omit_unnecessary_description(providerInfo.description);
     $('#provider-popup').find('.detail-area').find('.detail-description').find('.detail-body').text(Modal_description);
     // favorite Genre
-    var Modal_favoriteGenre = providerInfo.favoriteGenre.category + ' / ' + providerInfo.favoriteGenre.detailGenre;
+    var Modal_favoriteGenre = providerInfo.favoriteGenre[0].category + ' / ' + providerInfo.favoriteGenre[0].detailGenre;
     $('#provider-popup').find('.detail-area').find('.detail-want-category').find('.detail-body').text(Modal_favoriteGenre);
     // location geography
     var mapinfo = {
         latitude : providerInfo.location.coordinates[1],
         longitude : providerInfo.location.coordinates[0],
-        contentType : "public",
+        contentType : "private",
         target : provider_oMap,
         storeName : Modal_storeTitle
     };
@@ -281,19 +358,19 @@ modal_Factory.providerModal.loadModal = function(providerInfo){
 
 };
 
-modal_Factory.providerModal.loadHistory = function(){
 
-};
 
 
 modal_Factory.artistModal = {};
 modal_Factory.artistModal.artistInfo = {};
-modal_Factory.artistModal.getArtistInfo = function(artistId, callback){
+modal_Factory.artistModal.getArtistInfo = function(artistId){
     // 5475b49be7760be08ac72c00
     getArtist(artistId, function(data, status, res){
         if(status == 'success'){
-            modal_Factory.artistModal.artistInfo = data.data;
-            callback();
+//            modal_Factory.artistModal.artistInfo = data.data;
+            modal_Factory.artistModal.loadModal(data.data);
+            var artistId = data.data._id;
+            modal_Factory.artistModal.loadHistory(artistId);
         }
         else{
             alert('실패');
@@ -301,8 +378,8 @@ modal_Factory.artistModal.getArtistInfo = function(artistId, callback){
     });
 };
 
-modal_Factory.artistModal.loadModal = function(){
-    var artistInfo = modal_Factory.artistModal.artistInfo;
+modal_Factory.artistModal.loadModal = function(artistInfo){
+//    var artistInfo = modal_Factory.artistModal.artistInfo;
     // 사진
     var artistImages = artistInfo.artistImages;
     var targetSlider = $('#artist-popup').find('.artist-image-slider');
@@ -316,31 +393,96 @@ modal_Factory.artistModal.loadModal = function(){
     var show_genre = artist_genre + ' / ' + artist_detailgenre;
     $('#artist-popup').find('.detail-category').find('.detail-body').text(show_genre);
     // 선호지역
-//    var favorite_location = artistInfo.favoriteLocation[0].name;
-    var favorite_location = "서울시 마포구 서교동";
+    if(artistInfo.favoriteLocation.length == 0){
+        var favorite_location = "없음";
+    }
+    else{
+        var favorite_location = artistInfo.favoriteLocation[0].name;
+    }
     $('#artist-popup').find('.detail-location').find('.detail-body').text(favorite_location);
     // 소개
     var artist_description = artistInfo.description;
     $('#artist-popup').find('.detail-description').find('.detail-body').text(artist_description);
+    // 유튜브 url 변경
+//    var youtube_url = 'http://www.youtube.com/watch?v=LoF_fk363oE';
+    var youtube_url = artistInfo.videoUrl;
+    var url_length = youtube_url.length;
+    var youtube_id = youtube_url.substr(url_length-11, 11);
+    player.loadVideoById(youtube_id);
     $('#content-popup').modal('hide');
     $('#artist-popup').modal('show');
 };
-
-var youtubeplayer;
-modal_Factory.artistModal.onYouTubeIframeAPIReady = function(){
-    youtubeplayer = new YT.Player('player', {
-        events:{
-            'onStateChange' : onPlayerStateChange
+modal_Factory.artistModal.loadHistory = function(artistId){
+    // history line 지우기
+    $('#artist-popup').find('.history-list *').remove();
+    var historydata2submit = {
+        historyTime : '',
+        storeTitle : '',
+        artistname : '',
+        Genre : '',
+        likecount : '',
+        artistImage : ''
+    };
+    getArtistHistory(artistId, function(data,status,res){
+        if(status == 'success'){
+            for(var i in data.data){
+                var historydata = data.data[i];
+                var confirmed_artistId = historydata.isConfirmed_artistId;
+                var confirmed_artist_data = {};
+                for(var i in historydata.artists){
+                    console.log(historydata.artists[i]._id.$oid);
+                    if(confirmed_artistId == historydata.artists[i]._id.$oid){
+                        confirmed_artist_data = historydata.artists[i];
+                        break;
+                    }
+                }
+                historydata2submit.historyTime = modal_Factory.content_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                historydata2submit.likecount = historydata.likecount;
+                historydata2submit.storeTitle = historydata.provider.StoreTitle;
+                historydata2submit.artistname = confirmed_artist_data.name;
+                historydata2submit.Genre = historydata.contentGenre.category + ' / ' + historydata.contentGenre.detailGenre;
+                if(historydata.provider.providerImage.length != 0){
+                    historydata2submit.artistImage = historydata.provider.providerImage[0];
+                }
+                else{
+                    historydata2submit.artistImage = './images/seetreetimg/default_image.jpg';
+                }
+                modal_Factory.artistModal.prependHistory(historydata2submit);
+            }
+        }
+        else{
+            alert('히스토리 정보를 가져오는데 실패했습니다.');
         }
     });
 };
-function onPlayerStateChange(){
 
-}
+modal_Factory.artistModal.prependHistory = function(corehistorydata){
+    console.log(corehistorydata);
+    $('#artist-popup').find('.history-list').prepend(
+            '<div class = "history-content" data-index = "abc">'
+            + '<img class = "history-content-image" src = "' + corehistorydata.artistImage + '"/>'
+            + '<div class = "history-info">'
+            + '<div class = "history-date">' + corehistorydata.historyTime  +'</div>'
+            + '<div class = "history-place">' + corehistorydata.storeTitle + '</div>'
+            + '<div class = "history-artist">'  + corehistorydata.artistname + '</div>'
+            + '<div class = "history-category">' + corehistorydata.Genre + '</div>'
+            + '</div>'
+            + '<div class = "history-like-count">'
+            + '<img src = "./images/seetreetimg/btn-heart-grey-red.png"/>'
+            + '<span>' + corehistorydata.likecount + '</span>'
+            + '</div>'
+            + '</div>'
+    );
+};
 
-var teststring = '2014년 3월부터 매월 셋째 주 목요일마다&lt; 성남아트센터 &lt;마티네 콘서트&gt;가 진행된다. 보&lt;다 다양한 주제를 통해 폭넓은 클래식 레퍼토리를다루고자 한다. 최수열 지취자가 이끄는 여러 단체의 유려한 연주와 4년 연속 &lt;마티네콘서트&gt;의진행' +
-    '을 맡은 팝페라 가수 카이의 따뜻한 해설로 클래식에 대한 궁금증을 ' +
-    '해결해 나간다.<br>'
+
+
+
+
+
+
+
+
 var unnessary_description = ["<br>", "<br />", "&lt;", "&gt;", "&nbsp;"];
 modal_Factory.omit_unnecessary_description = function(description){
     var result_description = description;
@@ -351,7 +493,16 @@ modal_Factory.omit_unnecessary_description = function(description){
     }
     return result_description;
 };
+
 // 모달에 띄우는 시간을 변형시키는 함수
+modal_Factory.reply_convert_time = function(time){
+    var showtime;
+    showtime = "20" + time.substr(0,2) + "/" + time.substr(2,2) + "/" + time.substr(4,2) + "/ "
+        + time.substr(6,2) + ":" + time.substr(8,2) + ":" + time.substr(10,2) + " " + time.substr(12,2);
+
+    return showtime;
+};
+
 modal_Factory.content_convert_time = function(starttime, endtime){
     var showday = '';
     showday = starttime.substr(0,4) + "년 " + starttime.substr(4,2) + "월 " + starttime.substr(6,2) + "일 "

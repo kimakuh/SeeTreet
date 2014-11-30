@@ -554,8 +554,9 @@
                         </textarea>
                     </div>
                     <div class = "modify-button">
-                        <button class = "btn btn-lg btn-primary" id = "modify-provider-confirmed">
-                            modify
+                        <!--<button class = "btn btn-lg btn-primary" id = "modify-provider-confirmed">-->
+                        <button class = "common-button save-button btn-lg" id = "modify-provider-confirmed">
+                            수정
                         </button>
                     </div>
                 </div>
@@ -706,7 +707,7 @@
             </div>
             <div class = "modifytab artist">
                 <div class = "tabtitle">
-                    Artist
+                    아티스트
                 </div>
                 <div class = "tabdetailinfo">
                     <div class = "pic-youtube">
@@ -765,7 +766,7 @@
                         </textarea>
                     </div>
                     <div class = "modify-button">
-                        <button class = "btn btn-lg btn-primary" id = "modify-artist-confirmed">
+                        <button class = "common-button save-button btn-lg" id = "modify-artist-confirmed">
                             수정
                         </button>
                     </div>
@@ -850,7 +851,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade bs-example-modal-sm" id="content-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -951,7 +951,7 @@
                     </div>
                         <div class = "content-detail-commentcount">
                             <img src = "./images/seetreetimg/btn-reply-white.png"/>
-                            <span class = "likeCount">100</span>
+                            <span class = "commentcount">100</span>
                         </div>
                         <div class = "content-detail-likecount" data-index = "111111">
                             <img style = "display : none;" class = "likeActivate" src = "./images/seetreetimg/btn-heart-grey-red.png"/>
@@ -1158,7 +1158,7 @@
                                     activateTrafficMap : false,
                                     activateBicycleMap : false,
                                     minMaxLevel : [ 1, 14 ],
-                                    size : new nhn.api.map.Size(410, 223)
+                                    size : new nhn.api.map.Size(410, 240)
                                 });
                             </script>
                         </div>
@@ -1178,72 +1178,85 @@
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/seetreetimg/like.png"/>
+                                <img src = "./images/seetreetimg/btn-heart-grey-red.png"/>
                                 <span>85</span>
                             </div>
                         </div>
                         <div class = "history-content" data-index = "abc">
                             <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
                             <div class = "history-info">
-                                <div class = "history-date">2014/08/10 20:00PM</div>
+                                <div class = "history-date">2014/09/12 18:00PM</div>
                                 <div class = "history-place">AlohaTable</div>
-                                <div class = "history-artist">게토밤즈</div>
+                                <div class = "history-artist">3호선 버터플라이</div>
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/seetreetimg/like.png"/>
+                                <img src = "./images/seetreetimg/btn-heart-grey-red.png"/>
                                 <span>85</span>
                             </div>
                         </div>
                         <div class = "history-content" data-index = "abc">
-                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
                             <div class = "history-info">
-                                <div class = "history-date">2014/09/27 19:00PM</div>
-                                <div class = "history-place">ZOO COFFEE</div>
-                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-date">2014/09/12 18:00PM</div>
+                                <div class = "history-place">AlohaTable</div>
+                                <div class = "history-artist">3호선 버터플라이</div>
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/seetreetimg/like.png"/>
+                                <img src = "./images/seetreetimg/btn-heart-grey-red.png"/>
                                 <span>85</span>
                             </div>
                         </div>
                         <div class = "history-content" data-index = "abc">
-                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
                             <div class = "history-info">
-                                <div class = "history-date">2014/09/27 19:00PM</div>
-                                <div class = "history-place">ZOO COFFEE</div>
-                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-date">2014/09/12 18:00PM</div>
+                                <div class = "history-place">AlohaTable</div>
+                                <div class = "history-artist">3호선 버터플라이</div>
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/seetreetimg/like.png"/>
+                                <img src = "./images/seetreetimg/btn-heart-grey-red.png"/>
                                 <span>85</span>
                             </div>
                         </div>
                         <div class = "history-content" data-index = "abc">
-                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
                             <div class = "history-info">
-                                <div class = "history-date">2014/09/27 19:00PM</div>
-                                <div class = "history-place">ZOO COFFEE</div>
-                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-date">2014/09/12 18:00PM</div>
+                                <div class = "history-place">AlohaTable</div>
+                                <div class = "history-artist">3호선 버터플라이</div>
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/seetreetimg/like.png"/>
+                                <img src = "./images/seetreetimg/btn-heart-grey-red.png"/>
                                 <span>85</span>
                             </div>
                         </div>
                         <div class = "history-content" data-index = "abc">
-                            <img class = "history-content-image" src = "./images/seetreetimg/default_image.jpg"/>
+                            <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
                             <div class = "history-info">
-                                <div class = "history-date">2014/09/27 19:00PM</div>
-                                <div class = "history-place">ZOO COFFEE</div>
-                                <div class = "history-artist">장기하와 얼굴들</div>
+                                <div class = "history-date">2014/09/12 18:00PM</div>
+                                <div class = "history-place">AlohaTable</div>
+                                <div class = "history-artist">3호선 버터플라이</div>
                                 <div class = "history-category">모던락</div>
                             </div>
                             <div class = "history-like-count">
-                                <img src = "./images/seetreetimg/like.png"/>
+                                <img src = "./images/seetreetimg/btn-heart-grey-red.png"/>
+                                <span>85</span>
+                            </div>
+                        </div>
+                        <div class = "history-content" data-index = "abc">
+                            <img class = "history-content-image" src = "./images/seetreetimg/5mile2.jpg"/>
+                            <div class = "history-info">
+                                <div class = "history-date">2014/09/12 18:00PM</div>
+                                <div class = "history-place">AlohaTable</div>
+                                <div class = "history-artist">3호선 버터플라이</div>
+                                <div class = "history-category">모던락</div>
+                            </div>
+                            <div class = "history-like-count">
+                                <img src = "./images/seetreetimg/btn-heart-grey-red.png"/>
                                 <span>85</span>
                             </div>
                         </div>
@@ -1305,91 +1318,50 @@
                         <div class = "detail-want-category">
                             <span class = "detail-title">선호공연장소 : </span><span class = "detail-body">라이브카페</span>
                         </div>
-                        <div class = "detail-history-count">
-                            <img src = "./images/seetreetimg/number.png"/>
-                            <span>85</span>
-                        </div>
-                        <div class = "detail-like-count">
-                            <img src = "./images/seetreetimg/like.png"/>
-                            <span>85</span>
-                        </div>
+                        <!--<div class = "detail-history-count">-->
+                            <!--<img src = "./images/seetreetimg/number.png"/>-->
+                            <!--<span>85</span>-->
+                        <!--</div>-->
+                        <!--<div class = "detail-like-count">-->
+                            <!--<img src = "./images/seetreetimg/like.png"/>-->
+                            <!--<span>85</span>-->
+                        <!--</div>-->
                         <div class="additional-info youtube">
                             <div class="youtube-frame">
-                                <embed width="410" height="223" id = "artist-youtube-player" src="//www.youtube.com/embed/z_pqa36VHz8?enablejsapi=1&version=3&http://211.189.127.63/Server_Seetreet/" frameborder="0" allowfullscreen=""></embed>
-                                <!--<script type="text/javascript">-->
+                                <div id = "player"></div>
+                                <script>
+                                    var tag = document.createElement('script');
+                                    tag.src = "https://www.youtube.com/iframe_api";
+                                    var firstScriptTag = document.getElementsByTagName('script')[0];
+                                    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-                                    <!--var changeUrl2youtube = function(youtube_url){-->
-                                        <!--$('#artist-youtube-player')-->
-                                    <!--};-->
-                                <!--</script>-->
-                                <!--<div id="player"></div>-->
-                                <!--<script>-->
-                                    <!--// 2. This code loads the IFrame Player API code asynchronously.-->
-                                    <!--var tag = document.createElement('script');-->
-
-                                    <!--tag.src = "https://www.youtube.com/iframe_api";-->
-                                    <!--var firstScriptTag = document.getElementsByTagName('script')[0];-->
-                                    <!--firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);-->
-
-                                    <!--// 3. This function creates an <iframe> (and YouTube player)-->
-                                    <!--//    after the API code downloads.-->
-                                    <!--var player;-->
-                                    <!--function onYouTubeIframeAPIReady() {-->
-                                        <!--player = new YT.Player('player', {-->
-                                            <!--height: '223',-->
-                                            <!--width: '410',-->
-                                            <!--videoId: 'KQOWuUy-7qE',-->
-                                            <!--events: {-->
-                                                <!--'onReady': onPlayerReady,-->
-                                                <!--'onStateChange': onPlayerStateChange-->
-                                            <!--}-->
-                                        <!--});-->
-                                    <!--}-->
-                                    <!--// 4. The API will call this function when the video player is ready.-->
-                                    <!--function onPlayerReady(event) {-->
-                                        <!--event.target.playVideo();-->
-                                    <!--}-->
-                                    <!--// 5. The API calls this function when the player's state changes.-->
-                                    <!--//    The function indicates that when playing a video (state=1),-->
-                                    <!--//    the player should play for six seconds and then stop.-->
-                                    <!--var done = false;-->
-                                    <!--function onPlayerStateChange(event) {-->
-                                        <!--if (event.data == YT.PlayerState.PLAYING && !done) {-->
-                                            <!--setTimeout(stopVideo, 6000);-->
-                                            <!--done = true;-->
-                                        <!--}-->
-                                    <!--}-->
-                                    <!--function stopVideo() {-->
-                                        <!--player.stopVideo();-->
-                                    <!--}-->
-                                <!--</script>-->
+                                    var player;
+                                    function onYouTubeIframeAPIReady() {
+                                        player = new YT.Player('player', {
+                                            height: '223',
+                                            width: '410',
+                                            videoId: 'M7lc1UVf-VE',
+                                            events: {
+                                                'onReady': onPlayerReady,
+                                                'onStateChange': onPlayerStateChange
+                                            }
+                                        });
+                                    }
+                                    function onPlayerReady(event) {
+                                        event.target.playVideo();
+                                    }
+                                    var done = false;
+                                    function onPlayerStateChange(event) {
+                                        if (event.data == YT.PlayerState.PLAYING && !done) {
+                                            setTimeout(stopVideo, 1000);
+                                            done = true;
+                                        }
+                                    }
+                                    function stopVideo() {
+                                        player.stopVideo();
+                                    }
+                                </script>
                             </div>
-                            <!--<div id = "youtube-player"></div>-->
-                            <!--<script type = "text/javascript">-->
-                                <!--var tag = document.createElement('script');-->
-                                <!--tag.src = "https://www.youtube.com/iframe_api";-->
-                                <!--var firstScriptTag = document.getElementsByTagName('script')[0];-->
-                                <!--firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);-->
-
-                                <!--var player;-->
-                                <!--function onYouTubeIframeAPIReady(){-->
-                                    <!--player = new YT.Player('youtube-player', {-->
-                                        <!--height : '223',-->
-                                        <!--width : '410',-->
-                                        <!--videoId : 'M7lc1UVf-VE',-->
-                                        <!--events:{-->
-                                            <!--'onReady' : onPlayerReady,-->
-                                            <!--'onStateChange' : onPlayerStateChange-->
-                                        <!--}-->
-                                    <!--});-->
-                                <!--};-->
-                                <!--function onPlayerReady(event){-->
-                                    <!--event.target.playVider();-->
-                                <!--}-->
-
-                                <!--var done = false;-->
-
-                            <!--</script>-->
                         </div>
                     </div>
                 </div>

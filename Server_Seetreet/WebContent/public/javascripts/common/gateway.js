@@ -184,6 +184,18 @@ var postlikeContent = function(contentId, islike, callback){
     httpRequest(url, method, headers, body, callback);
 };
 
+var getcontentReplyCount = function(contentId, callback){
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var method = 'GET';
+    var headers = {
+        "_id" : token
+    };
+    var url_param = '?contentId=' + contentId;
+    var url = '/user/content/user/reply/count/' + userId + url_param;
+    httpRequest(url, method, headers, null, callback);
+};
+
 // 컨텐트의 댓글 정보들을 가져옵니다.
 var getcontentReply = function(contentId, page, callback){
     var token = getCookie(COOKIE_USER_TOKEN);
@@ -229,11 +241,22 @@ var getUserContent = function(latitude, longitude, page, callback){
 };
 
 // 장소 제공자의 히스토리를 가져옵니다.
-var getProviderHistory = function(page, callback){
+var getProviderHistory = function(providerId, callback){
     var token = getCookie(COOKIE_USER_TOKEN);
     var userId = getCookie(COOKIE_USER_ID);
-    var url_param = '?page=' + page;
-    var url = '/user/content/provider/history/' + userId + url_param;
+    var url_param = '?_id=' + providerId + '&isProvider=true';
+    var url = '/user/content/user/history/' + userId + url_param;
+    var method = 'GET';
+    var headers = {
+        "_id" : token
+    };
+    httpRequest(url, method, headers, null, callback);
+};
+var getArtistHistory = function(artistId, callback){
+    var token = getCookie(COOKIE_USER_TOKEN);
+    var userId = getCookie(COOKIE_USER_ID);
+    var url_param = '?_id=' + artistId + '&isProvider=false';
+    var url = '/user/content/user/history/' + userId + url_param;
     var method = 'GET';
     var headers = {
         "_id" : token
@@ -250,7 +273,7 @@ var getlocatestr2coord = function(locatestr, callback){
     var body = {
         address : locatestr
     };
-    var url = '/admin/map/addtocoord';
+    var url = '/admin/map/addtocoord/';
     var method = 'POST';
     httpRequest(url, method, headers, body, callback);
 };
@@ -263,7 +286,7 @@ var getcoord2locatestr = function(lat, long, callback){
         longitude : long,
         latitude : lat
     };
-    var url = '/admin/map/coordtoadd';
+    var url = '/admin/map/coordtoadd/';
     var method = 'POST';
     httpRequest(url, method, headers, body, callback);
 };
@@ -367,6 +390,7 @@ var httpRequest = function ( url, method, headers, body , callback  ){
         headers:headers,
         data: body,
         success: function(data, state, res){
+            console.log(data);
             if ( data == null )
                 data = '';
 //            console.log( '[[[[[[[[SUCCESS!!]]]]]]]   url: ' + url + ',   state:' + state + ',   data : ' + JSON.stringify( data ) );

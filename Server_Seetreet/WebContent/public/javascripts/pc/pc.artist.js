@@ -6,7 +6,6 @@ $(document).ready(function(){
     // start-area의 select option을 초기화한다.
     manage_artistinfo.load.setOption();
 
-
     $('.listboxgroup.artist.busking').find('.listbox.createbox').click(function(){
         $('#busking-popup').modal('show');
     });
@@ -44,13 +43,18 @@ $(document).ready(function(){
         console.log(targetIdname);
         var comparestring = 'artistinput';
         if(targetIdname.indexOf(comparestring) != -1){
-            var nth = targetIdname.substr(comparestring.length, 1);
-            if(manage_artistinfo.join.input_check(nth) == true){
-                manage_artistinfo.join.loadjoinartist(targetIdname);
-            }
-            else{
-                alert(artistCreate_caution);
-            }
+
+            manage_artistinfo.join.loadjoinartist(targetIdname);
+
+
+//            var nth = targetIdname.substr(comparestring.length, 1);
+//            if(manage_artistinfo.join.input_check(nth) == true){
+//                manage_artistinfo.join.loadjoinartist(targetIdname);
+//            }
+//
+//            else{
+//                alert(artistCreate_caution);
+//            }
         }
     });
 });
@@ -122,13 +126,14 @@ manage_artistinfo.join.format = {
 manage_artistinfo.join.loadjoinartist = function(buttonId){
     $('.main-artist').find('.modifytab').hide();
     $('.main-artist').find('.listtab').hide();
-    $('.main-artist').find('.start-area *').hide();
     $('.main-artist').find('.start-area').show();
+    $('.main-artist').find('.start-area *').hide();
     var nth = buttonId.substr(11,1);
     if(nth == 0){
         // start-input-first load
-        $('.main-artist').find('.start-area').find('.start-input-first').show();
         $('.main-artist').find('.start-area').find('.start-input-first *').show();
+        $('.main-artist').find('.start-area').find('.start-input-first').show();
+//        $('.main-artist').find('.start-area').find('.start-input-first').show('Blind', {direction : 'horizontal'});
     }
     else if(nth == 1){
         // start-input-first save
@@ -243,7 +248,7 @@ manage_artistinfo.modify.setModifyTab = function(artistInfo){
     var location_address = artistInfo.favoriteLocation[0].name;
     $('.modifytab.artist').find('.modify-location').find('input').val(location_address);
     // YouTubeUrl
-    var youtube_url = artistInfo.artistUrl;
+    var youtube_url = artistInfo.videoUrl;
     $('.modifytab.artist').find('.modify-youtube').find('input').val(youtube_url);
     // 소개말
     var artist_description = artistInfo.description;

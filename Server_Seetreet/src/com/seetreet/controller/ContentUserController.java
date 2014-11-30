@@ -17,6 +17,7 @@ import com.seetreet.bean.LocationBean;
 import com.seetreet.bean.UserBean;
 import com.seetreet.bean.content.ContentBean;
 import com.seetreet.dao.MongoDAO;
+import com.seetreet.dao.MongoPersonDAO;
 import com.seetreet.util.C;
 import com.seetreet.util.ResBodyFactory;
 
@@ -28,7 +29,8 @@ public class ContentUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     public static final String PREFIX = "/user/content/user/";
     
-    private static final String SEARCH = "/user/content/user/search/";    
+    private static final String SEARCH = "/user/content/user/search/";
+    private static final String HISTORY = "/user/content/user/history/";
     
     /**
      * @see HttpServlet#HttpServlet()
@@ -49,7 +51,10 @@ public class ContentUserController extends HttpServlet {
 		
 		if(cmd.contains(SEARCH)) {
 			searchContentByLocation(req, res);
-		}				
+		}
+		else if(cmd.contains(HISTORY)){
+			searchContentByHistory(req, res);
+		}
 	}
 	
 	private void searchContentByLocation(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -85,4 +90,38 @@ public class ContentUserController extends HttpServlet {
 				out.close();
 		}
 	}
+	
+	private void searchContentByHistory(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		PrintWriter out = res.getWriter();
+		try {
+			boolean checkProviderArtist = Boolean.valueOf(req.getParameter("isProvider"));
+			String _id = req.getParameter(ContentBean.KEY_ID);
+			
+			if (checkProviderArtist == true) {
+				if(MongoPersonDAO.getProvider(_id) != null){
+					out.write(ResBodyFactory.create(true,ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.searchContentHistory(_id, checkProviderArtist)));
+				}
+				else{
+					out.write(ResBodyFactory.create(false,ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, null));
+					return;
+				}
+			}
+			else if(checkProviderArtist == false){
+				if(MongoPersonDAO.getArtist(_id) != null){
+					out.write(ResBodyFactory.create(true,ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.searchContentHistory(_id, checkProviderArtist)));
+				}
+				else{
+					out.write(ResBodyFactory.create(false,ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, null));
+					return;
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			if (out != null)
+				out.close();
+		}
+	}
+	
 }
