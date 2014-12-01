@@ -33,7 +33,7 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
     }
     var content_time = modal_Factory.content_convert_time(contentinfo.contentStartTime, contentinfo.contentEndTime);
 
-    var storeTitle = contentinfo.provider.StoreTitle;
+    var storeTitle = modal_Factory.omit_unnecessary_description(contentinfo.provider.StoreTitle);
     var providerAddress = contentinfo.provider.StoreAddress;
     var artist_description      = '';
     var provider_description    = '';

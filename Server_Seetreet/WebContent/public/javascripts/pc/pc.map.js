@@ -90,7 +90,9 @@ map_Manage.set_searchMap = function(mode){
 // 선택된 좌표를 통해 contentlist를 갱신합니다.
 map_Manage.refreshContent = function(find_latitude, find_longitude){
     box_Factory.content.initContentData(function(){
-        contentshow(find_latitude, find_longitude);
+        contentshow(find_latitude, find_longitude, function(){
+            $('.content').slideDown();
+        });
     });
 };
 

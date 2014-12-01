@@ -10,7 +10,6 @@ Listtab.show = function(STATE) {
 	$("#artist_apply_content").remove();
 	switch(STATE) {
 	case Listtab.TAB_PROVIDER :
-		
 		$("body").append(
 			'<div class="modal fade" id="provider_create_content" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
 				'<div class="modal-dialog">' +

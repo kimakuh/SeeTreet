@@ -129,9 +129,9 @@ box_Factory.content.createContent = function(contentinfo, groupnumber, size){
                     + '</div>'
                 + '</div>'
         );
-//        $('.content[data-index = "' +  content_id + '"]').hide('slow', function(){
-//            $('.content[data-index = "' +  content_id + '"]').show('blind');
-//        });
+        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.largesize-area').find('.content[data-index = "' + content_id + '"]').hide();
+//        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.largesize-area').find('.content[data-index = "' + content_id + '"]').show('scale', {direction:"horizontal"});
+
     }
     else{
         $('.contentlist[group-list = "' +  groupnumber + '"]').find('.smallsize-area').append(
@@ -145,8 +145,27 @@ box_Factory.content.createContent = function(contentinfo, groupnumber, size){
                 + '</div>'
                 + '</div>'
         );
+        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.smallsize-area').find('.content[data-index = "' + content_id + '"]').hide();
+//        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.smallsize-area').find('.content[data-index = "' + content_id + '"]').show('scale', {direction : "horizontal"});
+
     }
 };
+
+var current_show_content_num = 1;
+box_Factory.content.contentLoadAnimation = function(groupnumber){
+//    console.log('count');
+//    if(current_show_content_num == 7){
+//        return;
+//    }
+//    if(current_show_content_num == 1){
+//        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.largesize-area').find('.content :nth-child(' + current_show_content_num + ')').show('clip');
+//    }
+//    else{
+//        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.smallsize-area').find('.content:nth-child(' + current_show_content_num + ')').show('clip');
+//    }
+//    box_Factory.content.contentLoadAnimation(groupnumber);
+};
+
 
 box_Factory.content.get_a_content = function(dataindex){
     var contentarray = box_Factory.content.contentArray;

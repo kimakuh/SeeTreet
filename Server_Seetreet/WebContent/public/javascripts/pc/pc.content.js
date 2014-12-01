@@ -32,7 +32,7 @@ var initialize_location = function(cb){
         handleNoGeolocation(false);
     }
 };
-var contentshow = function(latitude_, longitude_){
+var contentshow = function(latitude_, longitude_, callback){
     // 박스를 단지 그려주는 역할을 한다.
     // box_Factory.content.appendArray('30', '50', function()
     box_Factory.content.appendArray(latitude_, longitude_, function(){
@@ -54,13 +54,20 @@ var contentshow = function(latitude_, longitude_){
                 box_Factory.content.createContent(box_Factory.content.contentArray[i], current_group_num ,'small');
             }
         }
+        callback();
     });
 };
 
+
+
+
 $(document).ready(function(){
     initialize_location(function(){
-        contentshow(client.latitude, client.longitude);
+        contentshow(client.latitude, client.longitude, function(){
+            $('.content').slideDown();
+        });
     });
+
     $(document).on("click", ".content", function(e){
         var target_dataindex = $(e.currentTarget).attr('data-index');
         var contentinfo = box_Factory.content.get_a_content(target_dataindex);
@@ -73,7 +80,9 @@ $(document).ready(function(){
         });
     });
     $('.content-append-area').find('img').click(function(){
-        contentshow(client.latitude, client.longitude);
+        contentshow(client.latitude, client.longitude, function(){
+            $('.content').slideDown();
+        });
     });
     $('#content-popup').find('.provider-info-area').click(function(e){
         console.log('click!!!');
