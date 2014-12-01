@@ -657,6 +657,10 @@ textarea{
     width : 310px;
 }
 
+.artist .tabdetailinfo span{
+    color : #999999;
+}
+
 .artist .tabdetailinfo .modify-category select{
     display : inline-block;
     width : 150px;
@@ -681,6 +685,10 @@ textarea{
 .artist.modifytab .tabdetailinfo .modify-category span{
     margin-left : 27px;
 }
+
+
+
+
 
 
 
@@ -1184,6 +1192,11 @@ textarea{
 #location-search-popup .modal-footer {
     text-align: center;
 }
+
+#provider_create_content .modal-body {
+    display : table;
+}
+
 
 ::-webkit-scrollbar {
     width:7px;

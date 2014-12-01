@@ -394,7 +394,7 @@ var postConfirmFromArtist = function(genre , contentId , callback) {
 	};
 	var body = {
 		"contentId" : contentId,
-		"genre" : genre
+		"genre" : JSON.stringify(genre)
 	};
 	httpRequest(url, method, headers, body, callback);
 };

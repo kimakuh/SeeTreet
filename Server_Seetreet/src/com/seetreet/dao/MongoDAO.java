@@ -593,8 +593,7 @@ public class MongoDAO {
 							.append(ContentBean.KEY_FINISHIED, false)
 							.append(ContentBean.KEY_C_ARTIST, null)
 							.append(ContentBean.KEY_ARTIST+"."+ArtistBean.KEY_ID , 
-									new BasicDBObject().put("$ne", new ObjectId(artistId))))
-						.skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
+									new BasicDBObject().put("$ne", new ObjectId(artistId))));
 
 		try {
 			while(iter.hasNext()) {
@@ -664,8 +663,7 @@ public class MongoDAO {
 				_id = null;
 				
 			DBCursor iter = 
-					col.find(new BasicDBObject("provider._id", new ObjectId(_id)))
-					   .skip((page - 1) * MAX_LIMIT).limit(MAX_LIMIT);
+					col.find(new BasicDBObject("provider._id", new ObjectId(_id)));
 						
 			res = new JSONArray();
 			
@@ -789,7 +787,7 @@ public class MongoDAO {
 		DBCursor iter = col.find(new BasicDBObject()
 								.append(ContentBean.KEY_TYPE, "SEETREET")
 								.append(ContentBean.KEY_ARTIST+"."+ArtistBean.KEY_ID , new ObjectId(artistId))
-								).skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
+								);
 		
 		JSONArray res = new JSONArray();
 		try {
@@ -841,4 +839,48 @@ public class MongoDAO {
 		return res;
 	}
 	
+	public static boolean enrollConfirmedArtist(String _artistId, String _contentId) throws Exception{
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		ObjectId contentId = new ObjectId(_contentId);
+		
+		
+		BasicDBObject findQuery = new BasicDBObject()
+									  .append(ContentBean.KEY_ID, contentId);
+		BasicDBObject updateQuery 
+		= new BasicDBObject()
+			  .append("$set", new BasicDBObject()
+								   .append(ContentBean.KEY_C_ARTIST, _artistId)
+					 );
+		contentCol.update(findQuery, updateQuery);
+		
+		BasicDBObject updateTimeQuery 
+		= new BasicDBObject()
+			  .append("$set", new BasicDBObject()
+								   .append(ContentBean.KEY_C_TIME, C.currentDate())
+					 );
+		contentCol.update(findQuery, updateTimeQuery);
+		return true;
+	}
+	
+	public static boolean confirmContentGenreByArtist(String _contentId, String genre) throws Exception{
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		ObjectId contentId = new ObjectId(_contentId);
+		
+		JSONObject genreObj = new JSONObject(genre);
+		BasicDBObject genreDBObject = new BasicDBObject().append(GenreBean.KEY_CATEGORY, genreObj.get(GenreBean.KEY_CATEGORY))
+														 .append(GenreBean.KEY_DETAIL, genreObj.get(GenreBean.KEY_DETAIL));
+		
+		BasicDBObject findQuery = new BasicDBObject()
+									  .append(ContentBean.KEY_ID, contentId);
+		BasicDBObject updateQuery 
+		= new BasicDBObject()
+			  .append("$set", new BasicDBObject()
+								   .append(ContentBean.KEY_GENRE, genreDBObject)
+								   .append(ContentBean.KEY_LIKECOUNT, 0)
+					 );
+		contentCol.update(findQuery, updateQuery);
+		return true;
+	}
 }

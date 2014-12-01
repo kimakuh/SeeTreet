@@ -18,6 +18,7 @@ import com.seetreet.bean.UserBean;
 import com.seetreet.bean.content.ContentBean;
 import com.seetreet.dao.MongoDAO;
 import com.seetreet.dao.MongoPersonDAO;
+import com.seetreet.dao.MongoRecDAO;
 import com.seetreet.util.C;
 import com.seetreet.util.ResBodyFactory;
 
@@ -31,6 +32,7 @@ public class ContentUserController extends HttpServlet {
     
     private static final String SEARCH = "/user/content/user/search/";
     private static final String HISTORY = "/user/content/user/history/";
+    private static final String TEST = "/user/content/user/test/";
     
     /**
      * @see HttpServlet#HttpServlet()
@@ -54,6 +56,8 @@ public class ContentUserController extends HttpServlet {
 		}
 		else if(cmd.contains(HISTORY)){
 			searchContentByHistory(req, res);
+		}else if(cmd.contains(TEST)) {
+			MongoRecDAO.updateRecommandValue();
 		}
 	}
 	

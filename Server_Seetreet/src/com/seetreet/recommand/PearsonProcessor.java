@@ -1,18 +1,42 @@
 package com.seetreet.recommand;
 
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 
 public class PearsonProcessor {	
 	public static final int MAX_LIMIT = 10;
-	public static double getPearsonValue(JSONObject user1, JSONObject user2) {
+	public static double getPearsonValue(JSONObject user1, JSONObject user2){
 		try {
-			JSONObject userLoveHistory1 = user1;
-			JSONObject userLoveHistory2 = user2;
+			if(user1.has(RecommendEnum.REC_HISTORY_PROPERTIES.val()) == false || 
+					user2.has(RecommendEnum.REC_HISTORY_PROPERTIES.val()) == false) return 0.0;
 			
-			JSONArray properties1 = userLoveHistory1.getJSONArray(RecommendEnum.REC_HISTORY_PROPERTIES.val());
-			JSONArray properties2 = userLoveHistory2.getJSONArray(RecommendEnum.REC_HISTORY_PROPERTIES.val());
+			JSONObject userLoveHistory1 = user1.getJSONObject(RecommendEnum.REC_HISTORY_PROPERTIES.val());
+			JSONObject userLoveHistory2 = user2.getJSONObject(RecommendEnum.REC_HISTORY_PROPERTIES.val());
+						
+			String[] names1 = JSONObject.getNames(userLoveHistory1);
+			String[] names2 = JSONObject.getNames(userLoveHistory2);
+			
+			if(names1 == null || names2 == null) return 0.0;
+			
+			JSONArray properties1 = new JSONArray();
+			JSONArray properties2 = new JSONArray();
+			
+			for(String name : names1) {				
+				properties1.put(new JSONObject().put(RecommendEnum.LOVE_NAME.val(), name)
+												.put(RecommendEnum.LOVE_VALUE.val(),userLoveHistory1.getInt(name)));
+//				properties1.put(new JSONObject().put(name,userLoveHistory1.getInt(name)));
+			}
+			
+			for(String name : names2) {
+				properties2.put(new JSONObject().put(RecommendEnum.LOVE_NAME.val(), name)
+							.put(RecommendEnum.LOVE_VALUE.val(),userLoveHistory2.getInt(name)));
+//				properties2.put(new JSONObject().put(name,userLoveHistory2.getInt(name)));
+			}
+						
+//			JSONArray properties1 = userLoveHistory1.getJSONArray(RecommendEnum.REC_HISTORY_PROPERTIES.val());
+//			JSONArray properties2 = userLoveHistory2.getJSONArray(RecommendEnum.REC_HISTORY_PROPERTIES.val());
 //			System.out.println("======================================================================");
 //			System.out.println("======================================================================");
 //			System.out.printf("Source : %10s , Target : %10s  \n" , user1.getString(RecommendEnum.REC_HISTORY_USERID.val()), user2.getString(RecommendEnum.REC_HISTORY_USERID.val()));
@@ -60,11 +84,10 @@ public class PearsonProcessor {
 					}
 				}
 			}					
-//			System.out.printf("sum1 : %3.3f , sum2 : %3.3f , sum1Sq : %3.3f , sum2Sq : %3.3f , pSum : %3.3f \n" , sum1, sum2,sum1Sq, sum2Sq, pSum);
+			if(n == 0) return 0;
 			double num = pSum - (sum1*sum2/n);
 			double denSq = (sum1Sq - sum1*sum1/n)*(sum2Sq - sum2*sum2/n);
-			double den = Math.sqrt(denSq <0? denSq*-1 : denSq);			 
-//			System.out.printf("%3d , %2.2f , %2.2f \n" , n, num, den);
+			double den = Math.sqrt(denSq <0? denSq*-1 : denSq);			
 			if(den == 0) return 1;
 			
 			return num/den +1;			

@@ -63,8 +63,7 @@ Listtab.show = function(STATE) {
 					var artistId = data.data.user_artist._id;	
 					var page = mArtistApplication.getPage();
 					mArtistApplication.initHSlide(artistId);
-					getArtistApplications(artistId, page, function(res , state2) {
-						print(artistId + " , " + page);
+					getArtistApplications(artistId, page, function(res , state2) {						
 						if(state2 == "success") {
 							var arr = res.data;
 							for(var i in arr) {
@@ -303,6 +302,7 @@ var HSlider = function() {
 				print("Did not init");
 				return;
 			}
+			console.log(data);
 			if (isArtist) {
 				var artist = BoxFactory.create(BoxFactory.KEY_CREATE_ARTIST, {
 					title : data.name,
@@ -313,19 +313,17 @@ var HSlider = function() {
 				$(mId + " .viewport").append(artist);
 				$(mId + " .viewport .artist.box[data-id='" + data._id + "']")
 						.css("background-image","url('" + data.artistImages[0] + "')");
-				$(mId + " .viewport .artist.box[data-id='" + data._id + "'] .box_hover").click(function() {
-					console.log(data._id);
+				$(mId + " .viewport .artist.box[data-id='" + data._id + "'] .box_hover").click(function() {					
 					modal_Factory.artistModal.getArtistInfo(data._id);
 				});
 				
 				$(mId + " .viewport .artist.box[data-id='" + data._id + "'] .option.btn_permit").click(function() {
+					var str = mId + " .viewport .artist.box[data-id='" + data._id + "']";
+					var str1 = mId + " .viewport .confirm.artist.box";
 					var contentId = $(mId).attr("data-id");
 					permitArtist(data._id, contentId, function(data, state) {
-						console.log(data);
-						if(state == "success") {
-							$(mId + " .viewport .confirm.artist.box").removeClass("confirm");
-							$(mId + " .viewport .artist.box[data-id='" + data._id + "']").addClass("confirm");
-						}						
+						$(str1).removeClass("confirm");
+						$(str).addClass("confirm");					
 					});
 				});
 				
@@ -345,7 +343,7 @@ var HSlider = function() {
 						.css("background-image",(data.providerImage||"url('"+data.provider.providerImage[0]+"')"));
 		
 				mMap[data._id] = mId + " .viewport .provider.box[data-id='"+ data._id + "']";
-				$(mId + " .viewport .provider.box[data-id='" + data._id + "'] .box_hover").click(function() {
+				$(mId + " .viewport .provider.box[data-id='" + data._id + "'] .box_hover").click(function() {					
 					modal_Factory.providerModal.getProviderInfo(data.provider._id);
 				});	
 				
@@ -431,7 +429,3 @@ function print(string) {
 	console.log(">>>>>>>print<<<<<<<");
 	console.log(string);
 }
-
-
-
-

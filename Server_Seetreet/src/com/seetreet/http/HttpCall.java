@@ -17,7 +17,7 @@ import com.seetreet.dao.MongoDAO;
 import com.seetreet.util.C;
 
 public  class HttpCall {
-//	
+	
 	public static JSONArray getContentIds() throws ClientProtocolException, IOException{
 		HttpClient httpclient = HttpInstance.INSTANCE.getHttp();
 		//HttpClient httpclient = new DefaultHttpClient();

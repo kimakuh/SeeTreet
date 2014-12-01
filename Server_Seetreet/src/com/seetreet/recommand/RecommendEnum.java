@@ -1,6 +1,7 @@
 package com.seetreet.recommand;
 
 
+
 public enum RecommendEnum {
 	LOVE_NAME("name") , 
 	LOVE_VALUE("value") , 

@@ -52,6 +52,46 @@ $(document).ready(function(){
         });
     });
 
+
+    // 여기부터 호버링 효과입니다. // 마우스 인 , 마우스 오버
+    $('.seetreet-topbar-content').find('.user-logout').hover(function(){
+        $('.seetreet-topbar-content').find('.user-logout').attr('src', './images/seetreetimg/btn-on-yel.png');
+    }, function(){
+        $('.seetreet-topbar-content').find('.user-logout').attr('src', './images/seetreetimg/btn-on-grey.png');
+    });
+
+    $('#content-popup').find('.content-detail-likecount').hover(function(){
+        // 켜져있다면
+        if($('#content-popup').find('.content-detail-likecount').find('.likeActivate').css('display') == 'inline'){
+            $('#content-popup').find('.content-detail-likecount').find('.likeActivate').attr('src', './images/seetreetimg/btn-heart-yel-red.png');
+        }
+        // 꺼져있다면
+        else if($('#content-popup').find('.content-detail-likecount').find('.likeDeActivate').css('display') == 'inline'){
+            $('#content-popup').find('.content-detail-likecount').find('.likeDeActivate').attr('src', './images/seetreetimg/btn-heart-yel-white.png');
+        }
+    }, function(){
+        // 켜져있다면
+        if($('#content-popup').find('.content-detail-likecount').find('.likeActivate').css('display') == 'inline'){
+            $('#content-popup').find('.content-detail-likecount').find('.likeActivate').attr('src', './images/seetreetimg/btn-heart-grey-red.png');
+        }
+        // 꺼져있다면
+        else if($('#content-popup').find('.content-detail-likecount').find('.likeDeActivate').css('display') == 'inline'){
+            $('#content-popup').find('.content-detail-likecount').find('.likeDeActivate').attr('src', './images/seetreetimg/btn-heart-grey-white.png');
+        }
+    });
+
+    $('.seetreet-container').find('.content-append-area').find('img').hover(function(){
+        $('.seetreet-container').find('.content-append-area').find('img').attr('src', './images/seetreetimg/btn-plus-yel.png');
+    }, function(){
+        $('.seetreet-container').find('.content-append-area').find('img').attr('src', './images/seetreetimg/btn-plus-grey.png');
+    });
+    
+    $('#content-popup').find('.write-comment-area').find('#comment-submit').hover(function(){
+    	$('#content-popup').find('.write-comment-area').find('#comment-submit').attr('src', './images/seetreetimg/btn-ok-yel.png');
+    }, function(){
+    	$('#content-popup').find('.write-comment-area').find('#comment-submit').attr('src', './images/seetreetimg/btn-ok-grey.png');
+    });
+
 });
 
 var tabmanager = {};

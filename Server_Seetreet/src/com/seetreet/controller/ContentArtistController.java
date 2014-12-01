@@ -83,6 +83,8 @@ public class ContentArtistController extends HttpServlet {
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, applyContentByArtist(req, res)));
 			} else if(cmd.contains(PREFIX_DELETE)) {
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, deleteContentByArtist(req, res)));
+			} else if(cmd.contains(PREFIX_CONFIRM)) {
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, confirmContentByArtist(req, res)));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -186,4 +188,16 @@ public class ContentArtistController extends HttpServlet {
 		return arr;
 	}
 	
+	private boolean confirmContentByArtist(HttpServletRequest req, HttpServletResponse res) {
+		boolean state = false;
+		String contentId = req.getParameter("contentId");
+		String genre = req.getParameter("genre");
+		try {
+			state = MongoDAO.confirmContentGenreByArtist(contentId, genre);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return state;
+	}
 }

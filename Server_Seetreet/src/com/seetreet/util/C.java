@@ -49,7 +49,7 @@ public class C {
 	public static final String DAUMCOORDTOADD = "http://apis.daum.net/local/geo/coord2addr?";
 	
 	public static String currentDate(){
-		DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		Calendar cal = Calendar.getInstance();
 		String curTime = dateFormat.format(cal.getTime());
 		String curAmPm;
@@ -95,9 +95,9 @@ public class C {
 	}
 	
 //	public static final String FILEPATH = "C:\\Users\\Limjiuk\\git\\SeeTreet\\Server_Seetreet\\WebContent\\public\\images\\upload\\";
-	public static final String FILEPATH = "C:\\Users\\Youngwook\\Documents\\workspaceEE\\TEST\\WebContent\\public\\images\\upload\\";
+//	public static final String FILEPATH = "C:\\Users\\Youngwook\\Documents\\workspaceEE\\TEST\\WebContent\\public\\images\\upload\\";
+	public static final String FILEPATH = "C:\\jsp\\apache-tomcat-8.0.14\\wtpwebapps\\TEST\\public\\images\\upload\\";
 	public static final String URL = "./public/images/upload/";
-	
 	public static final String ADDPATH_ARTIST = "a\\";
 	public static final String ADDPATH_PROVIDER = "p\\";
 	public static final String ADDPATH_REPLY = "r\\";
