@@ -53,7 +53,7 @@ public class ContentPublicApiBean {
 			this.isFinished = false;
 
 		}catch(Exception e){
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		
  

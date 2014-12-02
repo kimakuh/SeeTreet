@@ -71,7 +71,6 @@ public class JoinController extends HttpServlet {
 		try {
 			if(cmd.contains(PREFIX_USER)) {
 				String 	email 	= cmd.replace(PREFIX_USER, "");
-				System.out.println(email);
 				if(joinUser(req, res , email)) {
 					out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, true));
 				}else {
@@ -106,12 +105,7 @@ public class JoinController extends HttpServlet {
 		String 	name 	= req.getParameter("name");
 		String  age		= req.getParameter("age");
 		String 	phone 	= req.getParameter("phone");
-		
-		System.out.println("PW : " + pw);
-		System.out.println("NAME : " + name);
-		System.out.println("AGE : " + age);
-		System.out.println("PHONE : " + phone);
-		
+				
 				
 		UserBean bean = new UserBean(email, name, age == null? -1 : Integer.parseInt(age), phone, pw);
 		
@@ -139,7 +133,6 @@ public class JoinController extends HttpServlet {
 						
 			String modTime = C.currentDate();
 			
-			System.out.println(locations.toString());
 			LocationBean[] locs = new LocationBean[locations.length()];
 						
 			for(int i = 0 ; i < locations.length(); i++) {

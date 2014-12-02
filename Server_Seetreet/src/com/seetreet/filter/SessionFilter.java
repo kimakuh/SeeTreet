@@ -30,7 +30,6 @@ public class SessionFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res,
 			FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
-		System.out.println(">> WEB-ACCESS");
 //		HttpServletRequest httpReq = (HttpServletRequest)req;
 //		HttpServletResponse httpRes = (HttpServletResponse)res;
 //		req.setCharacterEncoding(C.ENCODING);		

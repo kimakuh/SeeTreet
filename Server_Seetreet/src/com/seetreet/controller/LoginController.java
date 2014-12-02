@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 import com.google.gson.JsonObject;
+import com.seetreet.bean.LocationBean;
 import com.seetreet.bean.UserBean;
 import com.seetreet.bean.UserLoginBean;
 import com.seetreet.dao.MongoDAO;
@@ -27,6 +28,10 @@ public class LoginController extends HttpServlet {
     
 	private final String PREFIX = "/user/login/";
 	
+	private final String PREFIX_READYCOUNT = "/user/login/ready/";
+	private final String PREFIX_COMPLETECOUNT = "/user/login/complete/";
+	private final String PREFIX_10KM = "/user/login/10km/";
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -40,6 +45,27 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String reqURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String cmd = reqURI.substring(contextPath.length());
+		PrintWriter out = res.getWriter();
+		
+		try {
+			if(cmd.contains(PREFIX_READYCOUNT)) {
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.countUnFinishedContent()));
+			}else if(cmd.contains(PREFIX_COMPLETECOUNT)) {
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.countFinishedContent()));
+			}else if(cmd.contains(PREFIX_10KM)) {
+				double l_long = Double.parseDouble(req.getParameter(LocationBean.KEY_LATITUDE));
+				double l_lat = Double.parseDouble(req.getParameter(LocationBean.KEY_LONGITUDE));
+				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.countLocationContent(l_lat,l_long)));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			out.close();
+		}
 		
 	}
 
@@ -63,7 +89,6 @@ public class LoginController extends HttpServlet {
 				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_WRONG_INPUT, null));
 			} else {	
 				initSession(req, res, bean);
-				System.out.println(bean.getJson().toString());
 				out.write(ResBodyFactory.create(true, ResBodyFactory.STATE_GOOD_WITH_DATA, bean.getJson()));			
 			}
 		} catch (Exception e) {

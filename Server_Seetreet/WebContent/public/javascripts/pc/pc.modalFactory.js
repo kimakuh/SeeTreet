@@ -19,18 +19,20 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
     var content_name = contentinfo.contentTitle;
     
     var artist_name = '';
+    
+    var artistdata = {};
     if(content_type == 'private'){
     	var isConfirmed_artistId = contentinfo.isConfirmed_artistId;
     	var artistArray = contentinfo.artists;
-    	var artistdata = {};
     	for(var i in artistArray){
     		if(isConfirmed_artistId == artistArray[i]._id){
     			artistdata = artistArray[i];
     			break;
     		}
     	}
-        artist_name = artistdata.name;
     }
+    
+    artist_name = artistdata.name;
     var content_time = '';
     if(content_type == 'public'){
     	content_time = modal_Factory.content_convert_time(contentinfo.contentStartTime, contentinfo.contentEndTime);
@@ -44,12 +46,13 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
     var providerAddress = contentinfo.provider.StoreAddress;
     var artist_description      = '';
     var provider_description    = '';
+    
     if(content_type == 'public'){
         artist_description = '';
         provider_description = modal_Factory.omit_unnecessary_description(contentinfo.provider.description);
     }
     else{
-        artist_description = modal_Factory.omit_unnecessary_description(contentinfo.artists[0].description);
+        artist_description = modal_Factory.omit_unnecessary_description(artistdata.description);
         provider_description = modal_Factory.omit_unnecessary_description(contentinfo.provider.description);
     }
     var provider_img_array = new Array();
@@ -66,6 +69,7 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
             provider_img_array.push('./images/seetreetimg/content_default.jpg');
         }
     }
+    
     var artist_img_array = new Array();
     if(content_type == 'public'){
         for(var index=0 ; index < 3 ; index++){
@@ -75,7 +79,7 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
     else{
         for(var index = 0 ; index < 3 ; index++){
             if(index < contentinfo.artists[0].artistImages.length){
-                artist_img_array.push(contentinfo.artists[0].artistImages[index]);
+                artist_img_array.push(artistdata.artistImages[index]);
             }
             else{
                 artist_img_array.push('./images/seetreetimg/content_default.jpg');
@@ -89,10 +93,12 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
         target : content_oMap,
         storeName : storeTitle
     };
+    
     var providerId = contentinfo.provider._id;
     var artistId;
     if(content_type == "private"){
-        artistId = contentinfo.artists[0]._id;
+    	artistId = artistdata._id;
+//        artistId = contentinfo.artists[0]._id;
     }
     else{
         artistId = "seetreet";
@@ -125,8 +131,6 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
     $('#content-popup').find('.additional-info-area').find('.artist-info-area').find('img').attr('src', artist_img_array[0]);
     $('#content-popup').find('.additional-info-area').find('.artist-info-area').find('span').text(artist_name);
     $('#content-popup').find('.additional-info-area').find('.artist-info-area').attr('identification-value', artistId);
-
-
 
     map_Manage.set_map(mapinfo);
     modal_Factory.hideAndshowinfo(content_type);
@@ -446,6 +450,11 @@ modal_Factory.artistModal.loadModal = function(artistInfo){
     $('#content-popup').modal('hide');
     $('#artist-popup').modal('show');
 };
+
+
+
+
+
 modal_Factory.artistModal.loadHistory = function(artistId){
     // history line 지우기
     $('#artist-popup').find('.history-list *').remove();
@@ -464,7 +473,6 @@ modal_Factory.artistModal.loadHistory = function(artistId){
                 var confirmed_artistId = historydata.isConfirmed_artistId;
                 var confirmed_artist_data = {};
                 for(var i in historydata.artists){
-                    console.log(historydata.artists[i]._id.$oid);
                     if(confirmed_artistId == historydata.artists[i]._id.$oid){
                         confirmed_artist_data = historydata.artists[i];
                         break;
@@ -476,7 +484,12 @@ modal_Factory.artistModal.loadHistory = function(artistId){
                 else{
                 	historydata2submit.historyTime = box_Factory.seetreet_convert_time(historydata.contentStartTime, historydata.contentEndTime);
                 }
-                historydata2submit.likecount = historydata.likecount;
+                if(historydata.likecount == null){
+                    historydata2submit.likecount = '0';
+                 }
+                 else{
+                    historydata2submit.likecount = historydata.likecount;
+                 }
                 historydata2submit.storeTitle = historydata.provider.StoreTitle;
                 historydata2submit.artistname = confirmed_artist_data.name;
                 historydata2submit.Genre = historydata.contentGenre.category + ' / ' + historydata.contentGenre.detailGenre;
@@ -496,7 +509,6 @@ modal_Factory.artistModal.loadHistory = function(artistId){
 };
 
 modal_Factory.artistModal.prependHistory = function(corehistorydata){
-    console.log(corehistorydata);
     $('#artist-popup').find('.history-list').prepend(
             '<div class = "history-content" data-index = "abc">'
             + '<img class = "history-content-image" src = "' + corehistorydata.artistImage + '"/>'
@@ -536,8 +548,8 @@ modal_Factory.omit_unnecessary_description = function(description){
 // 모달에 띄우는 시간을 변형시키는 함수
 modal_Factory.reply_convert_time = function(time){
     var showtime;
-    showtime = "20" + time.substr(0,2) + "/" + time.substr(2,2) + "/" + time.substr(4,2) + "/ "
-        + time.substr(6,2) + ":" + time.substr(8,2) + ":" + time.substr(10,2) + " " + time.substr(12,2);
+    showtime = time.substr(0,4) + "/" + time.substr(4,2) + "/" + time.substr(6,2) + "/ "
+        + time.substr(8,2) + ":" + time.substr(10,2) + ":" + time.substr(12,2) + " " + time.substr(14,2);
     return showtime;
 };
 

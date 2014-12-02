@@ -61,9 +61,7 @@ public class ContentFilter implements Filter {
 		String email = postfixes[postfixes.length -1];		
 		String token = httpReq.getHeader(UserBean.KEY_TOKEN);
 		
-		System.out.println(token);
 		if(!MongoDAO.isUser(email, token)) {
-			System.out.println("> FILTER : ERROR");
 			PrintWriter out = res.getWriter();
 			try {
 				out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_UNKNOWN_TOKEN ,new JSONObject()));

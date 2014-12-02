@@ -1,3 +1,72 @@
+$(function() {	
+	var token = getCookie(COOKIE_USER_TOKEN);
+	var userId = getCookie(COOKIE_USER_ID);
+	AJAX("/user/content/user/rankProvider/" + userId ,
+		 "GET" ,
+		 {"_id" : token} ,
+		 {},
+		 function(res , state) {			 
+			 var arr = res.data;
+			 for(var i in arr) {
+				var title = arr[i].provider.StoreTitle;				
+				$(".recommend-place.recommend-box ul li:eq("+i+") div:eq(1)").text(title);
+				$(".recommend-place.recommend-box ul li:eq("+i+") div:eq(1)").addClass("rec_location_titles");
+			 }
+		 }
+		);
+	
+	AJAX("/user/content/user/rankArtist/" + userId ,
+			 "GET" ,
+			 {"_id" : token} ,
+			 {},
+			 function(res , state) {	
+				 var arr = res.data;	
+				 var table = {};
+				 for(var i in arr) {					 
+					 var artistId = arr[i].isConfirmed_artistId;
+					 table[artistId] = i;
+					 
+					 if(artistId == "PUBLIC") {						 
+						 $(".recommend-artist.recommend-box ul li:eq("+table[artistId]+") div:eq(1)").text("공공 문화");
+						 $(".recommend-artist.recommend-box ul li:eq("+table[artistId]+") div:eq(1)").addClass("rex_artist_name");
+						 continue;
+					 }else
+					 getArtist(artistId, function(res2, state2) {
+						 if(state2 == "success") {
+							 var name = res2.data.name;		
+							 var idx = res2.data._id;
+							 $(".recommend-artist.recommend-box ul li:eq("+table[idx]+") div:eq(1)").text(name);
+							 $(".recommend-artist.recommend-box ul li:eq("+table[idx]+") div:eq(1)").addClass("rex_artist_name");
+						 }
+					 })	
+				 }				 				 
+			 }
+			);
+});
+
+var AJAX = function ( url, method, headers, body , callback  ){
+    var fullUrl =  SERVER_ADDRESS + url;
+    $.ajax({
+        crossDomain : true,
+        dataType : "json",
+        contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+        url: fullUrl,
+        method: method,
+        headers:headers,
+        data: body,
+        success: function(data, state, res){
+            if ( data == null )
+                data = '';
+            callback ( data, state, res );
+        },
+        error: function(data, state){
+            if ( data == null )
+                data = '';
+            callback( data, state , null );
+        }
+    });
+}
+
 var slide = null;
 var mAritstApplication = null;
 var Listtab = {};

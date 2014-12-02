@@ -39,7 +39,7 @@ public  class HttpCall {
 			return jArray;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 			return null;
 		}
 	}
@@ -68,7 +68,7 @@ public  class HttpCall {
 			
 			return obj;
 		}catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 			return null;
 		}
 	}
@@ -93,7 +93,7 @@ public  class HttpCall {
 			System.out.println(res);
 			
 		}catch(Exception e){
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return res;
 		
@@ -116,7 +116,7 @@ public  class HttpCall {
 			res = new JSONObject(result.toString());
 			System.out.println(res);
 		}catch(Exception e){
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return res;
 	}

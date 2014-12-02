@@ -133,14 +133,24 @@ public class MongoRecDAO {
 		
 		DBObject result = recommendDB.findOne(new BasicDBObject(RecommendEnum.REC_USERID.val() , userId));
 		JSONObject json = null;
+		JSONObject res = new JSONObject();
 		if(result == null ) return json;
 		try {
 			json = new JSONObject(result.toString());
+			JSONArray arr = json.getJSONArray(RecommendEnum.REC_PROPERTIES.val());
+			if(arr == null) return res;
+			
+			for(int i = 0 ; i < arr.length(); i++) {
+				String name = JSONObject.getNames(arr.getJSONObject(i))[0];
+				double value = arr.getJSONObject(i).getDouble(name);
+				res.put(name, value);
+			}
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}		
-		return json;
+		return res;
 	}
 
 //	Warning: Calling toArray or length on a DBCursor will irrevocably turn it into an array. 
@@ -162,13 +172,16 @@ public class MongoRecDAO {
 		while(sCursor.hasNext()) {
 			sItem = sCursor.next();
 			DBCursor tCursor = targetCol.find();
+			
+			System.out.printf("%10s 의 피어슨 점수를 계산합니다.\n",sItem.get(RecommendEnum.REC_HISTORY_USERID.val()));
 			while(tCursor.hasNext()) {
 				tItem = tCursor.next();		
 				//같은 것끼리의 유사도는 계산 안함.
 				if(sItem.get("_id").toString().equals(tItem.get("_id").toString())) continue;
 				
 				try {
-					double v = PearsonProcessor.getPearsonValue(new JSONObject(sItem.toString()), new JSONObject(tItem.toString()));					
+					double v = PearsonProcessor.getPearsonValue(new JSONObject(sItem.toString()), new JSONObject(tItem.toString()));
+//					System.out.printf("%10s 와 %10s 의 유사도는 %3.3f \n",sItem.get(RecommendEnum.REC_HISTORY_USERID.val()) ,tItem.get(RecommendEnum.REC_HISTORY_USERID.val()) , v);
 					updateSimilarity(sItem.get(RecommendEnum.REC_HISTORY_USERID.val()).toString(), tItem.get(RecommendEnum.REC_HISTORY_USERID.val()).toString(), v);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -177,7 +190,7 @@ public class MongoRecDAO {
 			}
 			
 						
-//			System.out.printf("%10s \n",sItem.get(RecommendEnum.REC_HISTORY_USERID.val()));
+			System.out.printf("%10s 의 가장 유사한 10명을 선택합니다.\n",sItem.get(RecommendEnum.REC_HISTORY_USERID.val()));
 			DBCursor pCursor = valueMap.find(new BasicDBObject().append(RecommendEnum.SIM_MAP_SOURCE.val(), sItem.get(RecommendEnum.REC_HISTORY_USERID.val())))
 									   .sort(new BasicDBObject().append(RecommendEnum.SIM_MAP_VALUE.val(), -1))
 									   .limit(PearsonProcessor.MAX_LIMIT);
@@ -212,6 +225,7 @@ public class MongoRecDAO {
 												
 				JSONArray names = sumProperty.names();
 				if(names == null) continue;
+				System.out.printf("%10s : %7s \n" , "특성" , "추천값");
 				BasicDBList recValueList = new BasicDBList();
 				for (int i = 0; i < names.length(); i++) {
 					String key = names.getString(i);
@@ -222,10 +236,10 @@ public class MongoRecDAO {
 						double value = sumProperty.getDouble(key) * 100 / sum;
 						sumProperty.put(key, value);
 						recValueList.add(new BasicDBObject(key, value));
-//						System.out.printf("%10s : %3.3f , " , key , value);
+						System.out.printf("%10s : %3.3f ||\n " , key , value);
 					}
 				}				
-//				System.out.println();
+				
 				BasicDBObject findData = new BasicDBObject().append(RecommendEnum.REC_USERID.val(), sItem.get(RecommendEnum.REC_HISTORY_USERID.val()));				  
 				
 				BasicDBObject insertData = new BasicDBObject();			

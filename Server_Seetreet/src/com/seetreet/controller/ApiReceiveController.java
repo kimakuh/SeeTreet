@@ -36,14 +36,14 @@ public class ApiReceiveController extends HttpServlet {
     	
     	response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
-		System.out.println("DataReceiver--------------------");
+		
 		
 		
 		try {
 			HttpControl.getContents();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
     	//HttpDAO a = new HttpDAO();
     	//a.getContentsId();

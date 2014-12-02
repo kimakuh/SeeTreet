@@ -33,8 +33,8 @@ public class schedulerServlet extends HttpServlet {
    				.withIdentity("trigger", "group1")
    				.startNow()
    				.withSchedule(SimpleScheduleBuilder.simpleSchedule()
-//   						.withIntervalInHours(12)
-   						.withIntervalInSeconds(50)	
+   						.withIntervalInHours(12)
+//   						.withIntervalInSeconds(30)	
    						.repeatForever())            
    						.build();
    			

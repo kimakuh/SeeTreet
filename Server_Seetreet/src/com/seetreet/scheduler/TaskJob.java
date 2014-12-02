@@ -28,7 +28,8 @@ public class TaskJob implements Job {
 			}
 		}
 		*/
-		MongoRecDAO.updateRecommandValue();
+//		MongoRecDAO.updateRecommandValue();
+//		HttpControl.getContents();
 		System.out.println("TaskJob end : ");
 		System.out.println("-------------------------------------\n");
 		

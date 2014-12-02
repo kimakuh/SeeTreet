@@ -307,4 +307,18 @@
     background-color: #a9b9c5;
 }
 
+.recommend-box .rec_location_titles {
+	width: 166px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.recommend-box .rec_artist_name {
+	width: 166px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 

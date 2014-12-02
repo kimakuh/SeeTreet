@@ -117,7 +117,7 @@ public class MongoDAO {
 	
 		//같은게 있으면 false
 		if(col.findOne(new BasicDBObject(ContentPublicApiBean.KEY_CONTENTID, String.valueOf(contentId))) != null){
-			System.out.println("Exist ContentId : "+contentId);
+			//System.out.println("Exist ContentId : "+contentId);
 			return false;	
 		}
 			
@@ -196,12 +196,11 @@ public class MongoDAO {
 					.append("modifiedTime", obj.getModTime())
 					.append("StoreAddress", obj.getAddress());
 			col.insert(provider);
+			System.out.println("New Public API Data : " + obj.getStoreTitle());
 			return provider;
 		}catch(Exception e){
-			e.printStackTrace();
-			System.out.println("Error Title : " + obj.getStoreTitle());
-			//System.out.println(obj.getStoreTitle());
-			//System.out.println(obj.getProviderId());
+//			e.printStackTrace();
+			//System.out.println("Error Title : " + obj.getStoreTitle());
 			return null;
 		}
 	}
@@ -250,7 +249,6 @@ public class MongoDAO {
 					.append(UserBean.KEY_EMAIL, email)
 					.append(UserBean.KEY_TOKEN, new ObjectId(token));
 		
-		System.out.println(user.toString());
 		if(col.findOne(user) != null) 
 			return true;
 				
@@ -304,7 +302,6 @@ public class MongoDAO {
 //	}
 	
 	public static boolean joinArtist(ArtistBean bean , String token) {
-		if(true) return false;
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_ARTIST);
 		
@@ -362,7 +359,6 @@ public class MongoDAO {
 	
 	
 	public static boolean joinProvider(ProviderBean bean , String token) {
-		if(true) return false;
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_PROVIDER);
 		
@@ -488,16 +484,13 @@ public class MongoDAO {
 		return res;
 	}
 	
-	public static JSONObject enrollReply(JSONObject bean) throws Exception{
-		if(true) return null;
-		
+	public static JSONObject enrollReply(JSONObject bean) throws Exception{		
 		DB db = MongoDB.getDB();
 		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		DBCollection contentRe = db.getCollection(MongoDB.COLLECTION_REPLY);
 		
 		BasicDBObject rep = new BasicDBObject();
 		
-		System.out.println(bean.toString());
 		
 		rep.append(ReplyBean.KEY_CONTENTID, bean.getString(ReplyBean.KEY_CONTENTID))
 		   .append(ReplyBean.KEY_REPLYIMAGE, bean.getString(ReplyBean.KEY_REPLYIMAGE))
@@ -826,7 +819,6 @@ public class MongoDAO {
 				
 				DBCursor iter = 
 						col.find(new BasicDBObject("provider._id", new ObjectId(_id)));
-				System.out.println("PROVIDER ITER COUNT : " + iter.count());
 				while(iter.hasNext()){
 					DBObject obj = iter.next();
 					String resObj = obj.toString();
@@ -836,7 +828,6 @@ public class MongoDAO {
 			else if(check == false){
 				DBCursor iter = 
 						col.find(new BasicDBObject(ContentBean.KEY_C_ARTIST, _id));
-				System.out.println("ARTIST ITER COUNT : " + iter.count());
 				while(iter.hasNext()){
 					DBObject obj = iter.next();
 					res.put(new JSONObject(obj.toString()));
@@ -846,7 +837,6 @@ public class MongoDAO {
 			e.printStackTrace();
 		}
 		
-		System.out.println(res.toString());
 		return res;
 	}
 	
@@ -895,20 +885,89 @@ public class MongoDAO {
 		return true;
 	}
 	
-	public static JSONObject rankProvider() {
+	public static JSONArray rankProvider() {
+		JSONArray res = new JSONArray();
 		DB db = MongoDB.getDB();
 		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
-		return null;
+		DBCursor iter = contentCol.find(new BasicDBObject() , new BasicDBObject(ContentBean.KEY_PROVIDER+"."+ProviderBean.KEY_STORETITLE, 1))
+				  				  .limit(8)
+				  				  .sort(new BasicDBObject(ContentBean.KEY_LIKECOUNT, -1));
+		
+		
+		try {
+			while(iter.hasNext()) {
+				DBObject item = iter.next();
+				res.put(new JSONObject(item.toString()));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return res;
 		
 	}
 	
-	public static JSONObject rankArtist() {
+	public static JSONArray rankArtist() {
+		JSONArray res = new JSONArray();
 		DB db = MongoDB.getDB();
 		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
-		return null;
+		DBCursor iter = contentCol.find(new BasicDBObject() , new BasicDBObject(ContentBean.KEY_C_ARTIST, 1))
+				  				  .limit(8)
+				  				  .sort(new BasicDBObject(ContentBean.KEY_LIKECOUNT, -1));
+		
+		
+		try {
+			while(iter.hasNext()) {
+				DBObject item = iter.next();
+				res.put(new JSONObject(item.toString()));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return res;
 	}
 	
-	public static int countMaxContent() {
-		return 0;
+	public static int countUnFinishedContent() {
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		
+		return (int)(contentCol.count(new BasicDBObject().append(ContentBean.KEY_FINISHIED, false).append(ContentBean.KEY_C_ARTIST, new BasicDBObject("$ne", null))));
+		
+	}
+	
+	public static int countFinishedContent() {
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		
+		return (int)(contentCol.count(new BasicDBObject().append(ContentBean.KEY_FINISHIED, true)));
+	}
+	
+	public static int countLocationContent(double l_lat ,double l_long) {		
+		DB db = MongoDB.getDB();
+		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		
+		BasicDBList position = new BasicDBList();
+		position.put(LocationBean.LAT, l_long);
+		position.put(LocationBean.LONG, l_lat);		
+		long nContent = 
+				col.count(new BasicDBObject("provider.location", 
+							new BasicDBObject("$near" , 
+								new BasicDBObject("$geometry", 
+										new BasicDBObject("type","Point")
+										.append("coordinates", position)
+								)
+								.append("$maxDistance", 10000)
+							)
+						)
+						.append(ContentBean.KEY_FINISHIED, false)
+						.append(ContentBean.KEY_C_ARTIST, new BasicDBObject("$ne", null))
+						.append(ContentBean.KEY_GENRE, new BasicDBObject("$ne", null))						
+				);
+			
+		
+		return (int)nContent;
 	}
 }

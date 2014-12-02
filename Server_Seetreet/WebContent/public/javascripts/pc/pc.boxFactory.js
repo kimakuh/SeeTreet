@@ -24,25 +24,99 @@ box_Factory.content.initContentData = function(cb){
 // 더미데이터 넣기
 
 // 데이터를 추가해서 갱신해준다.
-box_Factory.content.appendArray = function(latitude, longitude, callback){
-    for(var i=0;i<2;i++){
-        box_Factory.content.contentpagenum += 1;
-        var pagenumber = box_Factory.content.contentpagenum;
-        getUserContent(latitude, longitude, pagenumber, function(data, status, res){
-            if(status == 'success'){
-                if(data.data.length != 0){
-                    box_Factory.returnDataFlag = true;
-                    for(var index in data.data){
-                        box_Factory.content.contentArray.push(data.data[index]);
-                    }
-                    callback();
-                }
-            }
-            else{
-                console.log('데이터가 안받아짐');
-            }
-        });
-    }
+//box_Factory.content.appendArray = function(latitude, longitude, callback){
+//    for(var i=0;i<2;i++){
+//        box_Factory.content.contentpagenum += 1;
+//        var pagenumber = box_Factory.content.contentpagenum;
+//        getUserContent(latitude, longitude, pagenumber, function(data, status, res){
+//            if(status == 'success'){
+//                if(data.data.length != 0){
+//                    box_Factory.returnDataFlag = true;
+//                    for(var index in data.data){
+//                        box_Factory.content.contentArray.push(data.data[index]);
+//                    }
+//                    callback();
+//                }
+//            }
+//            else{
+//                console.log('데이터가 안받아짐');
+//            }
+//        });
+//    }
+//};
+
+
+box_Factory.content.appendArray = function(latitude, longitude, callback) {
+	getRecTables(function(d, state) {
+		if (state == "success") {
+			var recTable = d.data;
+			if(recTable == undefined) {
+			    for(var i=0;i<2;i++){
+		        box_Factory.content.contentpagenum += 1;
+		        var pagenumber = box_Factory.content.contentpagenum;
+		        getUserContent(latitude, longitude, pagenumber, function(data, status, res){
+		            if(status == 'success'){
+		                if(data.data.length != 0){
+		                    box_Factory.returnDataFlag = true;
+		                    for(var index in data.data){
+		                        box_Factory.content.contentArray.push(data.data[index]);
+		                    }
+		                    callback();
+		                }
+		            }
+		            else{
+		                console.log('데이터가 안받아짐');
+		            }
+		        });
+			    }
+			} else {
+				
+				for (var i = 0; i < 2; i++) {
+					box_Factory.content.contentpagenum += 1;
+					var pagenumber = box_Factory.content.contentpagenum;
+					getUserContent(latitude,longitude, pagenumber, function(data, status, res) {
+								if (status == 'success') {
+									if (data.data.length != 0) {
+										box_Factory.returnDataFlag = true;
+										var tempArr = new Array();
+										for ( var index in data.data) {
+											var tContent = data.data[index];
+											// console.log(data.data[index]);
+											var aGenre = tContent.contentGenre.detailGenre;
+											var pGenre = tContent.provider.favoriteGenre[0].detailGenre;
+											data.data[index].recvalue = (recTable[aGenre] == undefined ? 0
+													: recTable[aGenre])
+													+ (recTable[pGenre] == undefined ? 0
+															: recTable[pGenre]);
+											tempArr.push(data.data[index]);										
+										}								
+
+										tempArr.sort(function(x, y) {
+											return y.recvalue - x.recvalue;
+										});
+										
+										for(var t in tempArr) {
+											box_Factory.content.contentArray
+											.push(tempArr[t]);
+										}
+										
+										
+										
+
+										callback();
+									}
+								} else {
+									console.log('데이터가 안받아짐');
+								}
+							});
+
+				}
+			}
+			
+
+		}
+	});
+
 };
 // createContentGroup는 data가 1, 8, 15 ... 단위로 만들어지면 된다.
 box_Factory.content.createContentGroup = function(groupnumber){
@@ -96,8 +170,6 @@ box_Factory.content.createContent = function(contentinfo, groupnumber, size){
     var start_time = contentinfo.contentStartTime;
     // 공연 종료 시간
     var end_time = contentinfo.contentEndTime;
-    console.log(start_time);
-    console.log(end_time);
     
     var content_time = '';
     if(content_type == 'public'){

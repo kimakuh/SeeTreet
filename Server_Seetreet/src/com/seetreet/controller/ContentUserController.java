@@ -32,7 +32,11 @@ public class ContentUserController extends HttpServlet {
     
     private static final String SEARCH = "/user/content/user/search/";
     private static final String HISTORY = "/user/content/user/history/";
+    private static final String REC = "/user/content/user/rec/";
     private static final String TEST = "/user/content/user/test/";
+    
+    private static final String RANK_PROVIDER = "/user/content/user/rankProvider/";
+    private static final String RANK_ARTIST = "/user/content/user/rankArtist/";
     
     /**
      * @see HttpServlet#HttpServlet()
@@ -58,6 +62,12 @@ public class ContentUserController extends HttpServlet {
 			searchContentByHistory(req, res);
 		}else if(cmd.contains(TEST)) {
 			MongoRecDAO.updateRecommandValue();
+		} else if(cmd.contains(RANK_PROVIDER)) {
+			rankProvider(req, res);
+		}else if(cmd.contains(RANK_ARTIST)) {
+			rankArtist(req, res);
+		}else if(cmd.contains(REC)) {
+			recTables(req, res);
 		}
 	}
 	
@@ -128,4 +138,43 @@ public class ContentUserController extends HttpServlet {
 		}
 	}
 	
+	private void rankArtist(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		PrintWriter out = res.getWriter();
+		try {			
+			out.write(ResBodyFactory.create(true,ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.rankArtist()));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			if (out != null)
+				out.close();
+		}
+	}
+	
+	private void rankProvider(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		PrintWriter out = res.getWriter();
+		try {			
+			out.write(ResBodyFactory.create(true,ResBodyFactory.STATE_GOOD_WITH_DATA, MongoDAO.rankProvider()));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			if (out != null)
+				out.close();
+		}
+	}
+	
+	private void recTables(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		PrintWriter out = res.getWriter();
+		try {			
+			String userId = req.getHeader(UserBean.KEY_TOKEN);
+			out.write(ResBodyFactory.create(true,ResBodyFactory.STATE_GOOD_WITH_DATA, MongoRecDAO.findRecommandValue(userId)));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			if (out != null)
+				out.close();
+		}
+	}
 }

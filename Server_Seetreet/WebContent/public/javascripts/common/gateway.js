@@ -355,6 +355,19 @@ var getArtistRecommends = function(page , callback) {
 	httpRequest(url, method, headers, body, callback);
 }
 
+//
+var getRecTables = function(callback) {
+	var token = getCookie(COOKIE_USER_TOKEN);
+	var userId = getCookie(COOKIE_USER_ID);
+	var url = '/user/content/user/rec/' + userId;
+	var method = 'GET';
+	var headers = {
+		"_id" : token
+	};
+	var body = {};
+	httpRequest(url, method, headers, body, callback);
+}
+
 var postApplication = function(contentId , callback) {
 	var token = getCookie(COOKIE_USER_TOKEN);
 	var userId = getCookie(COOKIE_USER_ID);

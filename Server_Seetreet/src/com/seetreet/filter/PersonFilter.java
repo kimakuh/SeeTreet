@@ -60,10 +60,8 @@ public class PersonFilter implements Filter {
 		httpReq.setAttribute(UserBean.KEY_EMAIL, email);
 		
 		if(cmd.contains(PersonController.PREFIX_IS_USER) == false) {			
-			String token = httpReq.getHeader(UserBean.KEY_TOKEN);			
-			System.out.println(token);
+			String token = httpReq.getHeader(UserBean.KEY_TOKEN);	
 			if(!MongoDAO.isUser(email, token)) {
-				System.out.println("> FILTER : ERROR");
 				PrintWriter out = res.getWriter();
 				try {
 					out.write(ResBodyFactory.create(false, ResBodyFactory.STATE_FAIL_ABOUT_UNKNOWN_TOKEN ,new JSONObject()));
