@@ -92,11 +92,20 @@ box_Factory.content.createContent = function(contentinfo, groupnumber, size){
     // 일이 넘어가게 되면 XX월 XX일 ~ XX월 XX일
     // 시간 포맷 201411130800PM
     // 공연 시작 시간
+    
     var start_time = contentinfo.contentStartTime;
     // 공연 종료 시간
     var end_time = contentinfo.contentEndTime;
-
-    var content_time = box_Factory.convert_time(start_time, end_time);
+    console.log(start_time);
+    console.log(end_time);
+    
+    var content_time = '';
+    if(content_type == 'public'){
+    	content_time = box_Factory.convert_time(start_time, end_time); 
+    }
+    else{
+    	content_time = box_Factory.seetreet_convert_time(start_time, end_time);
+    }
 
     // 공연 장소
     var content_address = contentinfo.provider.StoreAddress;
@@ -129,9 +138,9 @@ box_Factory.content.createContent = function(contentinfo, groupnumber, size){
                     + '</div>'
                 + '</div>'
         );
-//        $('.content[data-index = "' +  content_id + '"]').hide('slow', function(){
-//            $('.content[data-index = "' +  content_id + '"]').show('blind');
-//        });
+        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.largesize-area').find('.content[data-index = "' + content_id + '"]').hide();
+//        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.largesize-area').find('.content[data-index = "' + content_id + '"]').show('scale', {direction:"horizontal"});
+
     }
     else{
         $('.contentlist[group-list = "' +  groupnumber + '"]').find('.smallsize-area').append(
@@ -145,8 +154,27 @@ box_Factory.content.createContent = function(contentinfo, groupnumber, size){
                 + '</div>'
                 + '</div>'
         );
+        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.smallsize-area').find('.content[data-index = "' + content_id + '"]').hide();
+//        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.smallsize-area').find('.content[data-index = "' + content_id + '"]').show('scale', {direction : "horizontal"});
+
     }
 };
+
+var current_show_content_num = 1;
+box_Factory.content.contentLoadAnimation = function(groupnumber){
+//    console.log('count');
+//    if(current_show_content_num == 7){
+//        return;
+//    }
+//    if(current_show_content_num == 1){
+//        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.largesize-area').find('.content :nth-child(' + current_show_content_num + ')').show('clip');
+//    }
+//    else{
+//        $('.contentlist[group-list = "' +  groupnumber + '"]').find('.smallsize-area').find('.content:nth-child(' + current_show_content_num + ')').show('clip');
+//    }
+//    box_Factory.content.contentLoadAnimation(groupnumber);
+};
+
 
 box_Factory.content.get_a_content = function(dataindex){
     var contentarray = box_Factory.content.contentArray;
@@ -221,4 +249,28 @@ box_Factory.convert_time = function(starttime, endtime){
     }
     return showday;
 };
+
+box_Factory.seetreet_convert_time = function(starttime, endtime){
+	// 년    	.substr(0,4)
+	// 월	.substr(5,2)
+	// 일	.substr(8,2)
+	// 시 	.substr(11,2)
+	// 분	.substr(14,2)
+    var startday = starttime.substr(8,2);
+    var endday = endtime.substr(8,2);
+
+    var showday = '';
+
+    if(startday != endday){
+        showday = starttime.substr(5,2) + "월 " + starttime.substr(8,2) + "일 " + '~ '
+            +  endtime.substr(5,2) + '월 ' + endtime.substr(8,2) + "일";
+    }
+    else{
+        showday = starttime.substr(5,2) + "월 " + starttime.substr(8,2) + "일 "
+            + starttime.substr(11,2) + ":" + starttime.substr(14,2) + "PM" + " ~ "
+        + endtime.substr(11,2) + ":" + endtime.substr(14,2) + "PM";
+    }
+    return showday;
+	
+}
 

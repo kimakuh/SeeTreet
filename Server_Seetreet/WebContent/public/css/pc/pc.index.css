@@ -284,6 +284,9 @@ textarea{
     padding-left: 20px;
     margin-bottom : 7px;
     color : #333333;
+    text-overflow : ellipsis;
+    overflow: hidden;
+    height: 20px;
 }
 .seetreet-container .contentlist .largesize-area .content .showtime-title{
     /*font-size : 20px;*/

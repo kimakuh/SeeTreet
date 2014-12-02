@@ -189,6 +189,8 @@ public class JoinController extends HttpServlet {
 			String storeType	= req.getParameter(ProviderBean.KEY_STORETYPE);
 			String address	 	= req.getParameter(ProviderBean.KEY_ADDRESS);
 
+			System.out.println(req.getParameter(ProviderBean.KEY_IMAGES));
+			
 			String[] encodedImages = new String[images.length()];
 			String[] imageURLs = null;
 			for(int i = 0; i < images.length(); i++) {
@@ -238,6 +240,7 @@ public class JoinController extends HttpServlet {
 			}
 		} catch (JSONException ex) {
 			// TODO: handle exception
+			System.out.println(req.getParameter(ProviderBean.KEY_IMAGES));
 			ex.printStackTrace();
 		}
 		return false;

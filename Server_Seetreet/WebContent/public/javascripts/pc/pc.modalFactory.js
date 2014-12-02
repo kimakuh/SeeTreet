@@ -31,9 +31,16 @@ modal_Factory.contentModal.loadModal = function(contentinfo, callback){
     	}
         artist_name = artistdata.name;
     }
-    var content_time = modal_Factory.content_convert_time(contentinfo.contentStartTime, contentinfo.contentEndTime);
+    var content_time = '';
+    if(content_type == 'public'){
+    	content_time = modal_Factory.content_convert_time(contentinfo.contentStartTime, contentinfo.contentEndTime);
+    }
+    else{
+    	content_time = box_Factory.seetreet_convert_time(contentinfo.contentStartTime, contentinfo.contentEndTime);
+    }
+    
 
-    var storeTitle = contentinfo.provider.StoreTitle;
+    var storeTitle = modal_Factory.omit_unnecessary_description(contentinfo.provider.StoreTitle);
     var providerAddress = contentinfo.provider.StoreAddress;
     var artist_description      = '';
     var provider_description    = '';
@@ -290,10 +297,12 @@ modal_Factory.providerModal.getProviderInfo = function(providerId){
     });
 };
 modal_Factory.providerModal.loadHistory = function(providerId){
+	
     // history line 지우기
     $('#provider-popup').find('.history-list *').remove();
     var historydata2submit = {
         historyTime : '',
+        historyType : '',
         storeTitle : '',
         artistname : '',
         Genre : '',
@@ -312,7 +321,13 @@ modal_Factory.providerModal.loadHistory = function(providerId){
                         break;
                     }
                 }
-                historydata2submit.historyTime = modal_Factory.content_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                if(historydata.contentType == 'PUBLIC'){
+                	historydata2submit.historyTime = modal_Factory.content_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                }
+                else{
+                	historydata2submit.historyTime = box_Factory.seetreet_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                }
+                historydata2submit.historyType = historydata.contentType;
                 historydata2submit.likecount = historydata.likecount;
                 historydata2submit.storeTitle = historydata.provider.StoreTitle;
                 historydata2submit.artistname = confirmed_artist_data.name;
@@ -455,7 +470,12 @@ modal_Factory.artistModal.loadHistory = function(artistId){
                         break;
                     }
                 }
-                historydata2submit.historyTime = modal_Factory.content_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                if(historydata.contentType == 'PUBLIC'){
+                	historydata2submit.historyTime = modal_Factory.content_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                }
+                else{
+                	historydata2submit.historyTime = box_Factory.seetreet_convert_time(historydata.contentStartTime, historydata.contentEndTime);
+                }
                 historydata2submit.likecount = historydata.likecount;
                 historydata2submit.storeTitle = historydata.provider.StoreTitle;
                 historydata2submit.artistname = confirmed_artist_data.name;

@@ -304,6 +304,7 @@ public class MongoDAO {
 //	}
 	
 	public static boolean joinArtist(ArtistBean bean , String token) {
+		if(true) return false;
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_ARTIST);
 		
@@ -361,6 +362,7 @@ public class MongoDAO {
 	
 	
 	public static boolean joinProvider(ProviderBean bean , String token) {
+		if(true) return false;
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_PROVIDER);
 		
@@ -444,6 +446,7 @@ public class MongoDAO {
 						)
 						.append(ContentBean.KEY_FINISHIED, false)
 						.append(ContentBean.KEY_C_ARTIST, new BasicDBObject("$ne", null))
+						.append(ContentBean.KEY_GENRE, new BasicDBObject("$ne", null))						
 				).skip((page-1)*MAX_LIMIT).limit(MAX_LIMIT);
 			
 		try {
@@ -486,6 +489,8 @@ public class MongoDAO {
 	}
 	
 	public static JSONObject enrollReply(JSONObject bean) throws Exception{
+		if(true) return null;
+		
 		DB db = MongoDB.getDB();
 		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
 		DBCollection contentRe = db.getCollection(MongoDB.COLLECTION_REPLY);
@@ -574,13 +579,19 @@ public class MongoDAO {
 		return new JSONObject(C.convertObjectId(artist.toString()));
 	}
 	
+	// 주의
+	// basicdbobject 생성시 key, value 에 다른 basicdbobject 를 생성해서 사용하면 .put으로 하지말것!
+	// .put의 리턴은 null 이므로 객체 생성에 오류가 발생합니다.
+	
 	public static JSONArray searchContentByLocationFromArtist(double l_lat,	double l_long, int page , String artistId) {
 //		ContentProviderBean[] res = null;
 		JSONArray res = new JSONArray();
 
 		DB db = MongoDB.getDB();
 		DBCollection col = db.getCollection(MongoDB.COLLECTION_CONTENTS);
-
+		BasicDBObject artists = new BasicDBObject();
+		artists.put("$not", 
+				new BasicDBObject("$elemMatch", new BasicDBObject(ArtistBean.KEY_ID , new ObjectId(artistId))));
 		BasicDBList position = new BasicDBList();
 		position.put(LocationBean.LAT, l_lat);
 		position.put(LocationBean.LONG, l_long);
@@ -592,8 +603,8 @@ public class MongoDAO {
 													.append("coordinates", position))))
 							.append(ContentBean.KEY_FINISHIED, false)
 							.append(ContentBean.KEY_C_ARTIST, null)
-							.append(ContentBean.KEY_ARTIST+"."+ArtistBean.KEY_ID , 
-									new BasicDBObject().put("$ne", new ObjectId(artistId))));
+							.append(ContentBean.KEY_ARTIST ,artists));
+		
 
 		try {
 			while(iter.hasNext()) {
@@ -882,5 +893,22 @@ public class MongoDAO {
 					 );
 		contentCol.update(findQuery, updateQuery);
 		return true;
+	}
+	
+	public static JSONObject rankProvider() {
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		return null;
+		
+	}
+	
+	public static JSONObject rankArtist() {
+		DB db = MongoDB.getDB();
+		DBCollection contentCol = db.getCollection(MongoDB.COLLECTION_CONTENTS);
+		return null;
+	}
+	
+	public static int countMaxContent() {
+		return 0;
 	}
 }
